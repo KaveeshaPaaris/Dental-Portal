@@ -34,14 +34,20 @@ export async function verifyToken(
   const token = authHeader.split(' ')[1];
 
   try {
-    // Verify the Supabase JWT using our JWT secret
-    const decoded = jwt.verify(token, env.SUPABASE_JWT_SECRET) as { sub: string };
+    // Verify the token by calling Supabase directly
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+
+    if (authError || !user) {
+      console.error('Supabase Auth Error:', authError?.message);
+      res.status(401).json({ error: 'Invalid token' });
+      return;
+    }
 
     // Fetch the admin's profile to get their role
     const { data: profile, error } = await supabase
       .from('profiles')
       .select('id, email, full_name, role, is_active')
-      .eq('id', decoded.sub)
+      .eq('id', user.id)
       .single();
 
     if (error || !profile) {
@@ -63,10 +69,7 @@ export async function verifyToken(
 
     next();
   } catch (err) {
-    if (err instanceof jwt.TokenExpiredError) {
-      res.status(401).json({ error: 'Token expired' });
-    } else {
-      res.status(401).json({ error: 'Invalid token' });
-    }
+    console.error('Auth Middleware Error:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 }
