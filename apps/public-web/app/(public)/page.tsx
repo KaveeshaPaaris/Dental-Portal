@@ -4,7 +4,7 @@ import { ArrowRight, Star, Shield, Clock, Heart, CheckCircle } from 'lucide-reac
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
-  title: 'Smile Dental Clinic — World-Class Dental Care',
+  title: 'Charming Dental Clinic — World-Class Dental Care',
   description:
     'Book your dental appointment online. Expert care for all your dental needs — teeth whitening, orthodontics, implants, and more.',
 };

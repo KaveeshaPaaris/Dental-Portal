@@ -3,7 +3,7 @@ import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
-  title: 'Contact Us — Smile Dental Clinic',
+  title: 'Contact Us — Charming Dental Clinic',
   description: 'Get in touch with us for appointments, inquiries, or dental emergencies. We are here to help.',
 };
 

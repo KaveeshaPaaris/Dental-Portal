@@ -5,11 +5,11 @@ import { Toaster } from 'react-hot-toast';
 import ReactQueryProvider from '@/components/providers/ReactQueryProvider';
 
 export const metadata: Metadata = {
-  title: 'Smile Dental Clinic',
+  title: 'Charming Dental Clinic',
   description: 'World-class dental care, close to home. Book your appointment today.',
   keywords: 'dental clinic, dentist, teeth, orthodontics, dental care',
   openGraph: {
-    title: 'Smile Dental Clinic',
+    title: 'Charming Dental Clinic',
     description: 'World-class dental care, close to home.',
     type: 'website',
   },

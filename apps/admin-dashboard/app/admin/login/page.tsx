@@ -53,7 +53,7 @@ export default function AdminLoginPage() {
             <Shield size={28} />
           </div>
           <h1 className={styles.title}>Admin Portal</h1>
-          <p className={styles.subtitle}>Smile Dental Clinic — Staff Access Only</p>
+          <p className={styles.subtitle}>Charming Dental Clinic — Staff Access Only</p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form} noValidate>

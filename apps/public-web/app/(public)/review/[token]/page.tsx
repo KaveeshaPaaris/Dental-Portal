@@ -110,7 +110,7 @@ export default function ReviewSubmissionPage() {
         <div className={styles.header}>
           <h1 className={styles.title}>How was your visit?</h1>
           <p className={styles.subtitle}>
-            Hi {patientName}, please rate your recent experience at Smile Dental Clinic.
+            Hi {patientName}, please rate your recent experience at Charming Dental Clinic.
           </p>
         </div>
 

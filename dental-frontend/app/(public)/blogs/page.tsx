@@ -5,7 +5,7 @@ import { ArrowRight, Calendar, Clock } from 'lucide-react';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
-  title: 'Blog — Smile Dental Clinic',
+  title: 'Blog — Charming Dental Clinic',
   description: 'Read the latest news, tips, and insights about dental health and oral hygiene from our experts.',
 };
 

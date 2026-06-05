@@ -4,7 +4,7 @@ import Footer from '@/components/public/Footer';
 import FABButtons from '@/components/public/FABButtons';
 
 export const metadata: Metadata = {
-  title: { template: '%s | Smile Dental Clinic', default: 'Smile Dental Clinic' },
+  title: { template: '%s | Charming Dental Clinic', default: 'Charming Dental Clinic' },
   description: 'World-class dental care, close to home.',
 };
 

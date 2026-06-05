@@ -4,7 +4,7 @@ import { ArrowRight, CheckCircle2, Shield, HeartPulse, Sparkles, Activity, PlusS
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
-  title: 'Our Services — Smile Dental Clinic',
+  title: 'Our Services — Charming Dental Clinic',
   description: 'Comprehensive dental services including general dentistry, orthodontics, teeth whitening, and dental implants.',
 };
 

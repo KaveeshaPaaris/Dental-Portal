@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useTheme } from '@/context/ThemeContext';
 import { Sun, Moon, Menu, X, Phone } from 'lucide-react';
 import styles from './Navbar.module.css';
@@ -24,11 +25,14 @@ export default function Navbar() {
       <div className={`container ${styles.nav}`}>
         {/* Logo */}
         <Link href="/" className={styles.logo}>
-          <span className={styles.logoIcon}>🦷</span>
-          <span className={styles.logoText}>
-            <span className={styles.logoMain}>Smile</span>
-            <span className={styles.logoSub}>Dental</span>
-          </span>
+          <Image
+            src="/logo.png"
+            alt="Charming Dental Clinic"
+            width={240}
+            height={64}
+            style={{ objectFit: 'contain', width: 'auto', height: '64px' }}
+            priority
+          />
         </Link>
 
         {/* Desktop Nav */}

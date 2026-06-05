@@ -213,7 +213,7 @@ export async function completeBooking(id: string, adminId: string) {
   const notificationPromises = [
     sendSMS(
       booking.patient_phone,
-      `Hi ${booking.patient_name}! Thank you for visiting Smile Dental Clinic. Please share your feedback: ${reviewLink}`
+      `Hi ${booking.patient_name}! Thank you for visiting Charming Dental Clinic. Please share your feedback: ${reviewLink}`
     ),
     sendWhatsApp(
       booking.patient_phone,
@@ -251,7 +251,7 @@ export async function sendBookingConfirmation(id: string) {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
   });
 
-  const message = `Hi ${booking.patient_name}! Your appointment #${booking.appointment_number} is confirmed for ${dateStr} (${booking.assigned_session} session). See you soon! — Smile Dental Clinic`;
+  const message = `Hi ${booking.patient_name}! Your appointment #${booking.appointment_number} is confirmed for ${dateStr} (${booking.assigned_session} session). See you soon! — Charming Dental Clinic`;
 
   const promises = [
     sendSMS(booking.patient_phone, message),

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Phone, MessageCircle, Mail, MapPin, Clock, Heart } from 'lucide-react';
 import styles from './Footer.module.css';
 
@@ -20,11 +21,13 @@ export default function Footer() {
         {/* Brand */}
         <div className={styles.brand}>
           <div className={styles.logo}>
-            <span className={styles.logoIcon}>🦷</span>
-            <div>
-              <div className={styles.logoMain}>Smile Dental</div>
-              <div className={styles.logoSub}>Your smile is our priority</div>
-            </div>
+            <Image 
+              src="/logo.png" 
+              alt="Charming Dental Clinic" 
+              width={240} 
+              height={64} 
+              style={{ objectFit: 'contain', width: 'auto', height: '64px' }} 
+            />
           </div>
           <p className={styles.tagline}>
             Providing world-class dental care with a gentle touch since 2005.
@@ -93,7 +96,7 @@ export default function Footer() {
 
       <div className={styles.bottom}>
         <div className="container">
-          <p>© {new Date().getFullYear()} Smile Dental Clinic. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Charming Dental Clinic. All rights reserved.</p>
           <p className={styles.madeWith}>
             Made with <Heart size={14} className={styles.heart} /> for healthy smiles
           </p>

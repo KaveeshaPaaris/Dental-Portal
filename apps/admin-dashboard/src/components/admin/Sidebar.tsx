@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import {
@@ -36,9 +37,9 @@ export default function AdminSidebar() {
     <aside className={`admin-sidebar ${styles.sidebar}`}>
       {/* Logo */}
       <div className={styles.logo}>
-        <span className={styles.logoIcon}>🦷</span>
+        <Image src="/logo.png" alt="Charming Dental Clinic" width={32} height={32} className={styles.logoIcon} style={{ objectFit: 'contain' }} />
         <div>
-          <div className={styles.logoMain}>Smile Admin</div>
+          <div className={styles.logoMain}>Charming Dental Clinic</div>
           <div className={styles.logoRole}>{user?.role?.replace('_', ' ')}</div>
         </div>
       </div>

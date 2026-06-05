@@ -3,7 +3,7 @@ import Image from 'next/image';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
-  title: 'About Us — Smile Dental Clinic',
+  title: 'About Us — Charming Dental Clinic',
   description: 'Learn about our mission, our history, and meet the expert team of dentists dedicated to your oral health.',
 };
 
@@ -39,7 +39,7 @@ export default function AboutPage() {
           <div className="badge badge-primary" style={{ marginBottom: 16 }}>Our Story</div>
           <h1 className={styles.title}>Dedicated to Your Smile</h1>
           <p className={styles.subtitle}>
-            Since 2010, Smile Dental Clinic has been providing world-class dental care to our community. 
+            Since 2010, Charming Dental Clinic has been providing world-class dental care to our community. 
             We combine advanced technology with a compassionate, patient-first approach.
           </p>
         </header>

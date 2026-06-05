@@ -13,7 +13,7 @@ type Message = {
 
 export default function AskPage() {
   const [messages, setMessages] = useState<Message[]>([
-    { id: 'initial', sender: 'bot', text: 'Hello! I am the Smile Dental Assistant. Ask me anything about our services, opening hours, or treatments.' }
+    { id: 'initial', sender: 'bot', text: 'Hello! I am the Charming Dental Assistant. Ask me anything about our services, opening hours, or treatments.' }
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
