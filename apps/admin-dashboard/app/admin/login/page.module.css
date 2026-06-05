@@ -1,0 +1,112 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  background: var(--color-bg);
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 30% 30%, rgba(15,76,129,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 80%, rgba(93,173,226,0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 40px;
+  box-shadow: var(--shadow-xl);
+  animation: fadeIn 0.4s ease-out;
+}
+
+.header { text-align: center; margin-bottom: 32px; }
+
+.iconWrap {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  box-shadow: var(--shadow-md), var(--shadow-glow);
+}
+
+.title {
+  font-size: 1.625rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.inputWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.inputIcon {
+  position: absolute;
+  left: 12px;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.inputWithIcon { padding-left: 38px; }
+
+.inputWithAction { padding-right: 40px; }
+
+.eyeBtn {
+  position: absolute;
+  right: 10px;
+  padding: 4px;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  transition: color var(--transition-fast);
+}
+.eyeBtn:hover { color: var(--color-text-primary); }
+
+.submitBtn {
+  width: 100%;
+  padding: 13px;
+  margin-top: 8px;
+  font-size: 1rem;
+}
+
+.notice {
+  margin-top: 24px;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  line-height: 1.5;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-border);
+}

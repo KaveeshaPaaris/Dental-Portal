@@ -42,7 +42,7 @@ export function bookingConfirmationEmail(data: {
         <p><strong>Session:</strong> ${data.session}</p>
       </div>
       <p>Please arrive 10 minutes early. See you soon! 😊</p>
-      <p style="color: #64748B; font-size: 14px;">— Smile Dental Clinic</p>
+      <p style="color: #64748B; font-size: 14px;">— Charming Dental Clinic</p>
     </div>
   `;
 }
@@ -63,7 +63,7 @@ export function reviewRequestEmail(data: {
         </a>
       </div>
       <p style="color: #64748B; font-size: 14px;">This link is unique to you and can only be used once.</p>
-      <p style="color: #64748B; font-size: 14px;">— Smile Dental Clinic</p>
+      <p style="color: #64748B; font-size: 14px;">— Charming Dental Clinic</p>
     </div>
   `;
 }

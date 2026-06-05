@@ -3,6 +3,23 @@
 -- Run this in your Supabase SQL Editor
 -- ============================================================
 
+-- ─── CLEANUP (Allows re-running the script) ───────────────────
+DROP TABLE IF EXISTS site_content CASCADE;
+DROP TABLE IF EXISTS notifications CASCADE;
+DROP TABLE IF EXISTS faqs CASCADE;
+DROP TABLE IF EXISTS inventory_logs CASCADE;
+DROP TABLE IF EXISTS inventory CASCADE;
+DROP TABLE IF EXISTS reviews CASCADE;
+DROP TABLE IF EXISTS bookings CASCADE;
+DROP TABLE IF EXISTS profiles CASCADE;
+
+DROP TYPE IF EXISTS booking_source CASCADE;
+DROP TYPE IF EXISTS booking_status CASCADE;
+DROP TYPE IF EXISTS session_preference CASCADE;
+DROP TYPE IF EXISTS review_status CASCADE;
+DROP TYPE IF EXISTS inventory_action CASCADE;
+DROP TYPE IF EXISTS notification_type CASCADE;
+
 -- ─── ENUMS ──────────────────────────────────────────────────
 CREATE TYPE booking_source      AS ENUM ('ONLINE', 'PHONE', 'WHATSAPP');
 CREATE TYPE booking_status      AS ENUM ('PENDING_OTP', 'PENDING_REVIEW', 'ACCEPTED', 'REJECTED', 'COMPLETED', 'CANCELLED');

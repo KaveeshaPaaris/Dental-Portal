@@ -19,7 +19,7 @@ const envSchema = z.object({
   // Resend
   RESEND_API_KEY: z.string().min(1, 'RESEND_API_KEY is required'),
   EMAIL_FROM: z.string().email('EMAIL_FROM must be a valid email'),
-  EMAIL_FROM_NAME: z.string().default('Smile Dental Clinic'),
+  EMAIL_FROM_NAME: z.string().default('Charming Dental Clinic'),
 
   // CORS
   ALLOWED_ORIGINS: z.string().default('http://localhost:3000'),
