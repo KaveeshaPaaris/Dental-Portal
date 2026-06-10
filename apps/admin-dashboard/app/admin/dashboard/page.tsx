@@ -14,12 +14,12 @@ export default function AdminDashboard() {
 
   const { data: bookings } = useQuery({
     queryKey: ['bookings', 'dashboard'],
-    queryFn: () => api.get<Booking[]>('/admin/bookings?status=PENDING_REVIEW').then((r) => r.data),
+    queryFn: () => api.get<Booking[]>('/bookings?status=PENDING_REVIEW').then((r) => r.data),
   });
 
   const { data: reviews } = useQuery({
     queryKey: ['reviews', 'pending'],
-    queryFn: () => api.get<Review[]>('/admin/reviews?status=PENDING').then((r) => r.data),
+    queryFn: () => api.get<Review[]>('/reviews?status=PENDING').then((r) => r.data),
   });
 
   const { data: inventory } = useQuery({

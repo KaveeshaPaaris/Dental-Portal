@@ -40,8 +40,16 @@ export default function AdminBookingsPage() {
   };
 
   const handleStatusChange = async (id: string, action: 'accept' | 'reject') => {
+    const booking = bookings.find(b => b.id === id);
     try {
-      await api.patch(`/bookings/${id}/${action}`);
+      if (action === 'accept' && booking) {
+        await api.patch(`/bookings/${id}/accept`, {
+          assigned_date: booking.preferred_date,
+          assigned_session: booking.preferred_session,
+        });
+      } else {
+        await api.patch(`/bookings/${id}/${action}`);
+      }
       toast.success(`Booking ${action}ed successfully`);
       fetchBookings();
     } catch (error) {

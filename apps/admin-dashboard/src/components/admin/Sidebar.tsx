@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import {
   LayoutDashboard, Calendar, Star, Package,
-  HelpCircle, FileText, Users, Settings, LogOut,
+  HelpCircle, FileText, Users, Settings, LogOut, Newspaper,
 } from 'lucide-react';
 import styles from './Sidebar.module.css';
 
@@ -18,6 +18,7 @@ const NAV_ITEMS = [
   { label: 'Inventory',   href: '/admin/inventory',       icon: Package },
   { label: 'FAQs',        href: '/admin/faqs',            icon: HelpCircle },
   { label: 'Content',     href: '/admin/content',         icon: FileText },
+  { label: 'Blog Posts',  href: '/admin/blogs',           icon: Newspaper },
 ];
 
 const SUPER_ADMIN_ITEMS = [

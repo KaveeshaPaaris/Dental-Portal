@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { verifyToken } from '../../middleware/auth.middleware';
 import { requireRole } from '../../middleware/role.middleware';
 import { validate } from '../../middleware/validate.middleware';
+import { otpLimiter } from '../../middleware/rateLimiter.middleware';
 import * as controller from './bookings.controller';
 import {
   createBookingSchema,
@@ -16,8 +17,8 @@ const router = Router();
 
 // ─── PUBLIC ──────────────────────────────────────────────────
 router.post('/', validate(createBookingSchema), controller.createBooking);
-router.post('/verify-otp', validate(verifyOTPSchema), controller.verifyOTP);
-router.post('/resend-otp', validate(resendOTPSchema), controller.resendOTP);
+router.post('/verify-otp', otpLimiter, validate(verifyOTPSchema), controller.verifyOTP);
+router.post('/resend-otp', otpLimiter, validate(resendOTPSchema), controller.resendOTP);
 
 // ─── ADMIN ───────────────────────────────────────────────────
 router.get('/schedule', verifyToken, requireRole('ADMIN'), controller.getDailySchedule);
@@ -31,3 +32,4 @@ router.patch('/:id/reorder', verifyToken, requireRole('ADMIN'), validate(reorder
 router.post('/:id/send-confirmation', verifyToken, requireRole('ADMIN'), controller.sendConfirmation);
 
 export default router;
+

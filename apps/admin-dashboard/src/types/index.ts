@@ -126,6 +126,22 @@ export interface SiteContent {
   updated_at: string;
 }
 
+// ─── Blogs ────────────────────────────────────────────────────
+export interface Blog {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  category: string;
+  cover_image?: string;
+  is_published: boolean;
+  author_id?: string;
+  published_at?: string;
+  created_at: string;
+  updated_at: string;
+}
+
 // ─── API Responses ────────────────────────────────────────────
 export interface ApiError {
   error: string;
