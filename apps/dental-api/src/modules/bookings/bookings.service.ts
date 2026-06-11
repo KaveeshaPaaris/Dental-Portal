@@ -83,19 +83,27 @@ export async function getBookings(filters: {
   status?: string;
   date?: string;
   session?: string;
+  page?: number;
+  limit?: number;
 }) {
+  const page = filters.page || 1;
+  const limit = filters.limit || 50;
+  const from = (page - 1) * limit;
+  const to = from + limit - 1;
+
   let query = supabase
     .from('bookings')
-    .select('*, profiles(full_name, email)')
-    .order('created_at', { ascending: false });
+    .select('*, profiles(full_name, email)', { count: 'exact' })
+    .order('created_at', { ascending: false })
+    .range(from, to);
 
   if (filters.status) query = query.eq('status', filters.status);
   if (filters.date) query = query.eq('assigned_date', filters.date);
   if (filters.session) query = query.eq('assigned_session', filters.session);
 
-  const { data, error } = await query;
+  const { data, error, count } = await query;
   if (error) throw createError('Failed to fetch bookings', 500);
-  return data;
+  return { data: data ?? [], total: count ?? 0, page, limit };
 }
 
 export async function getDailySchedule(date: string) {
@@ -171,10 +179,11 @@ export async function acceptBooking(id: string, input: AcceptBookingInput, admin
       handled_by: adminId,
     })
     .eq('id', id)
+    .eq('status', 'PENDING_REVIEW')
     .select()
     .single();
 
-  if (error || !updated) throw createError('Failed to accept booking', 500);
+  if (error || !updated) throw createError('Booking was already handled by another admin or not found', 409);
   return updated;
 }
 
@@ -231,8 +240,14 @@ export async function completeBooking(id: string, adminId: string) {
     );
   }
 
-  // Don't block response on notification delivery
-  Promise.allSettled(notificationPromises);
+  // Don't block response on notification delivery, but log failures
+  Promise.allSettled(notificationPromises).then((results) => {
+    results.forEach((r, i) => {
+      if (r.status === 'rejected') {
+        console.error(`[completeBooking] Notification channel ${i} failed:`, r.reason);
+      }
+    });
+  });
 
   return booking;
 }

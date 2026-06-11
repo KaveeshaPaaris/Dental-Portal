@@ -11,11 +11,15 @@ import toast from 'react-hot-toast';
 export default function AdminBookingsPage() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const limit = 50;
 
-  const fetchBookings = async () => {
+  const fetchBookings = async (currentPage = 1) => {
     try {
-      const res = await api.get('/bookings');
-      setBookings(res.data);
+      const res = await api.get(`/bookings?page=${currentPage}&limit=${limit}`);
+      setBookings(res.data.data);
+      setTotal(res.data.total);
     } catch (error) {
       toast.error('Failed to load bookings');
     } finally {
@@ -24,8 +28,8 @@ export default function AdminBookingsPage() {
   };
 
   useEffect(() => {
-    fetchBookings();
-  }, []);
+    fetchBookings(page);
+  }, [page]);
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -51,7 +55,7 @@ export default function AdminBookingsPage() {
         await api.patch(`/bookings/${id}/${action}`);
       }
       toast.success(`Booking ${action}ed successfully`);
-      fetchBookings();
+      fetchBookings(page);
     } catch (error) {
       toast.error(`Failed to ${action} booking`);
     }
@@ -141,6 +145,30 @@ export default function AdminBookingsPage() {
           </tbody>
         </table>
       </div>
+
+      {total > limit && (
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 24 }}>
+          <div style={{ color: 'var(--color-text-secondary)' }}>
+            Showing {((page - 1) * limit) + 1} to {Math.min(page * limit, total)} of {total} bookings
+          </div>
+          <div style={{ display: 'flex', gap: 12 }}>
+            <button 
+              className="btn btn-secondary" 
+              disabled={page === 1} 
+              onClick={() => setPage(p => p - 1)}
+            >
+              Previous
+            </button>
+            <button 
+              className="btn btn-secondary" 
+              disabled={page * limit >= total} 
+              onClick={() => setPage(p => p + 1)}
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

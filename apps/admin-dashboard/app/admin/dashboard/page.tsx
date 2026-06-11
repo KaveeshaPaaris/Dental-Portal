@@ -14,7 +14,7 @@ export default function AdminDashboard() {
 
   const { data: bookings } = useQuery({
     queryKey: ['bookings', 'dashboard'],
-    queryFn: () => api.get<Booking[]>('/bookings?status=PENDING_REVIEW').then((r) => r.data),
+    queryFn: () => api.get<any>('/bookings?status=PENDING_REVIEW').then((r) => r.data.data),
   });
 
   const { data: reviews } = useQuery({

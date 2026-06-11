@@ -32,8 +32,14 @@ export async function resendOTP(req: Request, res: Response, next: NextFunction)
 
 export async function getBookings(req: Request, res: Response, next: NextFunction) {
   try {
-    const { status, date, session } = req.query as Record<string, string>;
-    const data = await bookingsService.getBookings({ status, date, session });
+    const { status, date, session, page, limit } = req.query as Record<string, string>;
+    const data = await bookingsService.getBookings({ 
+      status, 
+      date, 
+      session,
+      page: page ? parseInt(page, 10) : undefined,
+      limit: limit ? parseInt(limit, 10) : undefined,
+    });
     res.json(data);
   } catch (err) { next(err); }
 }
