@@ -38,7 +38,7 @@ export default function AdminSidebar() {
     <aside className={`admin-sidebar ${styles.sidebar}`}>
       {/* Logo */}
       <div className={styles.logo}>
-        <Image src="/logo.png" alt="Charming Dental Clinic" width={32} height={32} className={styles.logoIcon} style={{ objectFit: 'contain' }} />
+        <Image src="/logo.png" alt="Charming Dental Clinic" width={64} height={64} className={styles.logoIcon} style={{ objectFit: 'contain' }} />
         <div>
           <div className={styles.logoMain}>Charming Dental Clinic</div>
           <div className={styles.logoRole}>{user?.role?.replace('_', ' ')}</div>
