@@ -14,7 +14,7 @@ export default function AdminDashboard() {
 
   const { data: bookings } = useQuery({
     queryKey: ['bookings', 'dashboard'],
-    queryFn: () => api.get<any>('/bookings?status=PENDING_REVIEW').then((r) => r.data.data),
+    queryFn: () => api.get<{ data: Booking[] }>('/bookings?status=PENDING_REVIEW').then((r) => r.data.data),
   });
 
   const { data: reviews } = useQuery({
@@ -108,11 +108,11 @@ export default function AdminDashboard() {
           </div>
           {bookings && bookings.length > 0 ? (
             <div className={styles.list}>
-              {bookings.slice(0, 5).map((b) => (
+              {bookings.slice(0, 5).map((b: Booking) => (
                 <div key={b.id} className={styles.listItem}>
-                  <div className={styles.listAvatar}>{b.patient_name[0]}</div>
+                  <div className={styles.listAvatar}>{b.patient_name?.[0] || '?'}</div>
                   <div className={styles.listInfo}>
-                    <div className={styles.listName}>{b.patient_name}</div>
+                    <div className={styles.listName}>{b.patient_name || 'Unknown'}</div>
                     <div className={styles.listMeta}>
                       <Clock size={12} /> {b.preferred_date} · {b.preferred_session}
                     </div>

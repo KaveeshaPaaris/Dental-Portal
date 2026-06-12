@@ -16,6 +16,7 @@ import adminsRouter from './modules/admins/admins.routes';
 import faqsRouter from './modules/faqs/faqs.routes';
 import contentRouter from './modules/content/content.routes';
 import blogsRouter from './modules/blogs/blogs.routes';
+import authRouter from './modules/auth/auth.routes';
 
 const app = express();
 
@@ -54,6 +55,7 @@ const BASE = '/api/v1';
 
 // Public — apply general rate limiter
 // Note: OTP rate limiting is applied directly inside bookings.routes.ts
+app.use(`${BASE}/auth`, authRouter);
 app.use(`${BASE}/bookings`, publicLimiter, bookingsRouter);
 app.use(`${BASE}/reviews`, publicLimiter, reviewsRouter);
 app.use(`${BASE}/faqs`, publicLimiter, faqsRouter);

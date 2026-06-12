@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useTheme } from '@/context/ThemeContext';
-import { Sun, Moon, Menu, X, Phone } from 'lucide-react';
+import { usePatientAuth } from '@/context/PatientAuthContext';
+import { Sun, Moon, Menu, X, Phone, User, LogOut } from 'lucide-react';
 import styles from './Navbar.module.css';
 
 const NAV_LINKS = [
@@ -18,6 +19,7 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
+  const { user, signOut } = usePatientAuth();
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -54,10 +56,33 @@ export default function Navbar() {
             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
           </button>
 
-          <Link href="/book" className="btn btn-primary">
-            <Phone size={16} />
-            Book Appointment
-          </Link>
+          {user ? (
+            <>
+              <Link href="/book" className="btn btn-primary">
+                <Phone size={16} />
+                Book Appointment
+              </Link>
+              <button
+                onClick={signOut}
+                className={`btn btn-ghost btn-sm ${styles.themeBtn}`}
+                aria-label="Log out"
+                title="Log out"
+              >
+                <LogOut size={18} />
+              </button>
+            </>
+          ) : (
+            <>
+              <Link href="/login" className="btn btn-secondary btn-sm">
+                <User size={15} />
+                Patient Login
+              </Link>
+              <Link href="/book" className="btn btn-primary">
+                <Phone size={16} />
+                Book Appointment
+              </Link>
+            </>
+          )}
 
           <button
             className={`btn btn-ghost btn-sm ${styles.menuBtn}`}

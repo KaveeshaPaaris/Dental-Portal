@@ -38,6 +38,12 @@ export const reorderBookingSchema = z.object({
   slot_order: z.number().int().positive(),
 });
 
+export const updateBookingStatusSchema = z.object({
+  status: z.enum(['PENDING_OTP', 'PENDING_REVIEW', 'ACCEPTED', 'REJECTED', 'COMPLETED', 'CANCELLED']),
+  notes: z.string().optional().nullable(),
+  assigned_session: z.enum(['MORNING', 'EVENING']).optional().nullable(),
+});
+
 export type CreateBookingInput = z.infer<typeof createBookingSchema>;
 export type VerifyOTPInput = z.infer<typeof verifyOTPSchema>;
 export type AdminCreateBookingInput = z.infer<typeof adminCreateBookingSchema>;

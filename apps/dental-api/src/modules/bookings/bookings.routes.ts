@@ -11,6 +11,7 @@ import {
   adminCreateBookingSchema,
   acceptBookingSchema,
   reorderBookingSchema,
+  updateBookingStatusSchema,
 } from './bookings.schema';
 
 const router = Router();
@@ -30,6 +31,9 @@ router.patch('/:id/reject', verifyToken, requireRole('ADMIN'), controller.reject
 router.patch('/:id/complete', verifyToken, requireRole('ADMIN'), controller.completeBooking);
 router.patch('/:id/reorder', verifyToken, requireRole('ADMIN'), validate(reorderBookingSchema), controller.reorderBooking);
 router.post('/:id/send-confirmation', verifyToken, requireRole('ADMIN'), controller.sendConfirmation);
+
+// Generic endpoint for the frontend's unified status/notes update form
+router.patch('/:id/status', verifyToken, requireRole('ADMIN'), validate(updateBookingStatusSchema), controller.handleUpdateBookingStatus);
 
 export default router;
 
