@@ -32,10 +32,10 @@ export async function createBooking(input: CreateBookingInput) {
 
   if (error || !booking) throw createError('Failed to create booking', 500);
 
-  // Trigger OTP via Twilio Verify
-  await sendOTP(input.patient_phone);
+  // Trigger OTP via custom WhatsApp delivery
+  await sendOTP(input.patient_phone, booking.id);
 
-  return { booking_id: booking.id, message: 'OTP sent to your phone number.' };
+  return { booking_id: booking.id, message: 'OTP sent to your WhatsApp.' };
 }
 
 export async function verifyBookingOTP(bookingId: string, phone: string, code: string) {
@@ -49,7 +49,7 @@ export async function verifyBookingOTP(bookingId: string, phone: string, code: s
   if (booking.status !== 'PENDING_OTP') throw createError('OTP already verified or booking in invalid state', 400);
   if (booking.patient_phone !== phone) throw createError('Phone number mismatch', 400);
 
-  const approved = await verifyOTP(phone, code);
+  const approved = await verifyOTP(bookingId, code);
   if (!approved) throw createError('Invalid or expired OTP code', 400);
 
   const { error: updateError } = await supabase
@@ -73,7 +73,7 @@ export async function resendBookingOTP(bookingId: string, phone: string) {
   if (booking.status !== 'PENDING_OTP') throw createError('OTP not required for this booking', 400);
   if (booking.patient_phone !== phone) throw createError('Phone number mismatch', 400);
 
-  await sendOTP(phone);
+  await sendOTP(phone, bookingId);
   return { message: 'OTP resent successfully.' };
 }
 
@@ -83,19 +83,27 @@ export async function getBookings(filters: {
   status?: string;
   date?: string;
   session?: string;
+  page?: number;
+  limit?: number;
 }) {
+  const page = filters.page || 1;
+  const limit = filters.limit || 50;
+  const from = (page - 1) * limit;
+  const to = from + limit - 1;
+
   let query = supabase
     .from('bookings')
-    .select('*, profiles(full_name, email)')
-    .order('created_at', { ascending: false });
+    .select('*, profiles(full_name, email)', { count: 'exact' })
+    .order('created_at', { ascending: false })
+    .range(from, to);
 
   if (filters.status) query = query.eq('status', filters.status);
   if (filters.date) query = query.eq('assigned_date', filters.date);
   if (filters.session) query = query.eq('assigned_session', filters.session);
 
-  const { data, error } = await query;
+  const { data, error, count } = await query;
   if (error) throw createError('Failed to fetch bookings', 500);
-  return data;
+  return { data: data ?? [], total: count ?? 0, page, limit };
 }
 
 export async function getDailySchedule(date: string) {
@@ -147,7 +155,7 @@ export async function adminCreateBooking(input: AdminCreateBookingInput, adminId
   return booking;
 }
 
-export async function acceptBooking(id: string, input: AcceptBookingInput, adminId: string) {
+export async function acceptBooking(id: string, input: AcceptBookingInput & { notes?: string | null }, adminId: string) {
   const { data: booking } = await supabase
     .from('bookings')
     .select('id, status')
@@ -155,7 +163,9 @@ export async function acceptBooking(id: string, input: AcceptBookingInput, admin
     .single();
 
   if (!booking) throw createError('Booking not found', 404);
-  if (booking.status !== 'PENDING_REVIEW') throw createError('Booking is not in PENDING_REVIEW state', 400);
+  if (booking.status === 'ACCEPTED' || booking.status === 'COMPLETED') {
+    throw createError('Booking is already accepted or completed', 400);
+  }
 
   const appointmentNumber = await getNextAppointmentNumber(input.assigned_date, input.assigned_session);
   const slotOrder = await getNextSlotOrder(input.assigned_date, input.assigned_session);
@@ -169,12 +179,16 @@ export async function acceptBooking(id: string, input: AcceptBookingInput, admin
       appointment_number: appointmentNumber,
       slot_order: slotOrder,
       handled_by: adminId,
+      ...(input.notes !== undefined && { notes: input.notes })
     })
     .eq('id', id)
     .select()
     .single();
 
-  if (error || !updated) throw createError('Failed to accept booking', 500);
+  if (error || !updated) {
+    console.error('[acceptBooking] Supabase error:', error);
+    throw createError(error ? `Failed to accept booking: ${error.message}` : 'Failed to accept booking or booking not found', 500);
+  }
   return updated;
 }
 
@@ -231,8 +245,14 @@ export async function completeBooking(id: string, adminId: string) {
     );
   }
 
-  // Don't block response on notification delivery
-  Promise.allSettled(notificationPromises);
+  // Don't block response on notification delivery, but log failures
+  Promise.allSettled(notificationPromises).then((results) => {
+    results.forEach((r, i) => {
+      if (r.status === 'rejected') {
+        console.error(`[completeBooking] Notification channel ${i} failed:`, r.reason);
+      }
+    });
+  });
 
   return booking;
 }
@@ -286,5 +306,29 @@ export async function reorderBooking(id: string, slotOrder: number) {
     .single();
 
   if (error || !data) throw createError('Failed to reorder booking', 500);
+  return data;
+}
+
+export async function updateBookingGeneric(id: string, updates: { notes?: string | null, assigned_session?: string | null, status?: string }, adminId: string) {
+  const { data, error } = await supabase
+    .from('bookings')
+    .update({ ...updates, handled_by: adminId })
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error || !data) throw createError('Failed to update booking details', 500);
+  return data;
+}
+
+export async function updateBookingStatus(id: string, status: string, adminId: string) {
+  const { data, error } = await supabase
+    .from('bookings')
+    .update({ status, handled_by: adminId })
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error || !data) throw createError('Failed to update booking status', 500);
   return data;
 }

@@ -16,7 +16,7 @@ export default function AdminFAQsPage() {
 
   const fetchFAQs = async () => {
     try {
-      const res = await api.get('/faqs');
+      const res = await api.get('/faqs/admin');
       setFaqs(res.data);
     } catch (error) {
       toast.error('Failed to load FAQs');
@@ -38,10 +38,10 @@ export default function AdminFAQsPage() {
 
     try {
       if (editingId) {
-        await api.put(`/faqs/${editingId}`, payload);
+        await api.patch(`/faqs/admin/${editingId}`, payload);
         toast.success('FAQ updated');
       } else {
-        await api.post('/faqs', payload);
+        await api.post('/faqs/admin', payload);
         toast.success('FAQ added');
       }
       setShowModal(false);
@@ -56,7 +56,7 @@ export default function AdminFAQsPage() {
   const handleDelete = async (id: string) => {
     if (!window.confirm('Are you sure you want to delete this FAQ?')) return;
     try {
-      await api.delete(`/faqs/${id}`);
+      await api.delete(`/faqs/admin/${id}`);
       toast.success('FAQ deleted');
       fetchFAQs();
     } catch (error) {

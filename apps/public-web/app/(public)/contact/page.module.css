@@ -21,17 +21,14 @@
   font-size: 1.125rem;
 }
 
-.contentWrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 64px;
-}
-
 .infoGrid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 24px;
   margin-bottom: 48px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .infoCard {
@@ -70,43 +67,25 @@
 
 .mapWrapper {
   width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
   height: 300px;
   background: var(--color-surface-2);
   border-radius: var(--radius-xl);
   overflow: hidden;
   border: 1px solid var(--color-border);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   color: var(--color-text-muted);
-}
-
-.contactForm {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  padding: 40px;
-  box-shadow: var(--shadow-lg);
-}
-
-.formTitle {
-  font-size: 1.75rem;
-  margin-bottom: 24px;
-  color: var(--color-text-primary);
-}
-
-@media (max-width: 992px) {
-  .contentWrapper {
-    grid-template-columns: 1fr;
-    gap: 48px;
-  }
 }
 
 @media (max-width: 768px) {
   .title {
     font-size: 2rem;
   }
-  .contactForm {
-    padding: 24px;
+  .infoGrid {
+    grid-template-columns: 1fr;
   }
 }

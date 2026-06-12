@@ -32,8 +32,14 @@ export async function resendOTP(req: Request, res: Response, next: NextFunction)
 
 export async function getBookings(req: Request, res: Response, next: NextFunction) {
   try {
-    const { status, date, session } = req.query as Record<string, string>;
-    const data = await bookingsService.getBookings({ status, date, session });
+    const { status, date, session, page, limit } = req.query as Record<string, string>;
+    const data = await bookingsService.getBookings({ 
+      status, 
+      date, 
+      session,
+      page: page ? parseInt(page, 10) : undefined,
+      limit: limit ? parseInt(limit, 10) : undefined,
+    });
     res.json(data);
   } catch (err) { next(err); }
 }
@@ -93,5 +99,43 @@ export async function reorderBooking(req: Request, res: Response, next: NextFunc
   try {
     const data = await bookingsService.reorderBooking(req.params.id, req.body.slot_order);
     res.json(data);
+  } catch (err) { next(err); }
+}
+
+export async function handleUpdateBookingStatus(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { id } = req.params;
+    const { status, notes, assigned_session } = req.body;
+    const adminId = req.user!.id;
+
+    // First get current booking state
+    const booking = await bookingsService.getBookingById(id);
+
+    // Handle status transition
+    if (status && booking.status !== status) {
+       if (status === 'ACCEPTED') {
+          const assigned_date = booking.assigned_date || booking.preferred_date;
+          await bookingsService.acceptBooking(id, { 
+            assigned_date, 
+            assigned_session: assigned_session || booking.assigned_session || booking.preferred_session,
+            notes 
+          }, adminId);
+       } else if (status === 'REJECTED') {
+          if (notes !== undefined) await bookingsService.updateBookingGeneric(id, { notes }, adminId);
+          await bookingsService.rejectBooking(id, adminId);
+       } else if (status === 'COMPLETED') {
+          if (notes !== undefined) await bookingsService.updateBookingGeneric(id, { notes }, adminId);
+          await bookingsService.completeBooking(id, adminId);
+       } else {
+          await bookingsService.updateBookingGeneric(id, { notes, assigned_session, status }, adminId);
+       }
+    } else {
+       // Only updating notes/session
+       if (notes !== undefined || assigned_session !== undefined) {
+         await bookingsService.updateBookingGeneric(id, { notes, assigned_session }, adminId);
+       }
+    }
+
+    res.json({ success: true, message: 'Booking updated successfully' });
   } catch (err) { next(err); }
 }

@@ -5,7 +5,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
 
 /* ─── Design Tokens — Light Mode ─────────────────────────── */
-:root {
+:root, [data-theme='light'] {
   /* Brand Colors */
   --color-primary:        #0F4C81;
   --color-primary-light:  #1a6ab5;
@@ -105,10 +105,10 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
-body {
+html, body, [data-theme] body {
   font-family: var(--font-sans);
-  background-color: var(--color-bg);
-  color: var(--color-text-primary);
+  background-color: var(--color-bg) !important;
+  color: var(--color-text-primary) !important;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

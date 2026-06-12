@@ -39,7 +39,7 @@ export default function AdminContentPage() {
   const handleSave = async (key: string) => {
     setSavingKey(key);
     try {
-      await api.put(`/content/${key}`, { value: edits[key] });
+      await api.patch(`/content/${key}`, { value: edits[key] });
       toast.success('Content updated');
       fetchContent();
     } catch (error) {
