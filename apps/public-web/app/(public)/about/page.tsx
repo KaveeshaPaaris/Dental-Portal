@@ -10,25 +10,12 @@ export const metadata: Metadata = {
 const DOCTORS = [
   {
     id: '1',
-    name: 'Dr. Sarah Jenkins',
+    name: 'Dr. Chaaminda Paaris',
     specialty: 'Chief Orthodontist',
-    bio: 'With over 15 years of experience, Dr. Jenkins specializes in Invisalign and complex bite corrections.',
-    imageUrl: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=600&h=800',
+    bio: 'With over 15 years of experience, Dr. Paaris specializes in Invisalign and complex bite corrections.',
+    imageUrl: '/Dr%20paaris.jpg',
   },
-  {
-    id: '2',
-    name: 'Dr. Michael Chen',
-    specialty: 'Implant Specialist',
-    bio: 'Dr. Chen is a board-certified oral surgeon focusing on dental implants and full-arch restorations.',
-    imageUrl: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=600&h=800',
-  },
-  {
-    id: '3',
-    name: 'Dr. Emily Rodriguez',
-    specialty: 'Pediatric Dentist',
-    bio: 'Dedicated to making children’s dental visits fun and stress-free. Dr. Rodriguez is beloved by our youngest patients.',
-    imageUrl: 'https://images.unsplash.com/photo-1594824432258-f75f9227f32e?auto=format&fit=crop&q=80&w=600&h=800',
-  },
+
 ];
 
 export default function AboutPage() {
@@ -38,8 +25,8 @@ export default function AboutPage() {
         <header className={styles.header}>
           <div className="badge badge-primary" style={{ marginBottom: 16 }}>Our Story</div>
           <h1 className={styles.title}>Dedicated to Your Smile</h1>
-          <p className={styles.subtitle}>
-            Since 2010, Charming Dental Clinic has been providing world-class dental care to our community. 
+          <p className={styles.subTitle}>
+            Since 2010, Charming Dental Clinic has been providing world-class dental care to our community.
             We combine advanced technology with a compassionate, patient-first approach.
           </p>
         </header>
@@ -57,14 +44,14 @@ export default function AboutPage() {
           <div className={styles.missionContent}>
             <h2>Our Mission</h2>
             <p>
-              We believe that everyone deserves a healthy, beautiful smile. Our mission is to provide 
-              exceptional dental care in a comfortable, anxiety-free environment. 
+              We believe that everyone deserves a healthy, beautiful smile. Our mission is to provide
+              exceptional dental care in a comfortable, anxiety-free environment.
             </p>
             <p>
-              We invest in the latest dental technologies and continuous education to ensure our patients 
+              We invest in the latest dental technologies and continuous education to ensure our patients
               receive the most effective, minimally invasive treatments available today.
             </p>
-            
+
             <div className={styles.statsGrid}>
               <div className={styles.statItem}>
                 <div className={styles.statValue}>15+</div>
