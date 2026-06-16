@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import {
   LayoutDashboard, Calendar, Star, Package,
-  HelpCircle, FileText, Users, Settings, LogOut,
+  HelpCircle, FileText, Users, Settings, LogOut, Newspaper,
 } from 'lucide-react';
 import styles from './Sidebar.module.css';
 
@@ -18,6 +18,7 @@ const NAV_ITEMS = [
   { label: 'Inventory',   href: '/admin/inventory',       icon: Package },
   { label: 'FAQs',        href: '/admin/faqs',            icon: HelpCircle },
   { label: 'Content',     href: '/admin/content',         icon: FileText },
+  { label: 'Blog Posts',  href: '/admin/blogs',           icon: Newspaper },
 ];
 
 const SUPER_ADMIN_ITEMS = [
@@ -37,7 +38,7 @@ export default function AdminSidebar() {
     <aside className={`admin-sidebar ${styles.sidebar}`}>
       {/* Logo */}
       <div className={styles.logo}>
-        <Image src="/logo.png" alt="Charming Dental Clinic" width={32} height={32} className={styles.logoIcon} style={{ objectFit: 'contain' }} />
+        <Image src="/logo.png" alt="Charming Dental Clinic" width={64} height={64} className={styles.logoIcon} style={{ objectFit: 'contain' }} />
         <div>
           <div className={styles.logoMain}>Charming Dental Clinic</div>
           <div className={styles.logoRole}>{user?.role?.replace('_', ' ')}</div>

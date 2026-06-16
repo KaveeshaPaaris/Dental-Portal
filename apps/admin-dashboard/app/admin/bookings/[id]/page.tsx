@@ -52,8 +52,8 @@ export default function SingleBookingPage() {
       });
       toast.success('Booking updated successfully');
       router.push('/admin/bookings');
-    } catch (error) {
-      toast.error('Failed to update booking');
+    } catch (error: any) {
+      toast.error(error.response?.data?.error || 'Failed to update booking');
     } finally {
       setSaving(false);
     }
@@ -126,7 +126,6 @@ export default function SingleBookingPage() {
           <div className="form-group" style={{ marginBottom: 16 }}>
             <label className="form-label">Status</label>
             <select className="form-input" value={status} onChange={(e) => setStatus(e.target.value)}>
-              <option value="PENDING_OTP">Pending OTP</option>
               <option value="PENDING_REVIEW">Pending Review</option>
               <option value="ACCEPTED">Accepted</option>
               <option value="REJECTED">Rejected</option>

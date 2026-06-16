@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import '@/styles/globals.css';
 import { ThemeProvider } from '@/context/ThemeContext';
+import { PatientAuthProvider } from '@/context/PatientAuthContext';
 import { Toaster } from 'react-hot-toast';
 import ReactQueryProvider from '@/components/providers/ReactQueryProvider';
 
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <ThemeProvider>
+          <PatientAuthProvider>
           <ReactQueryProvider>
             {children}
             <Toaster
@@ -51,6 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               }}
             />
           </ReactQueryProvider>
+          </PatientAuthProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -27,7 +27,7 @@ export default function AdminReviewsPage() {
 
   const handleModerate = async (id: string, action: 'accept' | 'reject') => {
     try {
-      await api.patch(`/reviews/${id}/moderate`, { status: action === 'accept' ? 'ACCEPTED' : 'REJECTED' });
+      await api.patch(`/reviews/${id}/${action}`);
       toast.success(`Review ${action}ed`);
       fetchReviews();
     } catch (error) {

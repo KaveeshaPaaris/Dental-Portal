@@ -13,7 +13,7 @@ import styles from './page.module.css';
 const schema = z.object({
   patient_name: z.string().min(2, 'Name must be at least 2 characters'),
   patient_email: z.string().email('Invalid email').optional().or(z.literal('')),
-  patient_phone: z.string().min(7, 'Enter a valid phone number with country code'),
+  patient_phone: z.string().regex(/^\+[1-9]\d{6,14}$/, 'Phone must start with + and country code (e.g. +94771234567)'),
   preferred_date: z.string().min(1, 'Please select a date'),
   preferred_session: z.enum(['MORNING', 'EVENING']).refine((v) => v !== undefined, { message: 'Please select a session' }),
 });
