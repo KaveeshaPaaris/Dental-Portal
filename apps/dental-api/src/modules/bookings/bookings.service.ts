@@ -107,19 +107,43 @@ export async function getBookings(filters: {
 }
 
 export async function getDailySchedule(date: string) {
-  const { data, error } = await supabase
+  // Get accepted bookings for the specific date
+  const { data: accepted, error: acceptedError } = await supabase
     .from('bookings')
     .select('*')
     .eq('assigned_date', date)
     .eq('status', 'ACCEPTED')
     .order('slot_order', { ascending: true });
 
-  if (error) throw createError('Failed to fetch schedule', 500);
+  if (acceptedError) throw createError('Failed to fetch schedule', 500);
 
-  const morning = data?.filter((b) => b.assigned_session === 'MORNING') ?? [];
-  const evening = data?.filter((b) => b.assigned_session === 'EVENING') ?? [];
+  // Get ALL pending review bookings (global, not date-specific)
+  const { data: pending, error: pendingError } = await supabase
+    .from('bookings')
+    .select('*')
+    .eq('status', 'PENDING_REVIEW')
+    .order('created_at', { ascending: true });
 
-  return { date, morning, evening };
+  if (pendingError) throw createError('Failed to fetch pending queue', 500);
+
+  const morning = accepted?.filter((b) => b.assigned_session === 'MORNING') ?? [];
+  const evening = accepted?.filter((b) => b.assigned_session === 'EVENING') ?? [];
+
+  return { date, morning, evening, pending: pending ?? [] };
+}
+
+export async function getBookingDatesWithAppointments() {
+  const { data, error } = await supabase
+    .from('bookings')
+    .select('assigned_date')
+    .eq('status', 'ACCEPTED')
+    .not('assigned_date', 'is', null);
+
+  if (error) throw createError('Failed to fetch booking dates', 500);
+
+  // Return unique dates
+  const uniqueDates = [...new Set((data ?? []).map((b) => b.assigned_date).filter(Boolean))];
+  return { dates: uniqueDates };
 }
 
 export async function getBookingById(id: string) {

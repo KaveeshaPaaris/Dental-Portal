@@ -39,11 +39,17 @@ export async function sendOTP(to: string, bookingId?: string): Promise<void> {
 
   // 4. Send via WhatsApp Sandbox
   const formattedTo = to.startsWith('whatsapp:') ? to : `whatsapp:${to}`;
-  await client.messages.create({
-    from: env.TWILIO_WHATSAPP_NUMBER,   // whatsapp:+14155238886 (Sandbox number)
-    to: formattedTo,
-    body: `🦷 *Charming Dental Clinic*\n\nYour verification code is: *${code}*\n\nThis code expires in 10 minutes. Do not share it with anyone.`,
-  });
+  try {
+    const msg = await client.messages.create({
+      from: env.TWILIO_WHATSAPP_NUMBER,   // whatsapp:+14155238886 (Sandbox number)
+      to: formattedTo,
+      body: `🦷 *Charming Dental Clinic*\n\nYour verification code is: *${code}*\n\nThis code expires in 10 minutes. Do not share it with anyone.`,
+    });
+    console.log(`[Twilio] OTP message queued with SID: ${msg.sid}`);
+  } catch (error) {
+    console.error(`[Twilio] Failed to send OTP to ${formattedTo}:`, error);
+    throw error;
+  }
 }
 
 /**
