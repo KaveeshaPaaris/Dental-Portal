@@ -7,6 +7,7 @@ import { Eye, Calendar, Clock, CheckCircle, XCircle } from 'lucide-react';
 import api from '@/lib/api';
 import { Booking } from '@/types';
 import toast from 'react-hot-toast';
+import DatePicker from '@/components/admin/DatePicker';
 
 export default function AdminBookingsPage() {
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -21,6 +22,19 @@ export default function AdminBookingsPage() {
   const [statusFilter, setStatusFilter] = useState('');
   const [sessionFilter, setSessionFilter] = useState('');
   const [dateFilter, setDateFilter] = useState('');
+  const [highlightedDates, setHighlightedDates] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchDates = async () => {
+      try {
+        const res = await api.get('/bookings/created-dates');
+        setHighlightedDates(res.data.dates);
+      } catch (err) {
+        console.error('Failed to fetch booked dates', err);
+      }
+    };
+    fetchDates();
+  }, []);
 
   const fetchBookings = async (currentPage = 1) => {
     try {
@@ -64,8 +78,8 @@ export default function AdminBookingsPage() {
     setPage(1); // Reset to page 1 on filter change
   };
 
-  const handleDateFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDateFilter(e.target.value);
+  const handleDateFilterChange = (val: string) => {
+    setDateFilter(val);
     setPage(1); // Reset to page 1 on filter change
   };
 
@@ -174,18 +188,10 @@ export default function AdminBookingsPage() {
         </div>
         <div>
           <label style={{ display: 'block', fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: 8, fontWeight: 500 }}>Booked Date</label>
-          <input
-            type="date"
-            value={dateFilter}
-            onChange={handleDateFilterChange}
-            style={{
-              padding: '9px 16px',
-              borderRadius: 8,
-              border: '1px solid var(--color-border)',
-              background: 'var(--color-surface)',
-              color: 'var(--color-text-primary)',
-              outline: 'none'
-            }}
+          <DatePicker 
+            value={dateFilter} 
+            onChange={handleDateFilterChange} 
+            highlightedDates={highlightedDates} 
           />
         </div>
         <button

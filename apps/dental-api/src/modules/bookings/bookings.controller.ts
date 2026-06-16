@@ -64,6 +64,13 @@ export async function getBookingDates(req: Request, res: Response, next: NextFun
   } catch (err) { next(err); }
 }
 
+export async function getCreatedBookingDates(req: Request, res: Response, next: NextFunction) {
+  try {
+    const data = await bookingsService.getCreatedBookingDates();
+    res.json(data);
+  } catch (err) { next(err); }
+}
+
 export async function getBookingById(req: Request, res: Response, next: NextFunction) {
   try {
     const data = await bookingsService.getBookingById(req.params.id);

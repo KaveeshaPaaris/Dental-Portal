@@ -164,6 +164,18 @@ export async function getBookingDatesWithAppointments() {
   return { dates: uniqueDates };
 }
 
+export async function getCreatedBookingDates() {
+  const { data, error } = await supabase
+    .from('bookings')
+    .select('created_at');
+
+  if (error) throw createError('Failed to fetch created booking dates', 500);
+
+  // Extract unique dates in YYYY-MM-DD format from created_at timestamp
+  const uniqueDates = [...new Set((data ?? []).map((b) => b.created_at ? b.created_at.split('T')[0] : null).filter(Boolean))];
+  return { dates: uniqueDates as string[] };
+}
+
 export async function getBookingById(id: string) {
   const { data, error } = await supabase
     .from('bookings')

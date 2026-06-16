@@ -24,6 +24,7 @@ router.post('/resend-otp', otpLimiter, validate(resendOTPSchema), controller.res
 // ─── ADMIN ───────────────────────────────────────────────────
 router.get('/schedule', verifyToken, requireRole('ADMIN'), controller.getDailySchedule);
 router.get('/dates', verifyToken, requireRole('ADMIN'), controller.getBookingDates);
+router.get('/created-dates', verifyToken, requireRole('ADMIN'), controller.getCreatedBookingDates);
 router.get('/', verifyToken, requireRole('ADMIN'), controller.getBookings);
 router.post('/admin', verifyToken, requireRole('ADMIN'), validate(adminCreateBookingSchema), controller.adminCreateBooking);
 router.get('/:id', verifyToken, requireRole('ADMIN'), controller.getBookingById);
