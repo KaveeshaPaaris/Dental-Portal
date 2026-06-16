@@ -53,6 +53,13 @@ export async function getDailySchedule(req: Request, res: Response, next: NextFu
   } catch (err) { next(err); }
 }
 
+export async function getBookingDates(req: Request, res: Response, next: NextFunction) {
+  try {
+    const data = await bookingsService.getBookingDatesWithAppointments();
+    res.json(data);
+  } catch (err) { next(err); }
+}
+
 export async function getBookingById(req: Request, res: Response, next: NextFunction) {
   try {
     const data = await bookingsService.getBookingById(req.params.id);

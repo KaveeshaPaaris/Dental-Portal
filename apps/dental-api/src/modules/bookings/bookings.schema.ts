@@ -39,7 +39,7 @@ export const reorderBookingSchema = z.object({
 });
 
 export const updateBookingStatusSchema = z.object({
-  status: z.enum(['PENDING_OTP', 'PENDING_REVIEW', 'ACCEPTED', 'REJECTED', 'COMPLETED', 'CANCELLED']),
+  status: z.enum(['PENDING_OTP', 'PENDING_REVIEW', 'ACCEPTED', 'REJECTED', 'COMPLETED', 'CANCELLED']).optional(),
   notes: z.string().optional().nullable(),
   assigned_session: z.enum(['MORNING', 'EVENING']).optional().nullable(),
 });
