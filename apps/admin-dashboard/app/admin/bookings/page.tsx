@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { Eye, Calendar, Clock, CheckCircle, XCircle } from 'lucide-react';
@@ -15,9 +15,22 @@ export default function AdminBookingsPage() {
   const [total, setTotal] = useState(0);
   const limit = 50;
 
+  // Sorting & Filtering State
+  const [sortBy, setSortBy] = useState('created_at');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [statusFilter, setStatusFilter] = useState('');
+  const [sessionFilter, setSessionFilter] = useState('');
+  const [dateFilter, setDateFilter] = useState('');
+
   const fetchBookings = async (currentPage = 1) => {
     try {
-      const res = await api.get(`/bookings?page=${currentPage}&limit=${limit}`);
+      setLoading(true);
+      let url = `/bookings?page=${currentPage}&limit=${limit}&sortBy=${sortBy}&order=${sortOrder}`;
+      if (statusFilter) url += `&status=${statusFilter}`;
+      if (sessionFilter) url += `&preferred_session=${sessionFilter}`;
+      if (dateFilter) url += `&booked_date=${dateFilter}`;
+
+      const res = await api.get(url);
       setBookings(res.data.data);
       setTotal(res.data.total);
     } catch (error) {
@@ -29,7 +42,41 @@ export default function AdminBookingsPage() {
 
   useEffect(() => {
     fetchBookings(page);
-  }, [page]);
+  }, [page, sortBy, sortOrder, statusFilter, sessionFilter, dateFilter]);
+
+  const handleSort = (column: string) => {
+    if (sortBy === column) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(column);
+      setSortOrder('asc');
+    }
+    setPage(1); // Reset to page 1 on sort change
+  };
+
+  const handleStatusFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setStatusFilter(e.target.value);
+    setPage(1); // Reset to page 1 on filter change
+  };
+
+  const handleSessionFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSessionFilter(e.target.value);
+    setPage(1); // Reset to page 1 on filter change
+  };
+
+  const handleDateFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDateFilter(e.target.value);
+    setPage(1); // Reset to page 1 on filter change
+  };
+
+  const clearFilters = () => {
+    setStatusFilter('');
+    setSessionFilter('');
+    setDateFilter('');
+    setSortBy('created_at');
+    setSortOrder('desc');
+    setPage(1);
+  };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -61,14 +108,12 @@ export default function AdminBookingsPage() {
     }
   };
 
-  if (loading) {
-    return (
-      <div>
-        <h1 style={{ fontSize: '2rem', marginBottom: 24, fontWeight: 700 }}>Bookings Queue</h1>
-        <div className="skeleton" style={{ height: 400 }}></div>
-      </div>
-    );
-  }
+  const SortIcon = ({ column }: { column: string }) => {
+    if (sortBy !== column) return <span style={{ opacity: 0.3, marginLeft: 6, fontSize: '0.75rem' }}>↕</span>;
+    return sortOrder === 'asc'
+      ? <span style={{ color: 'var(--color-primary)', marginLeft: 6, fontSize: '0.85rem' }}>↑</span>
+      : <span style={{ color: 'var(--color-primary)', marginLeft: 6, fontSize: '0.85rem' }}>↓</span>;
+  };
 
   return (
     <div>
@@ -79,71 +124,190 @@ export default function AdminBookingsPage() {
         </Link>
       </div>
 
+      {/* Filter Bar */}
+      <div style={{ display: 'flex', gap: 16, marginBottom: 24, alignItems: 'flex-end', flexWrap: 'wrap' }}>
+        <div>
+          <label style={{ display: 'block', fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: 8, fontWeight: 500 }}>Status</label>
+          <select
+            value={statusFilter}
+            onChange={handleStatusFilterChange}
+            style={{
+              padding: '10px 16px',
+              borderRadius: 8,
+              border: '1px solid var(--color-border)',
+              background: 'var(--color-surface)',
+              color: 'var(--color-text-primary)',
+              minWidth: 180,
+              outline: 'none',
+              cursor: 'pointer'
+            }}
+          >
+            <option value="">All Statuses</option>
+            <option value="PENDING_REVIEW">Pending Review</option>
+            <option value="ACCEPTED">Accepted</option>
+            <option value="REJECTED">Rejected</option>
+            <option value="COMPLETED">Completed</option>
+            <option value="CANCELLED">Cancelled</option>
+            <option value="PENDING_OTP">Awaiting OTP</option>
+          </select>
+        </div>
+        <div>
+          <label style={{ display: 'block', fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: 8, fontWeight: 500 }}>Session</label>
+          <select
+            value={sessionFilter}
+            onChange={handleSessionFilterChange}
+            style={{
+              padding: '10px 16px',
+              borderRadius: 8,
+              border: '1px solid var(--color-border)',
+              background: 'var(--color-surface)',
+              color: 'var(--color-text-primary)',
+              minWidth: 150,
+              outline: 'none',
+              cursor: 'pointer'
+            }}
+          >
+            <option value="">All Sessions</option>
+            <option value="MORNING">Morning</option>
+            <option value="EVENING">Evening</option>
+          </select>
+        </div>
+        <div>
+          <label style={{ display: 'block', fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginBottom: 8, fontWeight: 500 }}>Booked Date</label>
+          <input
+            type="date"
+            value={dateFilter}
+            onChange={handleDateFilterChange}
+            style={{
+              padding: '9px 16px',
+              borderRadius: 8,
+              border: '1px solid var(--color-border)',
+              background: 'var(--color-surface)',
+              color: 'var(--color-text-primary)',
+              outline: 'none'
+            }}
+          />
+        </div>
+        <button
+          onClick={clearFilters}
+          className="btn btn-secondary"
+          style={{ height: 42, padding: '0 20px' }}
+        >
+          Clear Filters
+        </button>
+      </div>
+
       <div className="card" style={{ padding: 0, overflowX: 'auto' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-          <thead style={{ background: 'var(--color-surface-2)', borderBottom: '1px solid var(--color-border)' }}>
-            <tr>
-              <th style={{ padding: '16px 24px', fontWeight: 600, color: 'var(--color-text-secondary)' }}>Patient</th>
-              <th style={{ padding: '16px 24px', fontWeight: 600, color: 'var(--color-text-secondary)' }}>Contact</th>
-              <th style={{ padding: '16px 24px', fontWeight: 600, color: 'var(--color-text-secondary)' }}>Requested Date</th>
-              <th style={{ padding: '16px 24px', fontWeight: 600, color: 'var(--color-text-secondary)' }}>Status</th>
-              <th style={{ padding: '16px 24px', fontWeight: 600, color: 'var(--color-text-secondary)', textAlign: 'right' }}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {bookings.length === 0 ? (
+        {loading && bookings.length === 0 ? (
+           <div style={{ padding: '48px', textAlign: 'center', color: 'var(--color-text-muted)' }}>Loading bookings...</div>
+        ) : (
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+            <thead style={{ background: 'var(--color-surface-2)', borderBottom: '1px solid var(--color-border)' }}>
               <tr>
-                <td colSpan={5} style={{ padding: '48px 24px', textAlign: 'center', color: 'var(--color-text-muted)' }}>
-                  No bookings found in the queue.
-                </td>
+                <th 
+                  onClick={() => handleSort('patient_name')} 
+                  style={{ padding: '16px 24px', fontWeight: 600, color: 'var(--color-text-secondary)', cursor: 'pointer', userSelect: 'none', whiteSpace: 'nowrap' }}
+                  title="Sort by Patient Name"
+                >
+                  Patient <SortIcon column="patient_name" />
+                </th>
+                <th style={{ padding: '16px 24px', fontWeight: 600, color: 'var(--color-text-secondary)' }}>Time</th>
+                <th style={{ padding: '16px 24px', fontWeight: 600, color: 'var(--color-text-secondary)' }}>Contact</th>
+                <th 
+                  onClick={() => handleSort('preferred_date')} 
+                  style={{ padding: '16px 24px', fontWeight: 600, color: 'var(--color-text-secondary)', cursor: 'pointer', userSelect: 'none', whiteSpace: 'nowrap' }}
+                  title="Sort by Requested Date"
+                >
+                  Requested Date <SortIcon column="preferred_date" />
+                </th>
+                <th 
+                  onClick={() => handleSort('status')} 
+                  style={{ padding: '16px 24px', fontWeight: 600, color: 'var(--color-text-secondary)', cursor: 'pointer', userSelect: 'none', whiteSpace: 'nowrap' }}
+                  title="Sort by Status"
+                >
+                  Status <SortIcon column="status" />
+                </th>
+                <th style={{ padding: '16px 24px', fontWeight: 600, color: 'var(--color-text-secondary)', textAlign: 'right' }}>Actions</th>
               </tr>
-            ) : (
-              bookings.map((booking) => (
-                <tr key={booking.id} style={{ borderBottom: '1px solid var(--color-border)' }}>
-                  <td style={{ padding: '16px 24px', fontWeight: 500 }}>
-                    {booking.patient_name}
-                    <div style={{ fontSize: '0.8125rem', color: 'var(--color-text-muted)', marginTop: 4 }}>
-                      Source: {booking.source}
-                    </div>
-                  </td>
-                  <td style={{ padding: '16px 24px', color: 'var(--color-text-secondary)' }}>
-                    {booking.patient_phone}
-                  </td>
-                  <td style={{ padding: '16px 24px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-                      <Calendar size={14} color="var(--color-text-muted)" />
-                      {format(new Date(booking.preferred_date), 'MMM dd, yyyy')}
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.875rem', color: 'var(--color-text-secondary)' }}>
-                      <Clock size={14} color="var(--color-text-muted)" />
-                      {booking.preferred_session}
-                    </div>
-                  </td>
-                  <td style={{ padding: '16px 24px' }}>
-                    {getStatusBadge(booking.status)}
-                  </td>
-                  <td style={{ padding: '16px 24px', textAlign: 'right' }}>
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
-                      {booking.status === 'PENDING_REVIEW' && (
-                        <>
-                          <button onClick={() => handleStatusChange(booking.id, 'accept')} className="btn btn-sm" style={{ color: 'var(--color-success)', background: 'rgba(34,197,94,0.1)' }} title="Accept">
-                            <CheckCircle size={16} />
-                          </button>
-                          <button onClick={() => handleStatusChange(booking.id, 'reject')} className="btn btn-sm" style={{ color: 'var(--color-error)', background: 'rgba(239,68,68,0.1)' }} title="Reject">
-                            <XCircle size={16} />
-                          </button>
-                        </>
-                      )}
-                      <Link href={`/admin/bookings/${booking.id}`} className="btn btn-secondary btn-sm" title="View Details">
-                        <Eye size={16} />
-                      </Link>
-                    </div>
+            </thead>
+            <tbody style={{ opacity: loading ? 0.5 : 1, transition: 'opacity 0.2s' }}>
+              {bookings.length === 0 ? (
+                <tr>
+                  <td colSpan={6} style={{ padding: '48px 24px', textAlign: 'center', color: 'var(--color-text-muted)' }}>
+                    No bookings found matching your criteria.
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                bookings.map((booking, index) => {
+                  const bookedDateStr = format(new Date(booking.created_at), 'MMM dd, yyyy');
+                  const prevBooking = index > 0 ? bookings[index - 1] : null;
+                  const prevBookedDateStr = prevBooking ? format(new Date(prevBooking.created_at), 'MMM dd, yyyy') : null;
+                  
+                  const showSeparator = sortBy === 'created_at' && bookedDateStr !== prevBookedDateStr;
+
+                  return (
+                    <React.Fragment key={booking.id}>
+                      {showSeparator && (
+                        <tr style={{ background: 'var(--color-surface)', borderBottom: '1px solid var(--color-border)' }}>
+                          <td colSpan={6} style={{ padding: '12px 24px', fontWeight: 600, color: 'var(--color-primary)' }}>
+                            {bookedDateStr}
+                          </td>
+                        </tr>
+                      )}
+                      <tr style={{ borderBottom: '1px solid var(--color-border)', background: 'var(--color-surface-2)' }}>
+                        <td style={{ padding: '16px 24px', fontWeight: 500 }}>
+                          {booking.patient_name}
+                          <div style={{ fontSize: '0.8125rem', color: 'var(--color-text-muted)', marginTop: 4 }}>
+                            Source: {booking.source}
+                          </div>
+                        </td>
+                        <td style={{ padding: '16px 24px', color: 'var(--color-text-secondary)' }}>
+                           <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.875rem' }}>
+                            <Clock size={14} color="var(--color-text-muted)" />
+                            {format(new Date(booking.created_at), 'hh:mm a')}
+                          </div>
+                        </td>
+                        <td style={{ padding: '16px 24px', color: 'var(--color-text-secondary)' }}>
+                          {booking.patient_phone}
+                        </td>
+                        <td style={{ padding: '16px 24px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                            <Calendar size={14} color="var(--color-text-muted)" />
+                            {format(new Date(booking.preferred_date), 'MMM dd, yyyy')}
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.875rem', color: 'var(--color-text-secondary)' }}>
+                            <Clock size={14} color="var(--color-text-muted)" />
+                            {booking.preferred_session}
+                          </div>
+                        </td>
+                        <td style={{ padding: '16px 24px' }}>
+                          {getStatusBadge(booking.status)}
+                        </td>
+                        <td style={{ padding: '16px 24px', textAlign: 'right' }}>
+                          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                            {booking.status === 'PENDING_REVIEW' && (
+                              <>
+                                <button onClick={() => handleStatusChange(booking.id, 'accept')} className="btn btn-sm" style={{ color: 'var(--color-success)', background: 'rgba(34,197,94,0.1)' }} title="Accept">
+                                  <CheckCircle size={16} />
+                                </button>
+                                <button onClick={() => handleStatusChange(booking.id, 'reject')} className="btn btn-sm" style={{ color: 'var(--color-error)', background: 'rgba(239,68,68,0.1)' }} title="Reject">
+                                  <XCircle size={16} />
+                                </button>
+                              </>
+                            )}
+                            <Link href={`/admin/bookings/${booking.id}`} className="btn btn-secondary btn-sm" title="View Details">
+                              <Eye size={16} />
+                            </Link>
+                          </div>
+                        </td>
+                      </tr>
+                    </React.Fragment>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
+        )}
       </div>
 
       {total > limit && (

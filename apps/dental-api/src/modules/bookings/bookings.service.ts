@@ -82,9 +82,13 @@ export async function resendBookingOTP(bookingId: string, phone: string) {
 export async function getBookings(filters: {
   status?: string;
   date?: string;
+  booked_date?: string;
   session?: string;
+  preferred_session?: string;
   page?: number;
   limit?: number;
+  sortBy?: string;
+  order?: 'asc' | 'desc';
 }) {
   const page = filters.page || 1;
   const limit = filters.limit || 50;
@@ -94,12 +98,26 @@ export async function getBookings(filters: {
   let query = supabase
     .from('bookings')
     .select('*, profiles(full_name, email)', { count: 'exact' })
-    .order('created_at', { ascending: false })
     .range(from, to);
 
   if (filters.status) query = query.eq('status', filters.status);
   if (filters.date) query = query.eq('assigned_date', filters.date);
+  if (filters.booked_date) {
+    const startOfDay = new Date(filters.booked_date).toISOString();
+    const endOfDay = new Date(new Date(filters.booked_date).getTime() + 24 * 60 * 60 * 1000).toISOString();
+    query = query.gte('created_at', startOfDay).lt('created_at', endOfDay);
+  }
   if (filters.session) query = query.eq('assigned_session', filters.session);
+  if (filters.preferred_session) query = query.eq('preferred_session', filters.preferred_session);
+
+  // Apply sorting
+  if (filters.sortBy) {
+    const ascending = filters.order === 'asc';
+    query = query.order(filters.sortBy, { ascending });
+  } else {
+    // Default sort
+    query = query.order('created_at', { ascending: false });
+  }
 
   const { data, error, count } = await query;
   if (error) throw createError('Failed to fetch bookings', 500);
