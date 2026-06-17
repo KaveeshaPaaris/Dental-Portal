@@ -2,8 +2,8 @@
 
 import { Phone, MessageCircle } from 'lucide-react';
 
-const WHATSAPP_NUMBER = '+9476429760';
-const PHONE_NUMBER = '+9476429760';
+const WHATSAPP_NUMBER = '94776429760';
+const PHONE_NUMBER = '+94776429760';
 
 export default function FABButtons() {
   return (
