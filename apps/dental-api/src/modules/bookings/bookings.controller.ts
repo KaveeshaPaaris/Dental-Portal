@@ -32,13 +32,17 @@ export async function resendOTP(req: Request, res: Response, next: NextFunction)
 
 export async function getBookings(req: Request, res: Response, next: NextFunction) {
   try {
-    const { status, date, session, page, limit } = req.query as Record<string, string>;
+    const { status, date, booked_date, session, preferred_session, page, limit, sortBy, order } = req.query as Record<string, string>;
     const data = await bookingsService.getBookings({ 
       status, 
       date, 
+      booked_date,
       session,
+      preferred_session,
       page: page ? parseInt(page, 10) : undefined,
       limit: limit ? parseInt(limit, 10) : undefined,
+      sortBy,
+      order: order as 'asc' | 'desc',
     });
     res.json(data);
   } catch (err) { next(err); }
@@ -56,6 +60,13 @@ export async function getDailySchedule(req: Request, res: Response, next: NextFu
 export async function getBookingDates(req: Request, res: Response, next: NextFunction) {
   try {
     const data = await bookingsService.getBookingDatesWithAppointments();
+    res.json(data);
+  } catch (err) { next(err); }
+}
+
+export async function getCreatedBookingDates(req: Request, res: Response, next: NextFunction) {
+  try {
+    const data = await bookingsService.getCreatedBookingDates();
     res.json(data);
   } catch (err) { next(err); }
 }
@@ -144,5 +155,26 @@ export async function handleUpdateBookingStatus(req: Request, res: Response, nex
     }
 
     res.json({ success: true, message: 'Booking updated successfully' });
+  } catch (err) { next(err); }
+}
+
+export async function getDeletedBookings(req: Request, res: Response, next: NextFunction) {
+  try {
+    const data = await bookingsService.getDeletedBookings();
+    res.json(data);
+  } catch (err) { next(err); }
+}
+
+export async function softDeleteBooking(req: Request, res: Response, next: NextFunction) {
+  try {
+    const data = await bookingsService.softDeleteBooking(req.params.id, req.user!.id);
+    res.json(data);
+  } catch (err) { next(err); }
+}
+
+export async function restoreBooking(req: Request, res: Response, next: NextFunction) {
+  try {
+    const data = await bookingsService.restoreBooking(req.params.id, req.user!.id);
+    res.json(data);
   } catch (err) { next(err); }
 }
