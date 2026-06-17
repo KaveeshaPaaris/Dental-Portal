@@ -157,3 +157,24 @@ export async function handleUpdateBookingStatus(req: Request, res: Response, nex
     res.json({ success: true, message: 'Booking updated successfully' });
   } catch (err) { next(err); }
 }
+
+export async function getDeletedBookings(req: Request, res: Response, next: NextFunction) {
+  try {
+    const data = await bookingsService.getDeletedBookings();
+    res.json(data);
+  } catch (err) { next(err); }
+}
+
+export async function softDeleteBooking(req: Request, res: Response, next: NextFunction) {
+  try {
+    const data = await bookingsService.softDeleteBooking(req.params.id, req.user!.id);
+    res.json(data);
+  } catch (err) { next(err); }
+}
+
+export async function restoreBooking(req: Request, res: Response, next: NextFunction) {
+  try {
+    const data = await bookingsService.restoreBooking(req.params.id, req.user!.id);
+    res.json(data);
+  } catch (err) { next(err); }
+}

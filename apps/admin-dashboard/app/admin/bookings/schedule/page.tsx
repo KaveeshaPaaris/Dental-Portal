@@ -18,7 +18,7 @@ import {
 } from 'date-fns';
 import {
   ChevronLeft, ChevronRight, GripVertical, Clock, Phone, Mail,
-  User, CheckCircle, ArrowLeftCircle, X, SunMedium, Moon, Loader2, CalendarCheck,
+  User, CheckCircle, ArrowLeftCircle, X, SunMedium, Moon, Loader2, CalendarCheck, Trash2
 } from 'lucide-react';
 import api from '@/lib/api';
 import { Booking } from '@/types';
@@ -345,7 +345,7 @@ function DroppableColumn({
 // ─── Booking Detail Modal ─────────────────────────────────────
 
 function BookingModal({
-  booking, selectedDate, onClose, onComplete, onMoveToPending, onChangeSession,
+  booking, selectedDate, onClose, onComplete, onMoveToPending, onChangeSession, onDelete
 }: {
   booking: Booking;
   selectedDate: Date;
@@ -353,9 +353,11 @@ function BookingModal({
   onComplete: () => void;
   onMoveToPending: () => void;
   onChangeSession: (session: 'MORNING' | 'EVENING') => void;
+  onDelete: () => Promise<void>;
 }) {
   const [completing, setCompleting] = useState(false);
   const [moving, setMoving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const isAccepted = booking.status === 'ACCEPTED';
 
   return (
@@ -467,6 +469,16 @@ function BookingModal({
             Complete ✓
           </button>
         </div>
+        <button onClick={async () => { setDeleting(true); await onDelete(); setDeleting(false); }} disabled={deleting} style={{
+          width: '100%', padding: '10px', marginTop: 10,
+          background: 'transparent', border: '1px solid #ef4444', borderRadius: 8,
+          fontWeight: 600, fontSize: '0.875rem', color: '#ef4444',
+          cursor: deleting ? 'not-allowed' : 'pointer',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+        }}>
+          {deleting ? <Loader2 size={15} className="spin" /> : <Trash2 size={15} />}
+          Delete Appointment
+        </button>
       </div>
     </div>
   );
@@ -643,11 +655,24 @@ export default function ScheduleBoardPage() {
     if (!modalBooking) return;
     try {
       await api.patch(`/bookings/${modalBooking.id}/complete`);
-      toast.success('Booking marked as completed!');
+      toast.success('Booking marked as complete and review link sent!');
       setModalBooking(null);
       refresh();
-    } catch (err: any) {
-      toast.error(err.response?.data?.error || 'Failed to complete booking');
+    } catch {
+      toast.error('Failed to complete booking');
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!modalBooking) return;
+    if (!confirm('Are you sure you want to delete this appointment? It will be moved to the Recycle Bin.')) return;
+    try {
+      await api.delete(`/bookings/${modalBooking.id}`);
+      toast.success('Appointment deleted and moved to Recycle Bin');
+      setModalBooking(null);
+      refresh();
+    } catch {
+      toast.error('Failed to delete appointment');
     }
   };
 
@@ -751,6 +776,7 @@ export default function ScheduleBoardPage() {
           onComplete={handleComplete}
           onMoveToPending={handleMoveToPending}
           onChangeSession={handleChangeSession}
+          onDelete={handleDelete}
         />
       )}
 

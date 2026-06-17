@@ -43,6 +43,7 @@ export interface Booking {
   review_token?: string;
   created_at: string;
   updated_at: string;
+  deleted_at?: string;
 }
 
 export interface DailySchedule {

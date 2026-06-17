@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { format } from 'date-fns';
-import { Eye, Calendar, Clock, CheckCircle, XCircle } from 'lucide-react';
+import { Eye, Calendar, Clock, CheckCircle, XCircle, Trash2 } from 'lucide-react';
 import api from '@/lib/api';
 import { Booking } from '@/types';
 import toast from 'react-hot-toast';
@@ -122,6 +122,17 @@ export default function AdminBookingsPage() {
     }
   };
 
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this booking? It will be moved to the Recycle Bin.')) return;
+    try {
+      await api.delete(`/bookings/${id}`);
+      toast.success('Booking deleted and moved to Recycle Bin');
+      fetchBookings(page);
+    } catch (error) {
+      toast.error('Failed to delete booking');
+    }
+  };
+
   const SortIcon = ({ column }: { column: string }) => {
     if (sortBy !== column) return <span style={{ opacity: 0.3, marginLeft: 6, fontSize: '0.75rem' }}>↕</span>;
     return sortOrder === 'asc'
@@ -133,9 +144,14 @@ export default function AdminBookingsPage() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
         <h1 style={{ fontSize: '2rem', fontWeight: 700 }}>Bookings Queue</h1>
-        <Link href="/admin/bookings/schedule" className="btn btn-primary">
-          <Calendar size={18} /> Schedule Board
-        </Link>
+        <div style={{ display: 'flex', gap: 12 }}>
+          <Link href="/admin/bookings/recycle-bin" className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Trash2 size={18} /> Recycle Bin
+          </Link>
+          <Link href="/admin/bookings/schedule" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Calendar size={18} /> Schedule Board
+          </Link>
+        </div>
       </div>
 
       {/* Filter Bar */}
@@ -301,6 +317,9 @@ export default function AdminBookingsPage() {
                                 </button>
                               </>
                             )}
+                            <button onClick={() => handleDelete(booking.id)} className="btn btn-sm" style={{ color: '#ef4444', background: 'rgba(239,68,68,0.1)' }} title="Delete">
+                              <Trash2 size={16} />
+                            </button>
                             <Link href={`/admin/bookings/${booking.id}`} className="btn btn-secondary btn-sm" title="View Details">
                               <Eye size={16} />
                             </Link>

@@ -98,6 +98,7 @@ export async function getBookings(filters: {
   let query = supabase
     .from('bookings')
     .select('*, profiles(full_name, email)', { count: 'exact' })
+    .is('deleted_at', null)
     .range(from, to);
 
   if (filters.status) query = query.eq('status', filters.status);
@@ -131,6 +132,7 @@ export async function getDailySchedule(date: string) {
     .select('*')
     .eq('assigned_date', date)
     .eq('status', 'ACCEPTED')
+    .is('deleted_at', null)
     .order('slot_order', { ascending: true });
 
   if (acceptedError) throw createError('Failed to fetch schedule', 500);
@@ -140,6 +142,7 @@ export async function getDailySchedule(date: string) {
     .from('bookings')
     .select('*')
     .eq('status', 'PENDING_REVIEW')
+    .is('deleted_at', null)
     .order('created_at', { ascending: true });
 
   if (pendingError) throw createError('Failed to fetch pending queue', 500);
@@ -155,7 +158,8 @@ export async function getBookingDatesWithAppointments() {
     .from('bookings')
     .select('assigned_date')
     .eq('status', 'ACCEPTED')
-    .not('assigned_date', 'is', null);
+    .not('assigned_date', 'is', null)
+    .is('deleted_at', null);
 
   if (error) throw createError('Failed to fetch booking dates', 500);
 
@@ -167,7 +171,8 @@ export async function getBookingDatesWithAppointments() {
 export async function getCreatedBookingDates() {
   const { data, error } = await supabase
     .from('bookings')
-    .select('created_at');
+    .select('created_at')
+    .is('deleted_at', null);
 
   if (error) throw createError('Failed to fetch created booking dates', 500);
 
@@ -386,3 +391,39 @@ export async function updateBookingStatus(id: string, status: string, adminId: s
   if (error || !data) throw createError('Failed to update booking status', 500);
   return data;
 }
+
+export async function getDeletedBookings() {
+  const { data, error } = await supabase
+    .from('bookings')
+    .select('*, profiles(full_name, email)')
+    .not('deleted_at', 'is', null)
+    .order('deleted_at', { ascending: false });
+
+  if (error) throw createError('Failed to fetch deleted bookings', 500);
+  return data;
+}
+
+export async function softDeleteBooking(id: string, adminId: string) {
+  const { data, error } = await supabase
+    .from('bookings')
+    .update({ deleted_at: new Date().toISOString(), handled_by: adminId })
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error || !data) throw createError('Failed to delete booking', 500);
+  return data;
+}
+
+export async function restoreBooking(id: string, adminId: string) {
+  const { data, error } = await supabase
+    .from('bookings')
+    .update({ deleted_at: null, handled_by: adminId })
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error || !data) throw createError('Failed to restore booking', 500);
+  return data;
+}
+
