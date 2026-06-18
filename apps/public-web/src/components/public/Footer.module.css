@@ -1,105 +1,289 @@
+/* ─── Footer Shell ───────────────────────────────────────── */
 .footer {
-  background: var(--color-surface);
-  border-top: 1px solid var(--color-border);
-  padding-top: 64px;
+  background: #F8FAFC;
+  border-top: 1px solid #E8EDF3;
+  padding-top: 52px; /* slightly tighter than 56px */
 }
 
+/* ─── 4-Column Grid ──────────────────────────────────────── */
 .grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 48px;
-  padding-bottom: 48px;
+  grid-template-columns: 1.6fr 0.9fr 1.2fr 1.2fr;
+  gap: 52px;
+  padding-bottom: 44px;
+  align-items: start;
 }
 
+/* ─── Brand Column ───────────────────────────────────────── */
 .brand {}
+
 .logo {
+  margin-bottom: 12px;
+}
+
+.tagline {
+  font-size: 0.875rem;
+  color: #475569;
+  line-height: 1.75;
+  max-width: 250px;
+  margin-bottom: 8px;
+}
+
+/* Small trust statement below tagline */
+.trustBadge {
+  font-size: 0.8rem;
+  color: #1355A5;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  margin-bottom: 18px;
+  opacity: 0.85;
+}
+
+/* Social icons — small circles */
+.socials {
+  display: flex;
+  gap: 8px;
+}
+
+.socialIcon {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid #DDE3EC;
+  color: #64748B;
+  text-decoration: none;
+  background: white;
+  font-size: 16px; /* react-icons size controlled via font-size */
+  transition: background 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
 }
-.logoIcon { font-size: 2rem; }
-.logoMain {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: var(--color-primary);
-}
-.logoSub { font-size: 0.75rem; color: var(--color-text-muted); }
-.tagline { color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.7; max-width: 280px; }
 
-.section {}
-.sectionTitle {
-  font-size: 0.875rem;
+.socialIcon:hover {
+  background: #1355A5;
+  border-color: #1355A5;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* ─── Generic Column ─────────────────────────────────────── */
+.col {}
+
+/*
+  Section headings: no background box.
+  Blue uppercase text + subtle bottom border as divider.
+*/
+.colTitle {
+  font-size: 0.6875rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--color-text-primary);
+  letter-spacing: 0.11em;
+  color: #1355A5;
   margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #E2E8F0;
 }
 
-.links { display: flex; flex-direction: column; gap: 8px; }
-.link {
-  font-size: 0.9rem;
-  color: var(--color-text-secondary);
-  transition: color var(--transition-fast);
-  text-decoration: none;
-}
-.link:hover { color: var(--color-primary); }
-
-.contactList { display: flex; flex-direction: column; gap: 10px; }
-.contactItem {
+/* ─── Quick Links ────────────────────────────────────────── */
+.navLink {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   font-size: 0.875rem;
-  color: var(--color-text-secondary);
+  color: #475569;
   text-decoration: none;
-  transition: color var(--transition-fast);
+  padding: 5px 0;
+  transition: color 180ms ease, transform 180ms ease;
 }
-.contactItem:hover { color: var(--color-primary); }
 
-.hours { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
-.hoursRow { display: flex; align-items: flex-start; gap: 8px; color: var(--color-text-secondary); }
-.session { font-size: 0.8125rem; font-weight: 600; color: var(--color-text-primary); }
-.time { font-size: 0.8rem; color: var(--color-text-secondary); }
+.navLink:hover {
+  color: #1355A5;
+  transform: translateX(3px);
+}
 
-.mapPlaceholder {
+.chevron {
+  color: #CBD5E1;
+  flex-shrink: 0;
+  transition: color 180ms ease;
+}
+
+.navLink:hover .chevron {
+  color: #1355A5;
+}
+
+/* ─── Contact Column ─────────────────────────────────────── */
+.contactList {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px;
-  background: var(--color-surface-2);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
-  color: var(--color-text-secondary);
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: all var(--transition-fast);
+  flex-direction: column;
+  gap: 11px;
 }
-.mapPlaceholder:hover { border-color: var(--color-primary); color: var(--color-primary); }
 
+.contactRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.875rem;
+  color: #475569;
+  text-decoration: none;
+  line-height: 1.6;
+  transition: color 180ms ease;
+}
+
+/* Blue icon, vertically centered with first text line */
+.contactRow svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: #1355A5;
+}
+
+.contactRow:hover {
+  color: #1355A5;
+}
+
+/* ─── Hours Column ───────────────────────────────────────── */
+.hoursList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.hourItem {
+  display: grid;
+  grid-template-columns: 84px 1fr; /* day left, times right — aligned */
+  gap: 4px 0;
+  align-items: baseline;
+}
+
+/* When Mon–Wed has 2 time rows, let them stack naturally */
+.hourItem .hourTime:first-of-type {
+  margin-top: 0;
+}
+
+.hourDay {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #1E293B; /* dark navy — strong contrast */
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+  padding-right: 6px;
+}
+
+.hourTime {
+  font-size: 0.8125rem;
+  color: #64748B;
+  grid-column: 2;
+  line-height: 1.6;
+}
+
+.poyaNote {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  font-size: 0.75rem;
+  color: #94A3B8;
+  font-style: italic;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.poyaNote svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: #94A3B8;
+}
+
+/* Subtle outlined map button */
+.mapBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 1px solid #DDE3EC;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #475569;
+  text-decoration: none;
+  background: white;
+  transition: border-color 180ms ease, color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+}
+
+.mapBtn:hover {
+  border-color: #1355A5;
+  color: #1355A5;
+  background: rgba(19, 85, 165, 0.04);
+  box-shadow: 0 2px 8px rgba(19, 85, 165, 0.1);
+}
+
+/* ─── Bottom Bar ─────────────────────────────────────────── */
 .bottom {
-  border-top: 1px solid var(--color-border);
-  padding: 20px 0;
+  border-top: 1px solid #E8EDF3;
+  padding: 16px 0;
 }
+
 .bottom .container {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 8px;
-}
-.bottom p { font-size: 0.8125rem; color: var(--color-text-muted); }
-.madeWith { display: flex; align-items: center; gap: 4px; }
-.heart { color: var(--color-error); display: inline-block; }
-
-@media (max-width: 900px) {
-  .grid { grid-template-columns: 1fr 1fr; gap: 32px; }
-  .brand { grid-column: 1 / -1; }
+  gap: 6px;
 }
 
-@media (max-width: 600px) {
-  .grid { grid-template-columns: 1fr; gap: 24px; }
-  .bottom .container { flex-direction: column; text-align: center; }
+.bottom p {
+  font-size: 0.8rem;
+  color: #94A3B8;
+}
+
+.madeWith {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.heart {
+  color: #EF4444;
+}
+
+/* ─── Responsive ─────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+  }
+}
+
+@media (max-width: 640px) {
+  .footer {
+    padding-top: 36px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding-bottom: 32px;
+  }
+
+  /* Hours: revert to stacked column on very small screens */
+  .hourItem {
+    grid-template-columns: 1fr;
+  }
+
+  .hourDay {
+    grid-column: 1;
+    margin-bottom: 2px;
+  }
+
+  .hourTime {
+    grid-column: 1;
+    padding-left: 0;
+  }
+
+  .bottom .container {
+    flex-direction: column;
+    text-align: center;
+    gap: 4px;
+  }
 }
