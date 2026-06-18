@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, ExternalLink } from 'lucide-react';
 import styles from './page.module.css';
+import MapSection from '@/components/public/MapSection';
 
 export const metadata: Metadata = {
   title: 'Contact Us — Charming Dental Clinic',
@@ -27,8 +28,8 @@ export default function ContactPage() {
             <div>
               <h3 className={styles.infoTitle}>Our Clinic</h3>
               <p className={styles.infoText}>
-                123 Smile Boulevard<br />
-                Health District, NY 10001
+                Charming Dental Clinic <br />
+                97,7 Archbishop Nicholas Marcus Fernando Mawatha, Negombo
               </p>
             </div>
           </div>
@@ -40,8 +41,9 @@ export default function ContactPage() {
             <div>
               <h3 className={styles.infoTitle}>Phone & WhatsApp</h3>
               <p className={styles.infoText}>
-                +1 (555) 123-4567<br />
-                Available 24/7 for emergencies
+                +94 718109283<br />
+                +94 312282526
+
               </p>
             </div>
           </div>
@@ -53,8 +55,8 @@ export default function ContactPage() {
             <div>
               <h3 className={styles.infoTitle}>Email</h3>
               <p className={styles.infoText}>
-                hello@smiledental.com<br />
-                support@smiledental.com
+                charmingdental@gmail.com<br />
+                supcomport@charmingdental.
               </p>
             </div>
           </div>
@@ -66,25 +68,19 @@ export default function ContactPage() {
             <div>
               <h3 className={styles.infoTitle}>Working Hours</h3>
               <p className={styles.infoText}>
-                Monday – Friday: 8:00 AM – 8:00 PM<br />
-                Saturday: 9:00 AM – 2:00 PM<br />
-                Sunday: Closed
+                Mon–Wed: 9 AM–1 PM & 5 PM–11 PM<br />
+                Thu: 9 AM–1 PM Only<br />
+                Fri: 9 AM–5 PM <br />
+                Sat: 3:30 PM–11 PM<br />
+                Sun: Call in Advance for Appointments<br />
+
+                We are closed on all Poya (Full Moon) days.
               </p>
             </div>
           </div>
         </div>
 
-        <div className={styles.mapWrapper} style={{ padding: 0, overflow: 'hidden' }}>
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7916.714284488204!2d79.84456997365503!3d7.200030814934783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2ef7ab25a6c1b%3A0xc69391f9fb930206!2sDental%20Clinic%20-%20Dr%20Chaminda%20Paris!5e0!3m2!1sen!2slk!4v1781615194606!5m2!1sen!2slk"
-            width="100%"
-            height="100%"
-            style={{ border: 0, minHeight: '400px' }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          ></iframe>
-        </div>
+        <MapSection />
       </div>
     </div>
   );
