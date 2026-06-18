@@ -21,12 +21,12 @@ export default function Footer() {
         {/* Brand */}
         <div className={styles.brand}>
           <div className={styles.logo}>
-            <Image 
-              src="/logo.png" 
-              alt="Charming Dental Clinic" 
-              width={240} 
-              height={64} 
-              style={{ objectFit: 'contain', width: 'auto', height: '64px' }} 
+            <Image
+              src="/logo.png"
+              alt="Charming Dental Clinic"
+              width={240}
+              height={64}
+              style={{ objectFit: 'contain', width: 'auto', height: '64px' }}
             />
           </div>
           <p className={styles.tagline}>
@@ -51,17 +51,18 @@ export default function Footer() {
         <div className={styles.section}>
           <h4 className={styles.sectionTitle}>Contact Us</h4>
           <div className={styles.contactList}>
-            <a href="tel:+15550000000" className={styles.contactItem}>
-              <Phone size={16} /> +1 (555) 000-0000
+            <a href="tel:+94 718109283" className={styles.contactItem}>
+              <Phone size={16} /> +94 718109283
             </a>
-            <a href="https://wa.me/15550000000" target="_blank" rel="noreferrer" className={styles.contactItem}>
+            <a href="https://wa.me/94718109283" target="_blank" rel="noreferrer" className={styles.contactItem}>
               <MessageCircle size={16} /> WhatsApp Us
             </a>
-            <a href="mailto:hello@smileclinic.com" className={styles.contactItem}>
-              <Mail size={16} /> hello@smileclinic.com
+            <a href="mailto:charmingdental@gmail.com" className={styles.contactItem}>
+              <Mail size={16} /> charmingdental@gmail.com
             </a>
-            <div className={styles.contactItem}>
-              <MapPin size={16} /> 123 Main Street, City
+            <div className={styles.contactItem} style={{ alignItems: 'flex-start' }}>
+              <MapPin size={16} style={{ marginTop: '4px', flexShrink: 0 }} /> 
+              <span>Charming Dental Clinic<br />97,7 Archbishop Nicholas Marcus Fernando Mawatha, Negombo</span>
             </div>
           </div>
         </div>
@@ -71,26 +72,33 @@ export default function Footer() {
           <h4 className={styles.sectionTitle}>Clinic Hours</h4>
           <div className={styles.hours}>
             <div className={styles.hoursRow}>
-              <Clock size={14} />
-              <div>
-                <div className={styles.session}>Morning Session</div>
-                <div className={styles.time}>9:00 AM – 1:00 PM</div>
+              <Clock size={14} style={{ flexShrink: 0, marginTop: 4 }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <div className={styles.time}><strong style={{ color: 'var(--color-text-primary)' }}>Mon–Wed:</strong> 9 AM – 1 PM & 5 PM – 11 PM</div>
+                <div className={styles.time}><strong style={{ color: 'var(--color-text-primary)' }}>Thu:</strong> 9 AM – 1 PM Only</div>
+                <div className={styles.time}><strong style={{ color: 'var(--color-text-primary)' }}>Fri:</strong> 9 AM – 5 PM</div>
+                <div className={styles.time}><strong style={{ color: 'var(--color-text-primary)' }}>Sat:</strong> 3:30 PM – 11 PM</div>
+                <div className={styles.time}><strong style={{ color: 'var(--color-text-primary)' }}>Sun:</strong> Call in Advance</div>
               </div>
             </div>
-            <div className={styles.hoursRow}>
-              <Clock size={14} />
-              <div>
-                <div className={styles.session}>Evening Session</div>
-                <div className={styles.time}>5:00 PM – 9:00 PM</div>
+            <div className={styles.hoursRow} style={{ marginTop: 8 }}>
+              <div style={{ fontSize: '12px', color: 'var(--color-text-secondary)', lineHeight: 1.5 }}>
+                <em>Please Note: We are closed on all Poya (Full Moon) days.</em>
               </div>
             </div>
           </div>
 
-          {/* Map Placeholder */}
-          <div className={styles.mapPlaceholder}>
+          {/* Map Link */}
+          <a 
+            href="https://www.google.com/maps/search/?api=1&query=Dental+Clinic+-+Dr+Chaminda+Paris+Negombo"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.mapPlaceholder}
+            style={{ textDecoration: 'none', cursor: 'pointer' }}
+          >
             <MapPin size={24} />
             <span>View on Google Maps</span>
-          </div>
+          </a>
         </div>
       </div>
 
