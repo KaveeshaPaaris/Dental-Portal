@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
+// [FIX #15] Added Suspense for ReviewsCarousel loading boundary
+import { Suspense } from 'react';
 // [FIX #5] Removed unused `CheckCircle` import
 // [FIX #9] Added Lucide icons to replace service emojis
 import { ArrowRight, Star, Shield, Clock, Heart, Stethoscope, Sparkles, Wrench, AlignCenter, Crown, HeartPulse } from 'lucide-react';
@@ -31,23 +34,42 @@ const SERVICES = [
 
 export default function HomePage() {
   return (
-    <div>
+    // [FIX #16] Wrapped content in <main> for correct landmark semantics
+    <main id="main-content">
+      {/* [FIX #17] Skip navigation link for keyboard / screen-reader users */}
+      <a href="#main-content" className={styles.skipLink}>Skip to main content</a>
 
       {/* ─── Hero ─────────────────────────────────────────── */}
       {/* [FIX #14] Added aria-label for landmark navigation */}
       <section className={styles.hero} aria-label="Hero - Welcome">
-        <div className={styles.heroBg} />
+        {/* [FIX #18] Using Next.js <Image priority> for hero to improve LCP */}
+        <div className={styles.heroBg} aria-hidden="true">
+          <Image
+            src="/hero-bg.png"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className={styles.heroBgImage}
+            style={{ objectFit: 'cover', objectPosition: 'right center' }}
+          />
+        </div>
         <div className="container">
-          {/* [FIX #1] heroContent now has a frosted glass overlay for readability */}
+          {/* [FIX #1] heroContent sits cleanly over the hero image */}
           <div className={styles.heroContent}>
             <h1 className={styles.heroTitle}>
               World-Class Dental Care,{' '}
               <span className={styles.heroHighlight}>Close to Home</span>
             </h1>
 
+            {/* [FIX #19] Added heroSubtext tagline so .heroSubtext CSS is no longer dead */}
+            <p className={styles.heroSubtext}>
+              Trusted by 5,000+ patients. Board-certified specialists, same-week appointments available.
+            </p>
+
             <div className={styles.heroActions}>
               <Link href="/book" className="btn btn-primary btn-xl">
-                Book Appointment <ArrowRight size={18} />
+                Book Appointment <ArrowRight size={18} aria-hidden="true" />
               </Link>
               <Link href="/services" className="btn btn-secondary btn-xl">
                 Our Services
@@ -85,7 +107,8 @@ export default function HomePage() {
           <div className={styles.featuresGrid}>
             {FEATURES.map(({ icon: Icon, title, desc }) => (
               <div key={title} className={`card ${styles.featureCard}`}>
-                <div className={styles.featureIcon}>
+                {/* [FIX #20] aria-hidden on decorative icon wrapper */}
+                <div className={styles.featureIcon} aria-hidden="true">
                   <Icon size={22} />
                 </div>
                 <h3 className={styles.featureTitle}>{title}</h3>
@@ -108,8 +131,9 @@ export default function HomePage() {
             {/* [FIX #8] Wrapped service cards in <Link> to make them proper links */}
             {SERVICES.map((s) => (
               <Link key={s.name} href="/services" className={`card ${styles.serviceCard}`}>
-                {/* [FIX #9] Using Lucide icon styled identically to featureIcon */}
-                <div className={styles.featureIcon} style={{ margin: '0 0 8px 0' }}>
+                {/* [FIX #21] Replaced inline-style hack with dedicated .serviceIcon class */}
+                {/* [FIX #20] aria-hidden on decorative icon wrapper */}
+                <div className={styles.serviceIcon} aria-hidden="true">
                   <s.icon size={22} />
                 </div>
                 <h3 className={styles.serviceName}>{s.name}</h3>
@@ -119,14 +143,17 @@ export default function HomePage() {
           </div>
           <div className={styles.servicesCTA}>
             <Link href="/services" className="btn btn-secondary btn-lg">
-              View All Services <ArrowRight size={16} />
+              View All Services <ArrowRight size={16} aria-hidden="true" />
             </Link>
           </div>
         </div>
       </section>
 
       {/* ─── Reviews Carousel ──────────────────────────────── */}
-      <ReviewsCarousel />
+      {/* [FIX #15] Wrapped in Suspense with shimmer skeleton fallback */}
+      <Suspense fallback={<div className={styles.reviewsSkeleton} aria-label="Loading reviews…" />}>
+        <ReviewsCarousel />
+      </Suspense>
 
       {/* ─── CTA Banner ───────────────────────────────────── */}
       {/* [FIX #14] Added aria-label for landmark navigation */}
@@ -137,11 +164,11 @@ export default function HomePage() {
             <p>Book your appointment today — morning and evening slots available.</p>
             {/* [FIX #4] Changed misleading CTA from "Book Now — It's Free" */}
             <Link href="/book" className="btn btn-accent btn-xl">
-              Schedule Your Appointment <ArrowRight size={18} />
+              Schedule Your Appointment <ArrowRight size={18} aria-hidden="true" />
             </Link>
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 }

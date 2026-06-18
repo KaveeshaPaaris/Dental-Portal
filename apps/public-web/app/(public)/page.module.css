@@ -1,5 +1,30 @@
 /* [FIX #6] Removed empty `.page {}` rule */
 
+/* ─── Skip Navigation ────────────────────────────────── */
+/* [FIX #17] Visually hidden skip link, appears on focus for keyboard users */
+.skipLink {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skipLink:focus {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  width: auto;
+  height: auto;
+  padding: 8px 16px;
+  background: var(--color-primary);
+  color: white;
+  border-radius: var(--radius-sm, 6px);
+  z-index: 9999;
+  font-weight: 600;
+  text-decoration: none;
+}
+
 /* ─── Hero ──────────────────────────────────────────────── */
 .hero {
   position: relative;
@@ -16,11 +41,11 @@
   z-index: 0;
 }
 
-.heroBg::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: url('/hero-bg.png') right center / cover no-repeat;
+/* [FIX #18] heroBg::before removed — background image now handled by Next.js <Image>
+   which allows the browser to preload it early and improve LCP score */
+
+/* [FIX #18] Mask applied directly to the <Image> element via this class */
+.heroBgImage {
   opacity: 1;
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 60%);
   mask-image: linear-gradient(to right, transparent 0%, black 60%);
@@ -35,19 +60,13 @@
     radial-gradient(ellipse 60% 40% at 10% 80%, rgba(110, 231, 200, 0.15) 0%, transparent 50%);
 }
 
-/* [FIX #1] Added frosted glass overlay behind hero text for readability on any background */
+/* [FIX #1] Removed frosted glass box — text sits cleanly over the hero image */
+/* [FIX #22] Moved animation into prefers-reduced-motion guard (see bottom of file) */
 .heroContent {
   position: relative;
   z-index: 1;
   max-width: 680px;
-  padding: 48px 40px;
-  animation: fadeIn 0.6s ease-out;
-  background: rgba(var(--color-bg-rgb, 10, 15, 28), 0.65);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: var(--radius-xl, 20px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  padding: 80px 0;
 }
 
 /* [FIX #7] Removed unused `.heroBadge` CSS rule */
@@ -67,6 +86,7 @@
   background-clip: text;
 }
 
+/* [FIX #19] .heroSubtext is now used — tagline added to JSX */
 .heroSubtext {
   font-size: 1.125rem;
   color: var(--color-text-secondary);
@@ -125,13 +145,10 @@
   gap: 24px;
 }
 
+/* [FIX #22] transform removed from base rule — moved into prefers-reduced-motion guard */
 .featureCard {
   text-align: center;
   transition: transform var(--transition-normal);
-}
-
-.featureCard:hover {
-  transform: translateY(-4px);
 }
 
 .featureIcon {
@@ -188,6 +205,7 @@
 }
 
 /* [FIX #8] Removed `cursor: default` — cards are now proper links with pointer cursor */
+/* [FIX #22] transform removed from base rule — moved into prefers-reduced-motion guard */
 .serviceCard {
   display: flex;
   flex-direction: column;
@@ -197,11 +215,21 @@
   color: inherit;
 }
 
-.serviceCard:hover {
-  transform: translateY(-4px);
-}
+/* [FIX #9] `.serviceEmoji` removed — replaced by `.serviceIcon` */
 
-/* [FIX #9] `.serviceEmoji` removed — replaced by `.featureIcon` reuse in JSX */
+/* [FIX #21] Dedicated serviceIcon class instead of inline-style override on featureIcon */
+.serviceIcon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 8px 0; /* left-aligned inside card, not centred like featureIcon */
+  box-shadow: var(--shadow-md);
+}
 
 .serviceName {
   font-size: 1.0625rem;
@@ -216,6 +244,21 @@
 
 .servicesCTA {
   text-align: center;
+}
+
+/* ─── Reviews Skeleton ───────────────────────────────────── */
+/* [FIX #15] Shimmer placeholder shown while ReviewsCarousel loads */
+.reviewsSkeleton {
+  height: 220px;
+  background: linear-gradient(
+    90deg,
+    var(--color-surface) 25%,
+    var(--color-border) 50%,
+    var(--color-surface) 75%
+  );
+  background-size: 200% 100%;
+  border-radius: var(--radius-lg);
+  margin: 40px 0;
 }
 
 /* ─── CTA Banner ────────────────────────────────────────── */
@@ -251,6 +294,40 @@
   margin-bottom: 36px;
 }
 
+/* ─── Keyframes ─────────────────────────────────────────── */
+/* [FIX #23] Added missing fadeIn keyframe — was referenced but never defined */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* [FIX #15] Shimmer keyframe for ReviewsCarousel skeleton */
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ─── Motion preferences ─────────────────────────────────── */
+/* [FIX #22] Animations and hover transforms only run when the user hasn't
+   requested reduced motion in their OS accessibility settings */
+@media (prefers-reduced-motion: no-preference) {
+  .heroContent {
+    animation: fadeIn 0.6s ease-out;
+  }
+
+  .featureCard:hover {
+    transform: translateY(-4px);
+  }
+
+  .serviceCard:hover {
+    transform: translateY(-4px);
+  }
+
+  .reviewsSkeleton {
+    animation: shimmer 1.4s infinite;
+  }
+}
+
 /* ─── Responsive ────────────────────────────────────────── */
 @media (max-width: 960px) {
   .featuresGrid {
@@ -273,7 +350,7 @@
   }
 
   /* [FIX #12] On mobile, show image below text instead of beside it */
-  .heroBg::before {
+  .heroBgImage {
     -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 30%);
     mask-image: linear-gradient(to bottom, transparent 0%, black 30%);
   }
