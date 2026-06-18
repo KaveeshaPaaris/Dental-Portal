@@ -1,20 +1,25 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { CheckCircle, XCircle, Star, MessageSquare } from 'lucide-react';
+import { CheckCircle, XCircle, Star, MessageSquare, Lock, Sparkles } from 'lucide-react';
 import api from '@/lib/api';
 import { Review } from '@/types';
+import { useAuth } from '@/context/AuthContext';
 import toast from 'react-hot-toast';
 
 export default function AdminReviewsPage() {
+  const { user } = useAuth();
+  const isSuperAdmin = user?.role === 'SUPER_ADMIN';
+
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
+  const [featuringId, setFeaturingId] = useState<string | null>(null);
 
   const fetchReviews = async () => {
     try {
       const res = await api.get('/reviews');
       setReviews(res.data);
-    } catch (error) {
+    } catch {
       toast.error('Failed to load reviews');
     } finally {
       setLoading(false);
@@ -28,10 +33,24 @@ export default function AdminReviewsPage() {
   const handleModerate = async (id: string, action: 'accept' | 'reject') => {
     try {
       await api.patch(`/reviews/${id}/${action}`);
-      toast.success(`Review ${action}ed`);
+      toast.success(`Review ${action === 'accept' ? 'approved' : 'rejected'}`);
       fetchReviews();
-    } catch (error) {
+    } catch {
       toast.error(`Failed to ${action} review`);
+    }
+  };
+
+  const handleFeature = async (review: Review) => {
+    const newValue = !review.is_featured;
+    setFeaturingId(review.id);
+    try {
+      await api.patch(`/reviews/${review.id}/feature`, { featured: newValue });
+      toast.success(newValue ? '⭐ Review featured on homepage!' : 'Review removed from homepage');
+      fetchReviews();
+    } catch {
+      toast.error('Failed to update feature status');
+    } finally {
+      setFeaturingId(null);
     }
   };
 
@@ -46,16 +65,45 @@ export default function AdminReviewsPage() {
 
   return (
     <div>
-      <h1 style={{ fontSize: '2rem', marginBottom: 24, fontWeight: 700 }}>Review Moderation</h1>
-
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))', gap: 24 }}>
-        {reviews.length === 0 ? (
-          <div style={{ padding: '48px 24px', color: 'var(--color-text-muted)' }}>
-            No reviews pending moderation.
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
+        <h1 style={{ fontSize: '2rem', fontWeight: 700 }}>Review Moderation</h1>
+        {!isSuperAdmin && (
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 8,
+            background: 'var(--color-warning-light, #fef3c7)',
+            border: '1px solid var(--color-warning, #f59e0b)',
+            borderRadius: 'var(--radius-md)', padding: '8px 16px',
+            color: 'var(--color-warning-dark, #92400e)', fontSize: '0.875rem',
+          }}>
+            <Lock size={14} />
+            Read-only — Only super admins can approve, reject or feature reviews
           </div>
-        ) : (
-          reviews.map((review) => (
-            <div key={review.id} className="card" style={{ display: 'flex', flexDirection: 'column' }}>
+        )}
+      </div>
+
+      {reviews.length === 0 ? (
+        <div style={{ padding: '48px 24px', color: 'var(--color-text-muted)', textAlign: 'center' }}>
+          No reviews yet.
+        </div>
+      ) : (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))', gap: 24 }}>
+          {reviews.map((review) => (
+            <div key={review.id} className="card" style={{ display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden' }}>
+
+              {/* Featured ribbon */}
+              {review.is_featured && (
+                <div style={{
+                  position: 'absolute', top: 0, right: 0,
+                  background: 'linear-gradient(135deg, #f59e0b, #d97706)',
+                  color: 'white', fontSize: '0.6875rem', fontWeight: 700,
+                  padding: '4px 12px', borderBottomLeftRadius: 8,
+                  display: 'flex', alignItems: 'center', gap: 4,
+                }}>
+                  <Sparkles size={10} /> FEATURED
+                </div>
+              )}
+
+              {/* Header row */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
                 <div>
                   <div style={{ fontWeight: 600, fontSize: '1.125rem' }}>{review.patient_name}</div>
@@ -63,6 +111,9 @@ export default function AdminReviewsPage() {
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} size={16} fill={i < (review.rating || 0) ? 'currentColor' : 'none'} />
                     ))}
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: 4 }}>
+                    {new Date(review.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                   </div>
                 </div>
                 {review.status === 'PENDING' ? (
@@ -73,27 +124,58 @@ export default function AdminReviewsPage() {
                   <span className="badge badge-error">Rejected</span>
                 )}
               </div>
-              
-              <div style={{ flex: 1, color: 'var(--color-text-secondary)', background: 'var(--color-surface-2)', padding: 16, borderRadius: 'var(--radius-md)', marginBottom: 24, fontStyle: 'italic' }}>
-                <MessageSquare size={16} style={{ marginBottom: 8, color: 'var(--color-text-muted)' }} />
-                <br />
+
+              {/* Review content */}
+              <div style={{ flex: 1, color: 'var(--color-text-secondary)', background: 'var(--color-surface-2)', padding: 16, borderRadius: 'var(--radius-md)', marginBottom: 16, fontStyle: 'italic', lineHeight: 1.6 }}>
+                <MessageSquare size={16} style={{ marginBottom: 8, color: 'var(--color-text-muted)', display: 'block' }} />
                 "{review.content}"
               </div>
 
-              {review.status === 'PENDING' && (
-                <div style={{ display: 'flex', gap: 12 }}>
-                  <button onClick={() => handleModerate(review.id, 'accept')} className="btn btn-primary" style={{ flex: 1 }}>
-                    <CheckCircle size={18} /> Approve
-                  </button>
-                  <button onClick={() => handleModerate(review.id, 'reject')} className="btn btn-danger" style={{ flex: 1 }}>
-                    <XCircle size={18} /> Reject
-                  </button>
+              {/* Super admin actions only */}
+              {isSuperAdmin && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {/* Approve / Reject (only for PENDING) */}
+                  {review.status === 'PENDING' && (
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <button
+                        onClick={() => handleModerate(review.id, 'accept')}
+                        className="btn btn-primary"
+                        style={{ flex: 1 }}
+                      >
+                        <CheckCircle size={16} /> Approve
+                      </button>
+                      <button
+                        onClick={() => handleModerate(review.id, 'reject')}
+                        className="btn btn-danger"
+                        style={{ flex: 1 }}
+                      >
+                        <XCircle size={16} /> Reject
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Feature toggle (only for ACCEPTED reviews) */}
+                  {review.status === 'ACCEPTED' && (
+                    <button
+                      onClick={() => handleFeature(review)}
+                      disabled={featuringId === review.id}
+                      className={review.is_featured ? 'btn btn-warning' : 'btn btn-secondary'}
+                      style={{ width: '100%' }}
+                    >
+                      <Sparkles size={16} />
+                      {featuringId === review.id
+                        ? 'Updating...'
+                        : review.is_featured
+                          ? 'Remove from Homepage'
+                          : 'Feature on Homepage'}
+                    </button>
+                  )}
                 </div>
               )}
             </div>
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

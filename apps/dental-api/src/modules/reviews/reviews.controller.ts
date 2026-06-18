@@ -14,6 +14,13 @@ export async function getPublicReviews(req: Request, res: Response, next: NextFu
   } catch (err) { next(err); }
 }
 
+export async function getFeaturedReviews(req: Request, res: Response, next: NextFunction) {
+  try {
+    const data = await reviewsService.getFeaturedReviews();
+    res.json(data);
+  } catch (err) { next(err); }
+}
+
 export async function validateToken(req: Request, res: Response, next: NextFunction) {
   try {
     const data = await reviewsService.validateReviewToken(req.params.token);
@@ -55,6 +62,18 @@ export async function acceptReview(req: Request, res: Response, next: NextFuncti
 export async function rejectReview(req: Request, res: Response, next: NextFunction) {
   try {
     const data = await reviewsService.moderateReview(req.params.id, 'REJECTED', req.user!.id);
+    res.json(data);
+  } catch (err) { next(err); }
+}
+
+export async function featureReview(req: Request, res: Response, next: NextFunction) {
+  try {
+    const featured = req.body.featured as boolean;
+    if (typeof featured !== 'boolean') {
+      res.status(400).json({ error: 'featured must be a boolean' });
+      return;
+    }
+    const data = await reviewsService.featureReview(req.params.id, featured);
     res.json(data);
   } catch (err) { next(err); }
 }

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, Star, Shield, Clock, Heart, CheckCircle } from 'lucide-react';
 import styles from './page.module.css';
+import ReviewsCarousel from '@/components/ReviewsCarousel';
 
 export const metadata: Metadata = {
   title: 'Charming Dental Clinic — World-Class Dental Care',
@@ -11,17 +12,17 @@ export const metadata: Metadata = {
 
 const FEATURES = [
   { icon: Shield, title: 'Expert Doctors', desc: 'Board-certified specialists with 15+ years of experience.' },
-  { icon: Clock,  title: 'Flexible Hours', desc: 'Morning and evening sessions to fit your schedule.' },
-  { icon: Heart,  title: 'Gentle Care',   desc: 'Patient-first approach in a comfortable environment.' },
-  { icon: Star,   title: '5-Star Rated',  desc: 'Hundreds of happy patients trust us with their smiles.' },
+  { icon: Clock, title: 'Flexible Hours', desc: 'Morning and evening sessions to fit your schedule.' },
+  { icon: Heart, title: 'Gentle Care', desc: 'Patient-first approach in a comfortable environment.' },
+  { icon: Star, title: '5-Star Rated', desc: 'Hundreds of happy patients trust us with their smiles.' },
 ];
 
 const SERVICES = [
-  { emoji: '🦷', name: 'General Dentistry',  desc: 'Cleanings, fillings, extractions, and preventive care.' },
-  { emoji: '✨', name: 'Teeth Whitening',    desc: 'Professional-grade whitening for a brighter smile.' },
-  { emoji: '🔧', name: 'Dental Implants',    desc: 'Permanent, natural-looking replacements.' },
-  { emoji: '🌀', name: 'Orthodontics',       desc: 'Braces and clear aligners for perfectly aligned teeth.' },
-  { emoji: '👑', name: 'Dental Crowns',      desc: 'Restore damaged teeth with ceramic crowns.' },
+  { emoji: '🦷', name: 'General Dentistry', desc: 'Cleanings, fillings, extractions, and preventive care.' },
+  { emoji: '✨', name: 'Teeth Whitening', desc: 'Professional-grade whitening for a brighter smile.' },
+  { emoji: '🔧', name: 'Dental Implants', desc: 'Permanent, natural-looking replacements.' },
+  { emoji: '🌀', name: 'Orthodontics', desc: 'Braces and clear aligners for perfectly aligned teeth.' },
+  { emoji: '👑', name: 'Dental Crowns', desc: 'Restore damaged teeth with ceramic crowns.' },
   { emoji: '😌', name: 'Root Canal Therapy', desc: 'Pain-free treatment to save infected teeth.' },
 ];
 
@@ -34,18 +35,11 @@ export default function HomePage() {
         <div className={styles.heroBg} />
         <div className="container">
           <div className={styles.heroContent}>
-            <div className={`badge badge-accent ${styles.heroBadge}`}>
-              <CheckCircle size={12} />
-              Accepting New Patients
-            </div>
             <h1 className={styles.heroTitle}>
               World-Class Dental Care,{' '}
               <span className={styles.heroHighlight}>Close to Home</span>
             </h1>
-            <p className={styles.heroSubtext}>
-              Experience exceptional dental treatment in a warm, welcoming environment.
-              Our expert team is dedicated to your comfort and confidence.
-            </p>
+
             <div className={styles.heroActions}>
               <Link href="/book" className="btn btn-primary btn-xl">
                 Book Appointment <ArrowRight size={18} />
@@ -110,6 +104,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ─── Reviews Carousel ──────────────────────────────── */}
+      <ReviewsCarousel />
 
       {/* ─── CTA Banner ───────────────────────────────────── */}
       <section className={styles.ctaBanner}>
