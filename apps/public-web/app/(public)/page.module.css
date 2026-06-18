@@ -1,4 +1,4 @@
-.page {}
+/* [FIX #6] Removed empty `.page {}` rule */
 
 /* ─── Hero ──────────────────────────────────────────────── */
 .hero {
@@ -35,19 +35,22 @@
     radial-gradient(ellipse 60% 40% at 10% 80%, rgba(110, 231, 200, 0.15) 0%, transparent 50%);
 }
 
+/* [FIX #1] Added frosted glass overlay behind hero text for readability on any background */
 .heroContent {
   position: relative;
   z-index: 1;
   max-width: 680px;
-  padding: 80px 0;
+  padding: 48px 40px;
   animation: fadeIn 0.6s ease-out;
+  background: rgba(var(--color-bg-rgb, 10, 15, 28), 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--radius-xl, 20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
 }
 
-.heroBadge {
-  display: inline-flex;
-  margin-bottom: 24px;
-  font-size: 0.8125rem;
-}
+/* [FIX #7] Removed unused `.heroBadge` CSS rule */
 
 .heroTitle {
   font-size: clamp(2.5rem, 6vw, 4rem);
@@ -76,7 +79,14 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 48px;
+  margin-bottom: 36px;
+}
+
+/* [FIX #3] Wrapper with a subtle top border acting as a visual separator above stats */
+.heroStatsWrapper {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 24px;
+  margin-top: 8px;
 }
 
 .heroStats {
@@ -85,7 +95,7 @@
   flex-wrap: wrap;
 }
 
-.stat {}
+/* [FIX #6] Removed empty `.stat {}` rule — styles moved to statValue / statLabel */
 
 .statValue {
   font-family: var(--font-display);
@@ -177,22 +187,21 @@
   margin-bottom: 40px;
 }
 
+/* [FIX #8] Removed `cursor: default` — cards are now proper links with pointer cursor */
 .serviceCard {
   display: flex;
   flex-direction: column;
   gap: 8px;
   transition: transform var(--transition-normal);
-  cursor: default;
+  text-decoration: none;
+  color: inherit;
 }
 
 .serviceCard:hover {
   transform: translateY(-4px);
 }
 
-.serviceEmoji {
-  font-size: 2rem;
-  line-height: 1;
-}
+/* [FIX #9] `.serviceEmoji` removed — replaced by `.featureIcon` reuse in JSX */
 
 .serviceName {
   font-size: 1.0625rem;
@@ -253,7 +262,33 @@
   }
 }
 
+/* [FIX #11] Added mid-range breakpoint for hero title and stats gap */
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 2rem;
+  }
+
+  .heroStats {
+    gap: 20px;
+  }
+
+  /* [FIX #12] On mobile, show image below text instead of beside it */
+  .heroBg::before {
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 30%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 30%);
+  }
+}
+
 @media (max-width: 600px) {
+  /* [FIX #10] Mobile hero sizing using svh unit */
+  .hero {
+    min-height: 100svh;
+  }
+
+  .heroContent {
+    padding: 60px 20px 40px;
+  }
+
   .featuresGrid {
     grid-template-columns: 1fr;
   }
