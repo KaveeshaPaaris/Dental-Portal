@@ -13,7 +13,7 @@ const DOCTORS = [
     name: 'Dr. Chaaminda Paaris',
     specialty: 'Chief Orthodontist',
     bio: 'With over 15 years of experience, Dr. Paaris specializes in Invisalign and complex bite corrections.',
-    imageUrl: '/Dr%20paaris.jpg',
+    imageUrl: '/doctor_croped.jpg',
   },
 
 ];
@@ -31,16 +31,19 @@ export default function AboutPage() {
           </p>
         </header>
 
+        <div className={styles.clinicImageContainer}>
+          <Image
+            src="/about-clinic-v2.jpg"
+            alt="Charming Dental Clinic Exterior"
+            fill
+            style={{ objectFit: 'cover' }}
+            sizes="(max-width: 1000px) 100vw, 1000px"
+            priority
+          />
+        </div>
+
         <section className={styles.missionSection}>
-          <div className={styles.missionImage}>
-            <Image
-              src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=1200&h=800"
-              alt="Modern Dental Clinic"
-              fill
-              className="object-cover"
-              sizes="(max-width: 992px) 100vw, 50vw"
-            />
-          </div>
+
           <div className={styles.missionContent}>
             <h2>Our Mission</h2>
             <p>
@@ -86,7 +89,7 @@ export default function AboutPage() {
                     src={doc.imageUrl}
                     alt={doc.name}
                     fill
-                    className="object-cover"
+                    style={{ objectFit: 'cover', objectPosition: 'center top' }}
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
                   />
                 </div>

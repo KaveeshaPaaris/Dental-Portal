@@ -12,11 +12,27 @@
 .heroBg {
   position: absolute;
   inset: 0;
-  background: 
-    radial-gradient(ellipse 80% 60% at 60% 40%, rgba(93,173,226,0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 10% 80%, rgba(110,231,200,0.10) 0%, transparent 50%),
-    linear-gradient(135deg, var(--color-bg) 0%, var(--color-surface) 100%);
+  background: var(--color-bg);
   z-index: 0;
+}
+
+.heroBg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('/hero-bg.png') right center / cover no-repeat;
+  opacity: 1;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 60%);
+  mask-image: linear-gradient(to right, transparent 0%, black 60%);
+}
+
+.heroBg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 60% 40%, rgba(93, 173, 226, 0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 10% 80%, rgba(110, 231, 200, 0.15) 0%, transparent 50%);
 }
 
 .heroContent {
@@ -70,6 +86,7 @@
 }
 
 .stat {}
+
 .statValue {
   font-family: var(--font-display);
   font-size: 2rem;
@@ -77,6 +94,7 @@
   color: var(--color-primary);
   line-height: 1;
 }
+
 .statLabel {
   font-size: 0.8125rem;
   color: var(--color-text-secondary);
@@ -101,7 +119,10 @@
   text-align: center;
   transition: transform var(--transition-normal);
 }
-.featureCard:hover { transform: translateY(-4px); }
+
+.featureCard:hover {
+  transform: translateY(-4px);
+}
 
 .featureIcon {
   width: 52px;
@@ -129,17 +150,21 @@
 }
 
 /* ─── Services ──────────────────────────────────────────── */
-.services { padding: 80px 0; }
+.services {
+  padding: 80px 0;
+}
 
 .sectionHeader {
   text-align: center;
   margin-bottom: 48px;
 }
+
 .sectionHeader h2 {
   font-size: 2.25rem;
   font-weight: 800;
   margin-bottom: 12px;
 }
+
 .sectionHeader p {
   font-size: 1.0625rem;
   color: var(--color-text-secondary);
@@ -159,13 +184,30 @@
   transition: transform var(--transition-normal);
   cursor: default;
 }
-.serviceCard:hover { transform: translateY(-4px); }
 
-.serviceEmoji { font-size: 2rem; line-height: 1; }
-.serviceName { font-size: 1.0625rem; font-weight: 700; }
-.serviceDesc { font-size: 0.875rem; color: var(--color-text-secondary); line-height: 1.6; }
+.serviceCard:hover {
+  transform: translateY(-4px);
+}
 
-.servicesCTA { text-align: center; }
+.serviceEmoji {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.serviceName {
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+
+.serviceDesc {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.servicesCTA {
+  text-align: center;
+}
 
 /* ─── CTA Banner ────────────────────────────────────────── */
 .ctaBanner {
@@ -179,7 +221,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(255,255,255,0.06) 0%, transparent 70%);
+  background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(255, 255, 255, 0.06) 0%, transparent 70%);
 }
 
 .ctaContent {
@@ -196,19 +238,35 @@
 
 .ctaContent p {
   font-size: 1.125rem;
-  color: rgba(255,255,255,0.85);
+  color: rgba(255, 255, 255, 0.85);
   margin-bottom: 36px;
 }
 
 /* ─── Responsive ────────────────────────────────────────── */
 @media (max-width: 960px) {
-  .featuresGrid { grid-template-columns: repeat(2, 1fr); }
-  .servicesGrid { grid-template-columns: repeat(2, 1fr); }
+  .featuresGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .servicesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 600px) {
-  .featuresGrid { grid-template-columns: 1fr; }
-  .servicesGrid { grid-template-columns: 1fr; }
-  .heroActions { flex-direction: column; }
-  .heroStats { gap: 24px; }
+  .featuresGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .servicesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .heroActions {
+    flex-direction: column;
+  }
+
+  .heroStats {
+    gap: 24px;
+  }
 }

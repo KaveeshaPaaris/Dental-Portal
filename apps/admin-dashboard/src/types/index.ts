@@ -62,6 +62,7 @@ export interface Review {
   content: string;
   rating?: number;
   status: ReviewStatus;
+  is_featured: boolean;
   reviewed_by?: string;
   reviewed_at?: string;
   created_at: string;
