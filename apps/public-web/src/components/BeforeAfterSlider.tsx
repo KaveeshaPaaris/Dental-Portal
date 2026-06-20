@@ -134,7 +134,7 @@ export default function BeforeAfterSlider({
 
       {/* Disclaimer */}
       <p className={styles.disclaimer}>
-        Images are for illustrative purposes only. Individual results vary depending on each patient's oral condition and treatment plan.
+        These images are illustrative examples intended to demonstrate typical treatment goals. Individual results may vary depending on each patient's oral health and treatment plan.
       </p>
     </div>
   );
