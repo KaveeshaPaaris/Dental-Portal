@@ -1,13 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-// [FIX #15] Added Suspense for ReviewsCarousel loading boundary
 import { Suspense } from 'react';
-// [FIX #5] Removed unused `CheckCircle` import
-// [FIX #9] Added Lucide icons to replace service emojis
-import { ArrowRight, Star, Shield, Clock, Heart, Stethoscope, Sparkles, Wrench, AlignCenter, Crown, HeartPulse } from 'lucide-react';
+import { ArrowRight, Star, Shield, Clock, Heart } from 'lucide-react';
 import styles from './page.module.css';
 import ReviewsCarousel from '@/components/ReviewsCarousel';
+import { FEATURED_SERVICES } from '@/data/services';
 
 export const metadata: Metadata = {
   title: 'Charming Dental Clinic — World-Class Dental Care',
@@ -22,16 +20,6 @@ const FEATURES = [
   { icon: Star, title: '5-Star Rated', desc: 'Hundreds of happy patients trust us with their smiles.' },
 ];
 
-// [FIX #9] Replaced emojis with Lucide icons for a professional medical look
-const SERVICES = [
-  { icon: Stethoscope, name: 'General Dentistry', desc: 'Cleanings, fillings, extractions, and preventive care.' },
-  { icon: Sparkles, name: 'Teeth Whitening', desc: 'Professional-grade whitening for a brighter smile.' },
-  { icon: Wrench, name: 'Dental Implants', desc: 'Permanent, natural-looking replacements.' },
-  { icon: AlignCenter, name: 'Orthodontics', desc: 'Braces and clear aligners for perfectly aligned teeth.' },
-  { icon: Crown, name: 'Dental Crowns', desc: 'Restore damaged teeth with ceramic crowns.' },
-  { icon: HeartPulse, name: 'Root Canal Therapy', desc: 'Pain-free treatment to save infected teeth.' },
-];
-
 export default function HomePage() {
   return (
     // [FIX #16] Wrapped content in <main> for correct landmark semantics
@@ -42,18 +30,7 @@ export default function HomePage() {
       {/* ─── Hero ─────────────────────────────────────────── */}
       {/* [FIX #14] Added aria-label for landmark navigation */}
       <section className={styles.hero} aria-label="Hero - Welcome">
-        {/* [FIX #18] Using Next.js <Image priority> for hero to improve LCP */}
-        <div className={styles.heroBg} aria-hidden="true">
-          <Image
-            src="/hero-bg.png"
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className={styles.heroBgImage}
-            style={{ objectFit: 'cover', objectPosition: 'right center' }}
-          />
-        </div>
+        <div className={styles.heroBg} aria-hidden="true" />
         <div className="container">
           {/* [FIX #1] heroContent sits cleanly over the hero image */}
           <div className={styles.heroContent}>
@@ -120,7 +97,6 @@ export default function HomePage() {
       </section>
 
       {/* ─── Services ─────────────────────────────────────── */}
-      {/* [FIX #14] Added aria-label for landmark navigation */}
       <section className={styles.services} aria-label="Our Services">
         <div className="container">
           <div className={styles.sectionHeader}>
@@ -128,16 +104,24 @@ export default function HomePage() {
             <p>Comprehensive dental care for your entire family</p>
           </div>
           <div className={styles.servicesGrid}>
-            {/* [FIX #8] Wrapped service cards in <Link> to make them proper links */}
-            {SERVICES.map((s) => (
-              <Link key={s.name} href="/services" className={`card ${styles.serviceCard}`}>
-                {/* [FIX #21] Replaced inline-style hack with dedicated .serviceIcon class */}
-                {/* [FIX #20] aria-hidden on decorative icon wrapper */}
-                <div className={styles.serviceIcon} aria-hidden="true">
-                  <s.icon size={22} />
+            {FEATURED_SERVICES.map((s) => (
+              <Link key={s.slug} href={`/services/${s.slug}`} className={`card ${styles.serviceCard}`}>
+                <div className={styles.serviceCardImgWrap}>
+                  <Image
+                    src={s.image}
+                    alt={s.title}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 960px) 50vw, 33vw"
+                    className={styles.serviceCardImg}
+                  />
                 </div>
-                <h3 className={styles.serviceName}>{s.name}</h3>
-                <p className={styles.serviceDesc}>{s.desc}</p>
+                <div className={styles.serviceCardBody}>
+                  <h3 className={styles.serviceName}>{s.title}</h3>
+                  <p className={styles.serviceDesc}>{s.shortDesc}</p>
+                  <span className={styles.learnMore} aria-hidden="true">
+                    Learn More <ArrowRight size={13} />
+                  </span>
+                </div>
               </Link>
             ))}
           </div>
