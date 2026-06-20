@@ -76,6 +76,14 @@
   background: var(--color-surface-hover);
 }
 
+.navLinkActive {
+  color: var(--color-primary);
+  background: rgba(19, 85, 165, 0.05);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px rgba(19, 85, 165, 0.25);
+}
+
 .actions {
   display: flex;
   align-items: center;
@@ -108,6 +116,14 @@
 .mobileLink:hover {
   color: var(--color-primary);
   background: var(--color-surface-hover);
+}
+
+.mobileLinkActive {
+  color: var(--color-primary);
+  background: rgba(19, 85, 165, 0.05);
+  font-weight: 600;
+  border-left: 3px solid var(--color-primary);
+  padding-left: 13px; /* account for 3px border */
 }
 
 @media (max-width: 900px) {

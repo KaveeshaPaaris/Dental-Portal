@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { useTheme } from '@/context/ThemeContext';
 import { usePatientAuth } from '@/context/PatientAuthContext';
 import { Sun, Moon, Menu, X, Phone, User, LogOut } from 'lucide-react';
@@ -18,6 +19,7 @@ const NAV_LINKS = [
 ];
 
 export default function Navbar() {
+  const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
   const { user, signOut } = usePatientAuth();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -39,11 +41,19 @@ export default function Navbar() {
 
         {/* Desktop Nav */}
         <nav className={styles.desktopNav}>
-          {NAV_LINKS.map((link) => (
-            <Link key={link.href} href={link.href} className={styles.navLink}>
-              {link.label}
-            </Link>
-          ))}
+          {NAV_LINKS.map((link) => {
+            const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
+            return (
+              <Link 
+                key={link.href} 
+                href={link.href} 
+                className={`${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Actions */}
@@ -97,16 +107,20 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {menuOpen && (
         <div className={styles.mobileMenu}>
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={styles.mobileLink}
-              onClick={() => setMenuOpen(false)}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {NAV_LINKS.map((link) => {
+            const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`${styles.mobileLink} ${isActive ? styles.mobileLinkActive : ''}`}
+                onClick={() => setMenuOpen(false)}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
           <Link href="/book" className="btn btn-primary" onClick={() => setMenuOpen(false)}>
             Book Appointment
           </Link>
