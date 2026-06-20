@@ -134,7 +134,7 @@ export default function BeforeAfterSlider({
 
       {/* Disclaimer */}
       <p className={styles.disclaimer}>
-        * Results vary depending on individual oral health and treatment plans.
+        Images are for illustrative purposes only. Individual results vary depending on each patient's oral condition and treatment plan.
       </p>
     </div>
   );
