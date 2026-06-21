@@ -12,7 +12,7 @@ const DOCTORS = [
     id: '1',
     name: 'Dr. Chaaminda Paaris',
     specialty: 'Chief Orthodontist',
-    bio: 'With over 15 years of experience, Dr. Paaris specializes in Invisalign and complex bite corrections.',
+    bio: 'With over 20 years of experience, Dr. Paaris specializes in Invisalign and complex bite corrections.',
     imageUrl: '/doctor_croped.jpg',
   },
 

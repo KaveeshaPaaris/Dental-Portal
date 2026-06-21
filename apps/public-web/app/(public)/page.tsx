@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 const FEATURES = [
-  { icon: Shield, title: 'Expert Doctors', desc: 'Board-certified specialists with 15+ years of experience.' },
+  { icon: Shield, title: 'Expert Doctors', desc: 'Board-certified specialists with 20+ years of experience.' },
   { icon: Clock, title: 'Flexible Hours', desc: 'Morning and evening sessions to fit your schedule.' },
   { icon: Heart, title: 'Gentle Care', desc: 'Patient-first approach in a comfortable environment.' },
   { icon: Star, title: '5-Star Rated', desc: 'Hundreds of happy patients trust us with their smiles.' },
@@ -57,7 +57,7 @@ export default function HomePage() {
             <div className={styles.heroStatsWrapper}>
               <div className={styles.heroStats}>
                 {[
-                  { value: '15+', label: 'Years Experience' },
+                  { value: '20+', label: 'Years Experience' },
                   { value: '5K+', label: 'Happy Patients' },
                   { value: '4.9', label: 'Star Rating' },
                 ].map((stat) => (

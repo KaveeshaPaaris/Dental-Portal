@@ -5,7 +5,7 @@ import Image from 'next/image';
 import {
   Phone, MessageCircle, Mail, MapPin, Clock, Heart, ChevronRight,
 } from 'lucide-react';
-import { FaFacebookF, FaInstagram, FaWhatsapp, FaYoutube } from 'react-icons/fa';
+import { FaFacebookF, FaInstagram, FaWhatsapp } from 'react-icons/fa';
 import styles from './Footer.module.css';
 
 const QUICK_LINKS = [
@@ -21,7 +21,6 @@ const SOCIAL = [
   { icon: FaFacebookF, href: 'https://facebook.com',              label: 'Facebook' },
   { icon: FaInstagram, href: 'https://instagram.com',             label: 'Instagram' },
   { icon: FaWhatsapp,  href: 'https://wa.me/94718109283',         label: 'WhatsApp' },
-  { icon: FaYoutube,   href: 'https://youtube.com',               label: 'YouTube' },
 ];
 
 const HOURS = [
@@ -52,7 +51,7 @@ export default function Footer() {
             Creating confident smiles through compassionate, modern dental care in Negombo.
           </p>
           <p className={styles.trustBadge}>
-            Trusted family dental care in Negombo since 2005.
+            Trusted family dental care in Negombo since 2006.
           </p>
           <div className={styles.socials} aria-label="Social media links">
             {SOCIAL.map(({ icon: Icon, href, label }) => (
