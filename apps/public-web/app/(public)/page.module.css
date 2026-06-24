@@ -65,7 +65,7 @@
   position: relative;
   z-index: 1;
   max-width: 680px;
-  padding: 80px 0;
+  padding: 140px 0 80px;
 }
 
 /* [FIX #7] Removed unused `.heroBadge` CSS rule */
@@ -400,7 +400,7 @@
   }
 
   .heroContent {
-    padding: 60px 20px 40px;
+    padding: 120px 20px 40px;
   }
 
   .featuresGrid {

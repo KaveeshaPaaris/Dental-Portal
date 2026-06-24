@@ -42,7 +42,7 @@ export default function ServicesPage() {
             <div className={styles.statDivider} />
             <div className={styles.stat}><strong>5K+</strong><span>Patients Treated</span></div>
             <div className={styles.statDivider} />
-            <div className={styles.stat}><strong>15+</strong><span>Years of Excellence</span></div>
+            <div className={styles.stat}><strong>20+</strong><span>Years of Excellence</span></div>
           </div>
         </div>
       </section>
