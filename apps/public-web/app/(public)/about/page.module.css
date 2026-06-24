@@ -1,5 +1,5 @@
 .page {
-  padding: 48px 0 80px;
+  padding: 140px 0 80px;
 }
 
 .header {
@@ -13,6 +13,7 @@
   margin-bottom: 24px;
   background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -22,12 +23,20 @@
   line-height: 1.7;
 }
 
+.clinicImageContainer {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  height: 500px;
+  margin: 0 auto 80px;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-2xl);
+}
+
 .missionSection {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 64px;
-  align-items: center;
-  margin-bottom: 80px;
+  max-width: 800px;
+  margin: 0 auto 80px;
 }
 
 .missionImage {

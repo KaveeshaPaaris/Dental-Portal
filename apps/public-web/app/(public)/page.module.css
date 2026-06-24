@@ -1,4 +1,29 @@
-.page {}
+/* [FIX #6] Removed empty `.page {}` rule */
+
+/* ─── Skip Navigation ────────────────────────────────── */
+/* [FIX #17] Visually hidden skip link, appears on focus for keyboard users */
+.skipLink {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skipLink:focus {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  width: auto;
+  height: auto;
+  padding: 8px 16px;
+  background: var(--color-primary);
+  color: white;
+  border-radius: var(--radius-sm, 6px);
+  z-index: 9999;
+  font-weight: 600;
+  text-decoration: none;
+}
 
 /* ─── Hero ──────────────────────────────────────────────── */
 .hero {
@@ -12,26 +37,38 @@
 .heroBg {
   position: absolute;
   inset: 0;
-  background: 
-    radial-gradient(ellipse 80% 60% at 60% 40%, rgba(93,173,226,0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 10% 80%, rgba(110,231,200,0.10) 0%, transparent 50%),
-    linear-gradient(135deg, var(--color-bg) 0%, var(--color-surface) 100%);
+  background: var(--color-bg);
   z-index: 0;
 }
 
+.heroBg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('/hero-bg.png') right center / cover no-repeat;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 60%);
+  mask-image: linear-gradient(to right, transparent 0%, black 60%);
+}
+
+.heroBg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 60% 40%, rgba(93, 173, 226, 0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 10% 80%, rgba(110, 231, 200, 0.15) 0%, transparent 50%);
+}
+
+/* [FIX #1] Removed frosted glass box — text sits cleanly over the hero image */
+/* [FIX #22] Moved animation into prefers-reduced-motion guard (see bottom of file) */
 .heroContent {
   position: relative;
   z-index: 1;
   max-width: 680px;
-  padding: 80px 0;
-  animation: fadeIn 0.6s ease-out;
+  padding: 140px 0 80px;
 }
 
-.heroBadge {
-  display: inline-flex;
-  margin-bottom: 24px;
-  font-size: 0.8125rem;
-}
+/* [FIX #7] Removed unused `.heroBadge` CSS rule */
 
 .heroTitle {
   font-size: clamp(2.5rem, 6vw, 4rem);
@@ -48,6 +85,7 @@
   background-clip: text;
 }
 
+/* [FIX #19] .heroSubtext is now used — tagline added to JSX */
 .heroSubtext {
   font-size: 1.125rem;
   color: var(--color-text-secondary);
@@ -60,7 +98,14 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 48px;
+  margin-bottom: 36px;
+}
+
+/* [FIX #3] Wrapper with a subtle top border acting as a visual separator above stats */
+.heroStatsWrapper {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 24px;
+  margin-top: 8px;
 }
 
 .heroStats {
@@ -69,7 +114,8 @@
   flex-wrap: wrap;
 }
 
-.stat {}
+/* [FIX #6] Removed empty `.stat {}` rule — styles moved to statValue / statLabel */
+
 .statValue {
   font-family: var(--font-display);
   font-size: 2rem;
@@ -77,6 +123,7 @@
   color: var(--color-primary);
   line-height: 1;
 }
+
 .statLabel {
   font-size: 0.8125rem;
   color: var(--color-text-secondary);
@@ -97,11 +144,11 @@
   gap: 24px;
 }
 
+/* [FIX #22] transform removed from base rule — moved into prefers-reduced-motion guard */
 .featureCard {
   text-align: center;
   transition: transform var(--transition-normal);
 }
-.featureCard:hover { transform: translateY(-4px); }
 
 .featureIcon {
   width: 52px;
@@ -129,17 +176,21 @@
 }
 
 /* ─── Services ──────────────────────────────────────────── */
-.services { padding: 80px 0; }
+.services {
+  padding: 80px 0;
+}
 
 .sectionHeader {
   text-align: center;
   margin-bottom: 48px;
 }
+
 .sectionHeader h2 {
   font-size: 2.25rem;
   font-weight: 800;
   margin-bottom: 12px;
 }
+
 .sectionHeader p {
   font-size: 1.0625rem;
   color: var(--color-text-secondary);
@@ -152,20 +203,100 @@
   margin-bottom: 40px;
 }
 
+/* Image-based service cards */
 .serviceCard {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  transition: transform var(--transition-normal);
-  cursor: default;
+  overflow: hidden;
+  padding: 0;
+  transition: transform 260ms ease, box-shadow 260ms ease;
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
 }
-.serviceCard:hover { transform: translateY(-4px); }
 
-.serviceEmoji { font-size: 2rem; line-height: 1; }
-.serviceName { font-size: 1.0625rem; font-weight: 700; }
-.serviceDesc { font-size: 0.875rem; color: var(--color-text-secondary); line-height: 1.6; }
+.serviceCardImgWrap {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
 
-.servicesCTA { text-align: center; }
+.serviceCardImg {
+  object-fit: cover;
+  object-position: center;
+  transition: transform 440ms ease;
+}
+
+.serviceCard:hover .serviceCardImg {
+  transform: scale(1.06);
+}
+
+.serviceCardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px 22px 22px;
+  flex: 1;
+}
+
+.learnMore {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+/* [FIX #9] `.serviceEmoji` removed — replaced by `.serviceIcon` */
+
+/* [FIX #21] Dedicated serviceIcon class instead of inline-style override on featureIcon */
+.serviceIcon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 8px 0; /* left-aligned inside card, not centred like featureIcon */
+  box-shadow: var(--shadow-md);
+}
+
+.serviceName {
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+
+.serviceDesc {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.servicesCTA {
+  text-align: center;
+}
+
+/* ─── Reviews Skeleton ───────────────────────────────────── */
+/* [FIX #15] Shimmer placeholder shown while ReviewsCarousel loads */
+.reviewsSkeleton {
+  height: 220px;
+  background: linear-gradient(
+    90deg,
+    var(--color-surface) 25%,
+    var(--color-border) 50%,
+    var(--color-surface) 75%
+  );
+  background-size: 200% 100%;
+  border-radius: var(--radius-lg);
+  margin: 40px 0;
+}
 
 /* ─── CTA Banner ────────────────────────────────────────── */
 .ctaBanner {
@@ -179,7 +310,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(255,255,255,0.06) 0%, transparent 70%);
+  background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(255, 255, 255, 0.06) 0%, transparent 70%);
 }
 
 .ctaContent {
@@ -196,19 +327,95 @@
 
 .ctaContent p {
   font-size: 1.125rem;
-  color: rgba(255,255,255,0.85);
+  color: rgba(255, 255, 255, 0.85);
   margin-bottom: 36px;
+}
+
+/* ─── Keyframes ─────────────────────────────────────────── */
+/* [FIX #23] Added missing fadeIn keyframe — was referenced but never defined */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* [FIX #15] Shimmer keyframe for ReviewsCarousel skeleton */
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ─── Motion preferences ─────────────────────────────────── */
+/* [FIX #22] Animations and hover transforms only run when the user hasn't
+   requested reduced motion in their OS accessibility settings */
+@media (prefers-reduced-motion: no-preference) {
+  .heroContent {
+    animation: fadeIn 0.6s ease-out;
+  }
+
+  .featureCard:hover {
+    transform: translateY(-4px);
+  }
+
+  .serviceCard:hover {
+    transform: translateY(-4px);
+  }
+
+  .reviewsSkeleton {
+    animation: shimmer 1.4s infinite;
+  }
 }
 
 /* ─── Responsive ────────────────────────────────────────── */
 @media (max-width: 960px) {
-  .featuresGrid { grid-template-columns: repeat(2, 1fr); }
-  .servicesGrid { grid-template-columns: repeat(2, 1fr); }
+  .featuresGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .servicesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* [FIX #11] Added mid-range breakpoint for hero title and stats gap */
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 2rem;
+  }
+
+  .heroStats {
+    gap: 20px;
+  }
+
+  /* [FIX #12] On mobile, show image below text instead of beside it */
+  .heroBg::before {
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 30%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 30%);
+  }
 }
 
 @media (max-width: 600px) {
-  .featuresGrid { grid-template-columns: 1fr; }
-  .servicesGrid { grid-template-columns: 1fr; }
-  .heroActions { flex-direction: column; }
-  .heroStats { gap: 24px; }
+  /* [FIX #10] Mobile hero sizing using svh unit */
+  .hero {
+    min-height: 100svh;
+  }
+
+  .heroContent {
+    padding: 120px 20px 40px;
+  }
+
+  .featuresGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .servicesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .heroActions {
+    flex-direction: column;
+  }
+
+  .heroStats {
+    gap: 24px;
+  }
 }

@@ -5,14 +5,18 @@ import * as controller from './reviews.controller';
 
 const router = Router();
 
-// PUBLIC
+// ─── PUBLIC ───────────────────────────────────────────────────
 router.get('/public', controller.getPublicReviews);
+router.get('/featured', controller.getFeaturedReviews);
 router.get('/submit/:token', controller.validateToken);
 router.post('/submit/:token', controller.submitReview);
 
-// ADMIN
+// ─── ADMIN (any admin can view) ───────────────────────────────
 router.get('/', verifyToken, requireRole('ADMIN'), controller.getAllReviews);
-router.patch('/:id/accept', verifyToken, requireRole('ADMIN'), controller.acceptReview);
-router.patch('/:id/reject', verifyToken, requireRole('ADMIN'), controller.rejectReview);
+
+// ─── SUPER ADMIN ONLY (approve / reject / feature) ───────────
+router.patch('/:id/accept', verifyToken, requireRole('SUPER_ADMIN'), controller.acceptReview);
+router.patch('/:id/reject', verifyToken, requireRole('SUPER_ADMIN'), controller.rejectReview);
+router.patch('/:id/feature', verifyToken, requireRole('SUPER_ADMIN'), controller.featureReview);
 
 export default router;

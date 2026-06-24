@@ -8,8 +8,27 @@ export async function getPublicReviews() {
     .eq('status', 'ACCEPTED')
     .order('created_at', { ascending: false });
 
-  if (error) throw createError('Failed to fetch reviews', 500);
+  if (error) {
+    console.error('[getPublicReviews] Supabase error:', error.message, error.details, error.hint);
+    throw createError('Failed to fetch reviews', 500);
+  }
   return data;
+}
+
+export async function getFeaturedReviews() {
+  const { data, error } = await supabase
+    .from('reviews')
+    .select('id, patient_name, content, rating, created_at')
+    .eq('status', 'ACCEPTED')
+    .eq('is_featured', true)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('[getFeaturedReviews] Supabase error:', error.message, error.details, error.hint);
+    // Return empty array instead of crashing — likely the migration hasn't been run yet
+    return [];
+  }
+  return data ?? [];
 }
 
 export async function validateReviewToken(token: string) {
@@ -79,13 +98,43 @@ export async function getAllReviews(status?: string) {
 }
 
 export async function moderateReview(id: string, action: 'ACCEPTED' | 'REJECTED', adminId: string) {
+  // If rejecting, also unfeature the review
+  const updatePayload: Record<string, unknown> = {
+    status: action,
+    reviewed_by: adminId,
+    reviewed_at: new Date().toISOString(),
+  };
+  if (action === 'REJECTED') {
+    updatePayload.is_featured = false;
+  }
+
   const { data, error } = await supabase
     .from('reviews')
-    .update({
-      status: action,
-      reviewed_by: adminId,
-      reviewed_at: new Date().toISOString(),
-    })
+    .update(updatePayload)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error || !data) throw createError('Failed to update review', 500);
+  return data;
+}
+
+export async function featureReview(id: string, featured: boolean) {
+  // Only accepted reviews can be featured
+  const { data: review, error: fetchError } = await supabase
+    .from('reviews')
+    .select('status')
+    .eq('id', id)
+    .single();
+
+  if (fetchError || !review) throw createError('Review not found', 404);
+  if (featured && review.status !== 'ACCEPTED') {
+    throw createError('Only accepted reviews can be featured', 400);
+  }
+
+  const { data, error } = await supabase
+    .from('reviews')
+    .update({ is_featured: featured })
     .eq('id', id)
     .select()
     .single();
