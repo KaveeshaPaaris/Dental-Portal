@@ -97,7 +97,6 @@ export default function ReviewsCarousel() {
       <section className={styles.section}>
         <div className="container">
           <div className={styles.header}>
-            <span className={`badge badge-accent ${styles.badge}`}>Testimonials</span>
             <h2 className={styles.title}>See What Our Patients Say</h2>
           </div>
           <div className={styles.skeletonGrid}>
@@ -117,7 +116,6 @@ export default function ReviewsCarousel() {
     <section className={styles.section}>
       <div className="container">
         <div className={styles.header}>
-          <span className={`badge badge-accent ${styles.badge}`}>Testimonials</span>
           <h2 className={styles.title}>See What Our Patients Say</h2>
           <p className={styles.subtitle}>Real experiences from real patients who trust us with their smiles.</p>
         </div>
