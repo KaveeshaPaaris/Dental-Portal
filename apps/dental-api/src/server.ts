@@ -7,7 +7,7 @@ const server = app.listen(PORT, () => {
   console.log(`
   ╔══════════════════════════════════════════╗
   ║       🦷 Dental API Server Running       ║
-  ║  Port: ${PORT}                               ║
+  ║  Port: ${PORT}                              ║
   ║  Env:  ${env.NODE_ENV.padEnd(34)}║
   ╚══════════════════════════════════════════╝
   `);

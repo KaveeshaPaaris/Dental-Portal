@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
-import { User, Mail, Phone, Calendar, Clock, ArrowRight } from 'lucide-react';
+import { User, Mail, Phone, Calendar, ArrowRight } from 'lucide-react';
 import styles from './page.module.css';
 
 const schema = z.object({
@@ -59,44 +59,18 @@ export default function BookAppointmentPage() {
     <div className={styles.page}>
       <div className="container">
         <div className={styles.layout}>
-          {/* Left: Info */}
-          <div className={styles.info}>
-            <div className={`badge badge-primary ${styles.badge}`}>
-              <Clock size={12} /> Quick & Easy
-            </div>
-            <h1 className={styles.title}>Book Your Appointment</h1>
-            <p className={styles.subtitle}>
-              Fill in the form and we'll send a verification code to your phone to confirm your booking.
-            </p>
-
-            <div className={styles.steps}>
-              {[
-                { n: '1', label: 'Fill the form' },
-                { n: '2', label: 'Verify your phone with OTP' },
-                { n: '3', label: 'Clinic confirms your slot' },
-              ].map((step) => (
-                <div key={step.n} className={styles.step}>
-                  <div className={styles.stepNum}>{step.n}</div>
-                  <span>{step.label}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className={styles.sessions}>
-              <div className={`${styles.session} ${styles.morning}`}>
-                <span className={styles.sessionEmoji}>🌅</span>
-                <div>
-                  <div className={styles.sessionName}>Morning Session</div>
-                  <div className={styles.sessionTime}>9:00 AM – 1:00 PM</div>
-                </div>
-              </div>
-              <div className={`${styles.session} ${styles.evening}`}>
-                <span className={styles.sessionEmoji}>🌆</span>
-                <div>
-                  <div className={styles.sessionName}>Evening Session</div>
-                  <div className={styles.sessionTime}>5:00 PM – 9:00 PM</div>
-                </div>
-              </div>
+          {/* Left: Photo Card */}
+          <div className={styles.photoCard}>
+            <img
+              src="/clinic-interior.png"
+              alt="Dental Clinic Interior"
+              className={styles.clinicImage}
+            />
+            <div className={styles.photoOverlay}>
+              <h1 className={styles.photoTitle}>Book Your<br />Appointment</h1>
+              <p className={styles.photoSubtitle}>
+                Fill in the form and we'll send a verification code to your phone to confirm your booking.
+              </p>
             </div>
           </div>
 
@@ -178,7 +152,21 @@ export default function BookAppointmentPage() {
                     className={`${styles.sessionOption} ${selectedSession === 'MORNING' ? styles.sessionSelected : ''}`}
                   >
                     <input type="radio" value="MORNING" className={styles.hiddenRadio} {...register('preferred_session')} />
-                    <span>🌅</span>
+                    <span className={styles.sessionIcon}>
+                      {/* Sun SVG */}
+                      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="14" cy="14" r="5.5" fill="#F5A25D" stroke="#E8884A" strokeWidth="1"/>
+                        {/* rays */}
+                        <line x1="14" y1="1.5" x2="14" y2="4.5" stroke="#E8884A" strokeWidth="2" strokeLinecap="round"/>
+                        <line x1="14" y1="23.5" x2="14" y2="26.5" stroke="#E8884A" strokeWidth="2" strokeLinecap="round"/>
+                        <line x1="1.5" y1="14" x2="4.5" y2="14" stroke="#E8884A" strokeWidth="2" strokeLinecap="round"/>
+                        <line x1="23.5" y1="14" x2="26.5" y2="14" stroke="#E8884A" strokeWidth="2" strokeLinecap="round"/>
+                        <line x1="5.05" y1="5.05" x2="7.17" y2="7.17" stroke="#E8884A" strokeWidth="2" strokeLinecap="round"/>
+                        <line x1="20.83" y1="20.83" x2="22.95" y2="22.95" stroke="#E8884A" strokeWidth="2" strokeLinecap="round"/>
+                        <line x1="22.95" y1="5.05" x2="20.83" y2="7.17" stroke="#E8884A" strokeWidth="2" strokeLinecap="round"/>
+                        <line x1="7.17" y1="20.83" x2="5.05" y2="22.95" stroke="#E8884A" strokeWidth="2" strokeLinecap="round"/>
+                      </svg>
+                    </span>
                     <div>
                       <div className={styles.sessionOptionName}>Morning</div>
                       <div className={styles.sessionOptionTime}>9 AM – 1 PM</div>
@@ -188,7 +176,25 @@ export default function BookAppointmentPage() {
                     className={`${styles.sessionOption} ${selectedSession === 'EVENING' ? styles.sessionSelected : ''}`}
                   >
                     <input type="radio" value="EVENING" className={styles.hiddenRadio} {...register('preferred_session')} />
-                    <span>🌆</span>
+                    <span className={styles.sessionIcon}>
+                      {/* Crescent Moon with Sparkle Stars SVG */}
+                      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        {/* Crescent moon: big circle minus smaller offset circle */}
+                        <path d="M15 3C9.477 3 5 7.477 5 13C5 18.523 9.477 23 15 23C18.4 23 21.38 21.27 23.13 18.63C22.12 18.87 21.07 19 20 19C13.925 19 9 14.075 9 8C9 6.4 9.35 4.88 9.98 3.52C8.4 3.18 7 3 15 3Z" fill="#E8D89A"/>
+
+                        {/* Large 4-pointed sparkle star (top right area) */}
+                        <path d="M24 6 L24.6 8.4 L27 9 L24.6 9.6 L24 12 L23.4 9.6 L21 9 L23.4 8.4 Z" fill="#E8D89A"/>
+
+                        {/* Small 4-pointed sparkle star (middle right) */}
+                        <path d="M27 16 L27.4 17.6 L29 18 L27.4 18.4 L27 20 L26.6 18.4 L25 18 L26.6 17.6 Z" fill="#E8D89A"/>
+
+                        {/* Large dot */}
+                        <circle cx="22" cy="14" r="1.3" fill="#E8D89A"/>
+
+                        {/* Small dot */}
+                        <circle cx="25" cy="11" r="0.8" fill="#E8D89A"/>
+                      </svg>
+                    </span>
                     <div>
                       <div className={styles.sessionOptionName}>Evening</div>
                       <div className={styles.sessionOptionTime}>5 PM – 9 PM</div>
