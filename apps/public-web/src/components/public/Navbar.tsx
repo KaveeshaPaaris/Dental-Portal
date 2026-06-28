@@ -30,7 +30,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className={`${styles.logoBox} ${styles.glassBox}`}>
           <Image
-            src="/logo.png"
+            src={theme === 'dark' ? '/logo_dark.png' : '/logo.png'}
             alt="Charming Dental Clinic"
             width={240}
             height={64}

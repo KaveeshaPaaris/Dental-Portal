@@ -5,6 +5,7 @@ import Image from 'next/image';
 import {
   Phone, MessageCircle, Mail, MapPin, Clock, Heart, ChevronRight,
 } from 'lucide-react';
+import { useTheme } from '@/context/ThemeContext';
 import { FaFacebookF, FaInstagram, FaWhatsapp } from 'react-icons/fa';
 import styles from './Footer.module.css';
 
@@ -32,6 +33,8 @@ const HOURS = [
 ];
 
 export default function Footer() {
+  const { theme } = useTheme();
+
   return (
     <footer className={styles.footer}>
       <div className={`container ${styles.grid}`}>
@@ -40,7 +43,7 @@ export default function Footer() {
         <div className={styles.brand}>
           <div className={styles.logo}>
             <Image
-              src="/logo.png"
+              src={theme === 'dark' ? '/logo_dark.png' : '/logo.png'}
               alt="Charming Dental Clinic"
               width={200}
               height={56}

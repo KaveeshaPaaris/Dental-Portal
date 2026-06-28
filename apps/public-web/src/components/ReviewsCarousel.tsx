@@ -33,7 +33,7 @@ function StarRating({ rating }: { rating?: number }) {
 
 function ReviewCard({ review }: { review: Review }) {
   const [expanded, setExpanded] = useState(false);
-  const MAX_LENGTH = 140;
+  const MAX_LENGTH = 280;
   const isLong = review.content.length > MAX_LENGTH;
   const displayText = expanded || !isLong ? review.content : review.content.slice(0, MAX_LENGTH) + '…';
 
@@ -47,8 +47,8 @@ function ReviewCard({ review }: { review: Review }) {
         </button>
       )}
       <div className={styles.cardFooter}>
-        <div className={styles.avatar}>
-          {review.patient_name.charAt(0).toUpperCase()}
+        <div className={styles.flagIcon}>
+          <img src="https://flagcdn.com/w40/lk.png" alt="Sri Lanka" width="32" />
         </div>
         <div>
           <div className={styles.patientName}>{review.patient_name}</div>
