@@ -133,6 +133,38 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ─── Meet the Doctor ──────────────────────────────── */}
+      <section className={styles.doctorSection} aria-label="Meet the Doctor">
+        <div className="container">
+          <div className={styles.doctorHeader}>
+            <h2>Meet the Doctor</h2>
+            <span className={styles.doctorLabel}>CARING FOR YOUR SMILE WITH EXPERIENCE</span>
+
+          </div>
+          <div className={styles.doctorGrid}>
+            <div className={styles.doctorCard}>
+              <div className={styles.doctorImageWrapper}>
+                <Image
+                  src="/doctor_croped.jpg"
+                  alt="Dr. Chaaminda Paaris"
+                  fill
+                  unoptimized={true}
+                  style={{ objectFit: 'cover', objectPosition: 'center' }}
+                  sizes="(max-width: 768px) 100vw, 350px"
+                />
+              </div>
+              <div className={styles.doctorInfo}>
+                <h3 className={styles.doctorName}>Dr. Chaaminda Paaris</h3>
+                <div className={styles.doctorSpecialty}>Chief Dentist</div>
+                <p className={styles.doctorBio}>
+                  Delivering trusted dental care with over two decades of experience
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ─── Reviews Carousel ──────────────────────────────── */}
       {/* [FIX #15] Wrapped in Suspense with shimmer skeleton fallback */}
       <Suspense fallback={<div className={styles.reviewsSkeleton} aria-label="Loading reviews…" />}>

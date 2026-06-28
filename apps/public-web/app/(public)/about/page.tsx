@@ -74,11 +74,8 @@ export default function AboutPage() {
 
         <section className={styles.teamSection}>
           <div className={styles.teamHeader}>
-            <div className="badge badge-accent" style={{ marginBottom: 16 }}>Our Experts</div>
-            <h2>Meet the Team</h2>
-            <p style={{ color: 'var(--color-text-secondary)', maxWidth: 600, margin: '0 auto' }}>
-              Our board-certified dentists and specialists are here to provide you with the highest standard of care.
-            </p>
+            <h2>Meet the Doctor</h2>
+            <span className={styles.doctorLabel}>CARING FOR YOUR SMILE WITH EXPERIENCE</span>
           </div>
 
           <div className={styles.teamGrid}>

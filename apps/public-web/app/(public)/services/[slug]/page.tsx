@@ -116,35 +116,6 @@ export default async function ServiceDetailPage({
         </section>
       )}
 
-      {/* ── SECTION 5: Related Treatments ────────────────────── */}
-      {relatedServices.length > 0 && (
-        <section className={styles.sectionRelated}>
-          <div className="container">
-            <h2>Related Treatments</h2>
-            <div className={styles.relatedGrid}>
-              {relatedServices.map((rs) => (
-                <Link key={rs.slug} href={`/services/${rs.slug}`} className={styles.relatedCard}>
-                  <div className={styles.relatedImgWrap}>
-                    <Image
-                      src={rs.image}
-                      alt={rs.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      className={styles.relatedImg}
-                    />
-                  </div>
-                  <div className={styles.relatedBody}>
-                    <h3>{rs.title}</h3>
-                    <span className={styles.relatedCta}>
-                      Learn More <ArrowRight size={14} />
-                    </span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* ── SECTION 6: CTA ──────────────────────────────────── */}
       <section className={styles.sectionCta}>
