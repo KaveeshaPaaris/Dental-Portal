@@ -18,5 +18,6 @@ router.get('/', verifyToken, requireRole('ADMIN'), controller.getAllReviews);
 router.patch('/:id/accept', verifyToken, requireRole('SUPER_ADMIN'), controller.acceptReview);
 router.patch('/:id/reject', verifyToken, requireRole('SUPER_ADMIN'), controller.rejectReview);
 router.patch('/:id/feature', verifyToken, requireRole('SUPER_ADMIN'), controller.featureReview);
+router.patch('/:id/hide', verifyToken, requireRole('SUPER_ADMIN'), controller.hideReview);
 
 export default router;
