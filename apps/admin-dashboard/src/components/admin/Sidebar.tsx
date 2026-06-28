@@ -17,7 +17,6 @@ const NAV_ITEMS = [
   { label: 'Reviews',     href: '/admin/reviews',         icon: Star },
   { label: 'Inventory',   href: '/admin/inventory',       icon: Package },
   { label: 'FAQs',        href: '/admin/faqs',            icon: HelpCircle },
-  { label: 'Content',     href: '/admin/content',         icon: FileText },
   { label: 'Blog Posts',  href: '/admin/blogs',           icon: Newspaper },
 ];
 
