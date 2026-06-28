@@ -11,8 +11,8 @@ const DOCTORS = [
   {
     id: '1',
     name: 'Dr. Chaaminda Paaris',
-    specialty: 'Chief Orthodontist',
-    bio: 'With over 20 years of experience, Dr. Paaris specializes in Invisalign and complex bite corrections.',
+    specialty: 'Chief Dentist',
+    bio: 'Delivering trusted dental care with over two decades of experience',
     imageUrl: '/doctor_croped.jpg',
   },
 
@@ -89,7 +89,8 @@ export default function AboutPage() {
                     src={doc.imageUrl}
                     alt={doc.name}
                     fill
-                    style={{ objectFit: 'cover', objectPosition: 'center top' }}
+                    unoptimized={true}
+                    style={{ objectFit: 'cover', objectPosition: 'center' }}
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
                   />
                 </div>

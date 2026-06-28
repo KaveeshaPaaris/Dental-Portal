@@ -5,7 +5,7 @@
 .header {
   text-align: center;
   max-width: 600px;
-  margin: 0 auto 64px;
+  margin: 0 auto 48px;
 }
 
 .title {
@@ -21,34 +21,219 @@
   font-size: 1.125rem;
 }
 
-.infoGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-auto-rows: 1fr;
-  gap: 24px;
-  margin-bottom: 48px;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.infoCard {
+/* ── Address card ── */
+.addressCard {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
   gap: 16px;
-  padding: 24px;
+  padding: 20px 24px;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
-  height: 100%;
+  max-width: 800px;
+  margin: 0 auto 24px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s;
 }
 
+.addressCard:hover {
+  background: rgba(93, 173, 226, 0.06);
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ── Horizontal contact bar ── */
+.contactBar {
+  display: flex;
+  align-items: stretch;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  max-width: 800px;
+  margin: 0 auto 24px;
+  overflow: hidden;
+}
+
+.contactItem {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 24px 12px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.contactItem:hover {
+  background: rgba(93, 173, 226, 0.06);
+}
+
+.whatsapp:hover {
+  background: rgba(37, 211, 102, 0.06);
+}
+
+.divider {
+  width: 1px;
+  background: var(--color-border);
+  flex-shrink: 0;
+}
+
+.contactLabel {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.whatsappLabel {
+  color: #128C7E;
+}
+
+.contactValue {
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.contactValue small {
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+  font-weight: 400;
+}
+
+/* ── Working Hours ── */
+.hoursCard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  max-width: 800px;
+  margin: 0 auto 24px;
+  padding: 0;
+  text-align: left;
+  overflow: hidden;
+}
+
+.hoursHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 32px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.hoursTitleWrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hoursIconWrapper {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f0f7ff;
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hoursTitle {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.closedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: #f1f5f9;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.badgeDot {
+  width: 6px;
+  height: 6px;
+  background: #94a3b8;
+  border-radius: 50%;
+}
+
+.hoursList {
+  padding: 16px 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.hoursRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.hoursRow:last-child {
+  border-bottom: none;
+}
+
+.hoursDay {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+}
+
+.hoursTime {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: right;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.timeLine {
+  display: block;
+}
+
+.poyaFooter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #fff8ee;
+  border: 1px solid #ffedd5;
+  border-radius: 8px;
+  padding: 14px;
+  margin: 0 32px 32px 32px;
+  color: #c26115;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* ── Shared ── */
 .iconWrapper {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-full);
-  background: linear-gradient(135deg, rgba(93, 173, 226, 0.1), rgba(15, 76, 129, 0.1));
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(93,173,226,0.15), rgba(15,76,129,0.1));
   color: var(--color-primary);
   display: flex;
   align-items: center;
@@ -56,38 +241,44 @@
   flex-shrink: 0;
 }
 
+.whatsappIcon {
+  background: rgba(37, 211, 102, 0.12);
+  color: #128C7E;
+}
+
 .infoTitle {
-  font-size: 1.125rem;
+  font-size: 1rem;
+  font-weight: 600;
   color: var(--color-text-primary);
   margin-bottom: 4px;
 }
 
 .infoText {
   color: var(--color-text-secondary);
+  font-size: 0.9rem;
   line-height: 1.6;
 }
 
+/* ── Map ── */
 .mapWrapper {
-  width: 100%;
   max-width: 800px;
   margin: 0 auto;
-  height: 300px;
-  background: var(--color-surface-2);
   border-radius: var(--radius-xl);
   overflow: hidden;
   border: 1px solid var(--color-border);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-text-muted);
+  box-shadow: var(--shadow-sm);
 }
 
-@media (max-width: 768px) {
-  .title {
-    font-size: 2rem;
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .title { font-size: 2rem; }
+
+  .contactBar {
+    flex-direction: column;
   }
-  .infoGrid {
-    grid-template-columns: 1fr;
+
+  .divider {
+    width: 100%;
+    height: 1px;
   }
 }
