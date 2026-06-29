@@ -147,7 +147,8 @@
 /* [FIX #22] transform removed from base rule — moved into prefers-reduced-motion guard */
 .featureCard {
   text-align: center;
-  transition: transform var(--transition-normal);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .featureIcon {
@@ -209,7 +210,9 @@
   flex-direction: column;
   overflow: hidden;
   padding: 0;
-  transition: transform 260ms ease, box-shadow 260ms ease;
+  transition:
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
   color: inherit;
   height: 100%;
@@ -438,11 +441,13 @@
   }
 
   .featureCard:hover {
-    transform: translateY(-4px);
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
   }
 
   .serviceCard:hover {
-    transform: translateY(-4px);
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
   }
 
   .reviewsSkeleton {
