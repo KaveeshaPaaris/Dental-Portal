@@ -219,7 +219,7 @@ export default function AdminInventoryPage() {
             <div style={{ marginBottom: 24 }}>
               <ImageUploader
                 label="Item Image"
-                bucket="inventory-images"
+                bucket="blog-images"
                 value={formData.image_url}
                 onChange={url => setFormData({ ...formData, image_url: url })}
               />
@@ -237,120 +237,101 @@ export default function AdminInventoryPage() {
         </div>
       )}
 
-      {/* ── Table ──────────────────────────────────────────── */}
-      <div className="card" style={{ padding: 0, overflowX: 'auto' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-          <thead style={{ background: 'var(--color-surface-2)', borderBottom: '1px solid var(--color-border)' }}>
-            <tr>
-              <th style={{ padding: '16px 24px', fontWeight: 600, color: 'var(--color-text-secondary)' }}>Item</th>
-              <th style={{ padding: '16px 24px', fontWeight: 600, color: 'var(--color-text-secondary)' }}>Status</th>
-              <th style={{ padding: '16px 24px', fontWeight: 600, color: 'var(--color-text-secondary)' }}>In Stock</th>
-              <th style={{ padding: '16px 24px', fontWeight: 600, color: 'var(--color-text-secondary)' }}>Threshold</th>
-              <th style={{ padding: '16px 24px', fontWeight: 600, color: 'var(--color-text-secondary)', textAlign: 'right' }}>Adjust Stock</th>
-              <th style={{ padding: '16px 24px', fontWeight: 600, color: 'var(--color-text-secondary)', textAlign: 'right' }}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {inventory.length === 0 ? (
-              <tr>
-                <td colSpan={6} style={{ padding: '48px 24px', textAlign: 'center', color: 'var(--color-text-muted)' }}>
-                  No items in inventory. Click "Add New Item" to get started.
-                </td>
-              </tr>
-            ) : (
-              inventory.map(item => (
-                <tr key={item.id} style={{ borderBottom: '1px solid var(--color-border)' }}>
-                  {/* Item name + image */}
-                  <td style={{ padding: '14px 24px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                      {item.image_url ? (
-                        <div style={{
-                          width: 44,
-                          height: 44,
-                          borderRadius: 8,
-                          overflow: 'hidden',
-                          flexShrink: 0,
-                          border: '1px solid var(--color-border)',
-                          position: 'relative',
-                        }}>
-                          <Image
-                            src={item.image_url}
-                            alt={item.name}
-                            fill
-                            sizes="44px"
-                            style={{ objectFit: 'cover' }}
-                            unoptimized
-                          />
-                        </div>
-                      ) : (
-                        <div style={{
-                          width: 44,
-                          height: 44,
-                          borderRadius: 8,
-                          background: 'var(--color-surface-2)',
-                          border: '1px solid var(--color-border)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flexShrink: 0,
-                        }}>
-                          <ImageIcon size={18} color="var(--color-text-muted)" />
-                        </div>
-                      )}
-                      <div>
-                        <div style={{ fontWeight: 600 }}>{item.name}</div>
-                        {item.description && (
-                          <div style={{ fontSize: '0.8125rem', color: 'var(--color-text-muted)', marginTop: 2 }}>
-                            {item.description}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </td>
+      {/* ── Grid ──────────────────────────────────────────── */}
+      {inventory.length === 0 ? (
+        <div className="card" style={{ padding: '48px 24px', textAlign: 'center', color: 'var(--color-text-muted)' }}>
+          No items in inventory. Click "Add New Item" to get started.
+        </div>
+      ) : (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 24 }}>
+          {inventory.map(item => (
+            <div key={item.id} className="card" style={{ display: 'flex', flexDirection: 'column', gap: 0, padding: 0, overflow: 'hidden' }}>
+              {/* Top: Image */}
+              {item.image_url ? (
+                <div style={{
+                  width: '100%',
+                  height: 180,
+                  position: 'relative',
+                  borderBottom: '1px solid var(--color-border)',
+                  background: 'var(--color-surface-2)',
+                }}>
+                  <Image
+                    src={item.image_url}
+                    alt={item.name}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 340px"
+                    style={{ objectFit: 'cover' }}
+                    unoptimized
+                  />
+                </div>
+              ) : (
+                <div style={{
+                  width: '100%',
+                  height: 180,
+                  background: 'var(--color-surface-2)',
+                  borderBottom: '1px solid var(--color-border)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                  <ImageIcon size={48} color="var(--color-text-muted)" />
+                </div>
+              )}
 
-                  {/* Status badge */}
-                  <td style={{ padding: '14px 24px' }}>
-                    {item.is_low_stock ? (
-                      <span className="badge badge-error" style={{ display: 'flex', alignItems: 'center', gap: 4, width: 'fit-content' }}>
-                        <AlertTriangle size={13} /> Low Stock
-                      </span>
-                    ) : (
-                      <span className="badge badge-success">Sufficient</span>
-                    )}
-                  </td>
-
-                  {/* Quantity */}
-                  <td style={{ padding: '14px 24px', fontWeight: 600 }}>
-                    {item.current_quantity}{' '}
-                    <span style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem', fontWeight: 400 }}>
-                      {item.unit}
+              {/* Bottom: Info and Actions */}
+              <div style={{ display: 'flex', flexDirection: 'column', padding: 20, flex: 1 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
+                  <h3 style={{ fontWeight: 600, fontSize: '1.25rem', margin: '0 0 8px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {item.name}
+                  </h3>
+                  {item.is_low_stock && (
+                    <span className="badge badge-error" style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '2px 8px', fontSize: '0.75rem' }}>
+                      <AlertTriangle size={14} /> Low
                     </span>
-                  </td>
+                  )}
+                </div>
+                
+                {item.description && (
+                  <div style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: 16, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                    {item.description}
+                  </div>
+                )}
+                
+                <div style={{ display: 'flex', gap: 16, fontSize: '0.875rem', marginTop: 'auto', marginBottom: 16, background: 'var(--color-surface-2)', padding: '12px 16px', borderRadius: 8 }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ color: 'var(--color-text-secondary)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>In Stock</div>
+                    <strong style={{ color: 'var(--color-text-primary)', fontSize: '1.125rem' }}>{item.current_quantity}</strong> <span style={{ color: 'var(--color-text-muted)' }}>{item.unit}</span>
+                  </div>
+                  <div style={{ width: 1, background: 'var(--color-border)' }}></div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ color: 'var(--color-text-secondary)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>Threshold</div>
+                    <span style={{ color: 'var(--color-text-primary)', fontSize: '1.125rem' }}>{item.minimum_threshold}</span>
+                  </div>
+                </div>
 
-                  {/* Threshold */}
-                  <td style={{ padding: '14px 24px', color: 'var(--color-text-secondary)' }}>
-                    {item.minimum_threshold} {item.unit}
-                  </td>
+                {/* Divider */}
+                <div style={{ height: 1, background: 'var(--color-border)', margin: '0 -20px 16px' }}></div>
 
-                  {/* Quick Adjust */}
-                  <td style={{ padding: '14px 24px', textAlign: 'right' }}>
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 6 }}>
-                      <input
-                        type="number"
-                        min="1"
-                        value={adjustAmounts[item.id] ?? 1}
-                        onChange={e => setAdjustAmounts(prev => ({ ...prev, [item.id]: parseInt(e.target.value) || 1 }))}
-                        style={{
-                          width: 60,
-                          padding: '4px 8px',
-                          borderRadius: 6,
-                          border: '1px solid var(--color-border)',
-                          background: 'var(--color-surface)',
-                          color: 'var(--color-text-primary)',
-                          fontSize: '0.875rem',
-                          textAlign: 'center',
-                        }}
-                      />
+                {/* Actions */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <input
+                      type="number"
+                      min="1"
+                      value={adjustAmounts[item.id] ?? 1}
+                      onChange={e => setAdjustAmounts(prev => ({ ...prev, [item.id]: parseInt(e.target.value) || 1 }))}
+                      style={{
+                        width: 56,
+                        padding: '6px 8px',
+                        borderRadius: 6,
+                        border: '1px solid var(--color-border)',
+                        background: 'var(--color-surface)',
+                        color: 'var(--color-text-primary)',
+                        fontSize: '0.875rem',
+                        textAlign: 'center',
+                      }}
+                    />
+                    <div style={{ display: 'flex', gap: 4 }}>
                       <button
                         onClick={() => handleAdjustStock(item.id, 'USED')}
                         className="btn btn-secondary btn-sm"
@@ -366,25 +347,22 @@ export default function AdminInventoryPage() {
                         + Restock
                       </button>
                     </div>
-                  </td>
+                  </div>
 
-                  {/* Edit / Delete */}
-                  <td style={{ padding: '14px 24px', textAlign: 'right' }}>
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
-                      <button onClick={() => openEdit(item)} className="btn btn-secondary btn-sm" title="Edit">
-                        <Edit size={15} />
-                      </button>
-                      <button onClick={() => handleDelete(item.id)} className="btn btn-danger btn-sm" title="Delete">
-                        <Trash2 size={15} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+                  <div style={{ display: 'flex', gap: 4 }}>
+                    <button onClick={() => openEdit(item)} className="btn btn-secondary btn-sm" title="Edit">
+                      <Edit size={16} />
+                    </button>
+                    <button onClick={() => handleDelete(item.id)} className="btn btn-danger btn-sm" title="Delete">
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
