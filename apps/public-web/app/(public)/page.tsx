@@ -6,7 +6,7 @@ import { ArrowRight, Star, Shield, Clock, Heart } from 'lucide-react';
 import styles from './page.module.css';
 import ReviewsCarousel from '@/components/ReviewsCarousel';
 import { FEATURED_SERVICES } from '@/data/services';
-import { FadeUp, StaggerContainer, ParallaxHeroBg, SlideIn, FloatAnimation } from '@/components/animations';
+import { FadeUp, StaggerContainer, ParallaxHeroBg, SlideIn, FloatAnimation, RevealOnScroll } from '@/components/animations';
 import { AnimatedFeatureCard, AnimatedServiceCard, AnimatedServiceLink } from '@/components/animations/AnimatedCards';
 import AnimatedCounter from '@/components/AnimatedCounter';
 
@@ -174,13 +174,13 @@ export default function HomePage() {
                   sizes="(max-width: 768px) 100vw, 350px"
                 />
               </FloatAnimation>
-              <SlideIn direction="right" delay={0.2} className={styles.doctorInfo}>
+              <FadeUp delay={0.25} className={styles.doctorInfo}>
                 <h3 className={styles.doctorName}>Dr. Chaaminda Paaris</h3>
                 <div className={styles.doctorSpecialty}>Chief Dentist</div>
                 <p className={styles.doctorBio}>
                   Delivering trusted dental care with over two decades of experience
                 </p>
-              </SlideIn>
+              </FadeUp>
             </SlideIn>
           </div>
         </div>
@@ -196,14 +196,14 @@ export default function HomePage() {
       {/* [FIX #14] Added aria-label for landmark navigation */}
       <section className={styles.ctaBanner} aria-label="Book an Appointment">
         <div className="container">
-          <div className={styles.ctaContent}>
+          <RevealOnScroll className={styles.ctaContent}>
             <h2>Ready for a Healthier Smile?</h2>
             <p>Book your appointment today — morning and evening slots available.</p>
             {/* [FIX #4] Changed misleading CTA from "Book Now — It's Free" */}
             <Link href="/book" className="btn btn-accent btn-xl">
               Schedule Your Appointment <ArrowRight size={18} aria-hidden="true" />
             </Link>
-          </div>
+          </RevealOnScroll>
         </div>
       </section>
     </main>
