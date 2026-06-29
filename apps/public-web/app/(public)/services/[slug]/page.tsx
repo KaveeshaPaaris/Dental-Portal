@@ -75,12 +75,13 @@ export default async function ServiceDetailPage({
       {service.standaloneImage && (
         <section style={{ paddingBottom: '80px' }}>
           <div className="container" style={{ display: 'flex', justifyContent: 'center' }}>
-            <div style={{ position: 'relative', width: '100%', maxWidth: '800px', aspectRatio: '16/9', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
+            <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
               <Image
                 src={service.standaloneImage}
                 alt={`${service.title} representation`}
-                fill
-                style={{ objectFit: 'cover' }}
+                width={1200}
+                height={600}
+                style={{ width: '100%', height: 'auto', display: 'block' }}
               />
             </div>
           </div>
