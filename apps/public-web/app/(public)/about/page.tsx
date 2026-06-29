@@ -11,8 +11,8 @@ const DOCTORS = [
   {
     id: '1',
     name: 'Dr. Chaaminda Paaris',
-    specialty: 'Chief Orthodontist',
-    bio: 'With over 20 years of experience, Dr. Paaris specializes in Invisalign and complex bite corrections.',
+    specialty: 'Chief Dentist',
+    bio: 'Delivering trusted dental care with over two decades of experience',
     imageUrl: '/doctor_croped.jpg',
   },
 
@@ -74,11 +74,8 @@ export default function AboutPage() {
 
         <section className={styles.teamSection}>
           <div className={styles.teamHeader}>
-            <div className="badge badge-accent" style={{ marginBottom: 16 }}>Our Experts</div>
-            <h2>Meet the Team</h2>
-            <p style={{ color: 'var(--color-text-secondary)', maxWidth: 600, margin: '0 auto' }}>
-              Our board-certified dentists and specialists are here to provide you with the highest standard of care.
-            </p>
+            <h2>Meet the Doctor</h2>
+            <span className={styles.doctorLabel}>CARING FOR YOUR SMILE WITH EXPERIENCE</span>
           </div>
 
           <div className={styles.teamGrid}>
@@ -89,7 +86,8 @@ export default function AboutPage() {
                     src={doc.imageUrl}
                     alt={doc.name}
                     fill
-                    style={{ objectFit: 'cover', objectPosition: 'center top' }}
+                    unoptimized={true}
+                    style={{ objectFit: 'cover', objectPosition: 'center' }}
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
                   />
                 </div>

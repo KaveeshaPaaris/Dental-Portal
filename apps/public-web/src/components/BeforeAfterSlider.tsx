@@ -3,6 +3,8 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { VIEWPORT_CONFIG, DURATIONS, EASE_OUT } from '@/utils/animations';
 import styles from './BeforeAfterSlider.module.css';
 
 interface BeforeAfterSliderProps {
@@ -64,7 +66,13 @@ export default function BeforeAfterSlider({
   }, []);
 
   return (
-    <div className={styles.wrapper}>
+    <motion.div 
+      className={styles.wrapper}
+      initial={{ opacity: 0, scale: 0.96 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={VIEWPORT_CONFIG}
+      transition={{ duration: DURATIONS.default, ease: EASE_OUT }}
+    >
       {/* Slider canvas */}
       <div
         ref={containerRef}
@@ -136,6 +144,6 @@ export default function BeforeAfterSlider({
       <p className={styles.disclaimer}>
         These images are illustrative examples intended to demonstrate typical treatment goals. Individual results may vary depending on each patient's oral health and treatment plan.
       </p>
-    </div>
+    </motion.div>
   );
 }

@@ -377,7 +377,6 @@ h1, h2, h3, h4, h5, h6 {
   top: 0;
   left: 0;
   z-index: 40;
-  transition: transform var(--transition-normal);
 }
 
 .admin-main {
@@ -454,8 +453,8 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ─── Responsive ─────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .admin-sidebar { transform: translateX(-100%); }
-  .admin-sidebar.open { transform: translateX(0); }
+  .admin-sidebar { translate: -100% 0; transition: translate var(--transition-normal); }
+  .admin-sidebar.open { translate: 0 0; }
   .admin-main { margin-left: 0; }
   .container { padding: 0 16px; }
   .fab { width: 48px; height: 48px; }

@@ -17,7 +17,6 @@ const NAV_ITEMS = [
   { label: 'Reviews',     href: '/admin/reviews',         icon: Star },
   { label: 'Inventory',   href: '/admin/inventory',       icon: Package },
   { label: 'FAQs',        href: '/admin/faqs',            icon: HelpCircle },
-  { label: 'Content',     href: '/admin/content',         icon: FileText },
   { label: 'Blog Posts',  href: '/admin/blogs',           icon: Newspaper },
 ];
 
@@ -29,10 +28,13 @@ export default function AdminSidebar() {
   const pathname = usePathname();
   const { user, signOut } = useAuth();
 
-  const isActive = (href: string) =>
-    href === '/admin/dashboard'
-      ? pathname === href
-      : pathname.startsWith(href);
+  const isActive = (href: string) => {
+    if (href === '/admin/dashboard') return pathname === href;
+    if (href === '/admin/bookings') {
+      return pathname === href || (pathname.startsWith('/admin/bookings/') && !pathname.startsWith('/admin/bookings/schedule'));
+    }
+    return pathname.startsWith(href);
+  };
 
   return (
     <aside className={`admin-sidebar ${styles.sidebar}`}>

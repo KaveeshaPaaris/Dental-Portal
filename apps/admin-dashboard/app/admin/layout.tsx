@@ -51,7 +51,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
       <AdminSidebar />
       <div className="admin-main">
         <AdminTopBar />
-        <main className="admin-content animate-fadeIn">
+        <main className="admin-content">
           {children}
         </main>
       </div>

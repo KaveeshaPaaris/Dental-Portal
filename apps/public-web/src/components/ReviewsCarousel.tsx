@@ -3,6 +3,9 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { Star, ChevronLeft, ChevronRight, Quote, ArrowRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { VIEWPORT_CONFIG, staggerContainer, DURATIONS, EASE_OUT } from '@/utils/animations';
+import { FadeUp } from '@/components/animations';
 import styles from './ReviewsCarousel.module.css';
 
 interface Review {
@@ -16,24 +19,36 @@ interface Review {
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api/v1';
 const SLIDE_INTERVAL = 5000;
 
+const MotionStar = motion.create(Star);
+
 function StarRating({ rating }: { rating?: number }) {
   return (
-    <div className={styles.stars}>
+    <motion.div 
+      className={styles.stars}
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="visible"
+      viewport={VIEWPORT_CONFIG}
+    >
       {[1, 2, 3, 4, 5].map((i) => (
-        <Star
+        <MotionStar
           key={i}
           size={16}
+          variants={{
+             hidden: { scale: 0, opacity: 0 },
+             visible: { scale: 1, opacity: 1, transition: { type: 'spring', stiffness: 300, damping: 15 } }
+          }}
           className={i <= (rating ?? 0) ? styles.starFilled : styles.starEmpty}
           fill={i <= (rating ?? 0) ? 'currentColor' : 'none'}
         />
       ))}
-    </div>
+    </motion.div>
   );
 }
 
 function ReviewCard({ review }: { review: Review }) {
   const [expanded, setExpanded] = useState(false);
-  const MAX_LENGTH = 140;
+  const MAX_LENGTH = 280;
   const isLong = review.content.length > MAX_LENGTH;
   const displayText = expanded || !isLong ? review.content : review.content.slice(0, MAX_LENGTH) + '…';
 
@@ -47,8 +62,8 @@ function ReviewCard({ review }: { review: Review }) {
         </button>
       )}
       <div className={styles.cardFooter}>
-        <div className={styles.avatar}>
-          {review.patient_name.charAt(0).toUpperCase()}
+        <div className={styles.flagIcon}>
+          <img src="https://flagcdn.com/w40/lk.png" alt="Sri Lanka" width="32" />
         </div>
         <div>
           <div className={styles.patientName}>{review.patient_name}</div>
@@ -97,7 +112,6 @@ export default function ReviewsCarousel() {
       <section className={styles.section}>
         <div className="container">
           <div className={styles.header}>
-            <span className={`badge badge-accent ${styles.badge}`}>Testimonials</span>
             <h2 className={styles.title}>See What Our Patients Say</h2>
           </div>
           <div className={styles.skeletonGrid}>
@@ -116,11 +130,12 @@ export default function ReviewsCarousel() {
   return (
     <section className={styles.section}>
       <div className="container">
-        <div className={styles.header}>
-          <span className={`badge badge-accent ${styles.badge}`}>Testimonials</span>
-          <h2 className={styles.title}>See What Our Patients Say</h2>
-          <p className={styles.subtitle}>Real experiences from real patients who trust us with their smiles.</p>
-        </div>
+        <FadeUp>
+          <div className={styles.header}>
+            <h2 className={styles.title}>See What Our Patients Say</h2>
+            <p className={styles.subtitle}>Real experiences from real patients who trust us with their smiles.</p>
+          </div>
+        </FadeUp>
 
         <div
           className={styles.carouselWrapper}
@@ -133,11 +148,24 @@ export default function ReviewsCarousel() {
             </button>
           )}
 
-          <div className={styles.cardsGrid}>
-            {visibleReviews.map((review, i) => (
-              <ReviewCard key={`${review.id}-${i}`} review={review} />
-            ))}
-          </div>
+          <motion.div className={styles.cardsGrid} layout>
+            <AnimatePresence mode="popLayout" initial={false}>
+              {visibleReviews.map((review) => (
+                <motion.div
+                  key={review.id}
+                  layout
+                  initial={{ opacity: 0, x: 50, scale: 0.95 }}
+                  animate={{ opacity: 1, x: 0, scale: 1 }}
+                  exit={{ opacity: 0, x: -50, scale: 0.95 }}
+                  transition={{ duration: DURATIONS.fast, ease: EASE_OUT }}
+                  whileHover={{ y: -8, boxShadow: '0 12px 30px rgba(0,0,0,0.1)' }}
+                  style={{ width: '100%' }} // Ensure it flexes correctly
+                >
+                  <ReviewCard review={review} />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
 
           {totalSlides > 3 && (
             <button className={`${styles.navBtn} ${styles.navNext}`} onClick={next} aria-label="Next reviews">

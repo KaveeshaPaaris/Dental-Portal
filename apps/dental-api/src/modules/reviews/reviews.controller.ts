@@ -77,3 +77,15 @@ export async function featureReview(req: Request, res: Response, next: NextFunct
     res.json(data);
   } catch (err) { next(err); }
 }
+
+export async function hideReview(req: Request, res: Response, next: NextFunction) {
+  try {
+    const hidden = req.body.hidden as boolean;
+    if (typeof hidden !== 'boolean') {
+      res.status(400).json({ error: 'hidden must be a boolean' });
+      return;
+    }
+    const data = await reviewsService.hideReview(req.params.id, hidden);
+    res.json(data);
+  } catch (err) { next(err); }
+}

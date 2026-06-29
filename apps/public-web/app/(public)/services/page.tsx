@@ -47,34 +47,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* ── Filters ──────────────────────────────── */}
-      <div className={styles.filtersBar}>
-        <div className={`container ${styles.filtersInner}`}>
-          <div className={styles.searchWrap}>
-            <Search size={16} className={styles.searchIcon} aria-hidden="true" />
-            <input
-              type="search"
-              placeholder="Search treatments…"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className={styles.searchInput}
-              aria-label="Search dental services"
-            />
-          </div>
-          <div className={styles.chips} role="group" aria-label="Filter by category">
-            {(['All', ...CATEGORIES] as FilterCategory[]).map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`${styles.chip} ${activeCategory === cat ? styles.chipActive : ''}`}
-                aria-pressed={activeCategory === cat}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
+
 
       {/* ── Grid ─────────────────────────────────── */}
       <section className={styles.gridSection} aria-label="Services list">
@@ -109,7 +82,7 @@ export default function ServicesPage() {
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className={styles.cardImg}
                     />
-                    <span className={styles.categoryBadge}>{s.category}</span>
+
                   </div>
 
                   {/* Body */}
