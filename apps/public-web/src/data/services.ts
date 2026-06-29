@@ -39,6 +39,7 @@ export interface Service {
   showBeforeAfter: boolean;
   beforeImage?: string;    // only when showBeforeAfter = true
   afterImage?: string;
+  standaloneImage?: string;
 
   // Text
   shortDesc: string;
@@ -65,9 +66,10 @@ export const SERVICES: Service[] = [
     title: 'General Dentistry',
     category: 'Preventive',
     icon: Stethoscope,
-    image: '/services/photo-1667133295315-820bb6481730-800.jpg',
+    image: '/general.png',
     heroImage: '/services/photo-1588776814546-daab30f310ce-1200.jpg',
-    showBeforeAfter: true,
+    showBeforeAfter: false,
+    standaloneImage: '/general.png',
     beforeImage: '/services/photo-1664529845836-433c172142ca-800.jpg',
     afterImage: '/services/photo-1489278353717-f64c6ee8a4d2-800.jpg',
     shortDesc: 'Comprehensive routine care to keep your smile healthy for life.',
@@ -334,11 +336,11 @@ export const SERVICES: Service[] = [
     title: 'Dental Fillings',
     category: 'Restorative',
     icon: Layers,
-    image: '/services/photo-1606811856475-5e6fcdc6e509-800.jpg',
+    image: '/toot_filling.png',
     heroImage: '/services/photo-1495573020741-8a2f372bbec3-1200.jpg',
     showBeforeAfter: true,
-    beforeImage: '/services/photo-1619988252418-a1e6ee10b122-800.jpg',
-    afterImage: '/services/photo-1667133295315-820bb6481730-800.jpg',
+    beforeImage: '/cavity.png',
+    afterImage: '/filling.png',
     shortDesc: 'Restore decayed or damaged teeth with natural-looking composite fillings.',
     listingDesc: 'Modern tooth-coloured composite fillings restore decayed or damaged teeth to full function and appearance, offering a natural result that blends seamlessly with your existing teeth.',
     highlights: ['Tooth-Coloured Composite', 'Metal-Free Options', 'Single Appointment', 'Strengthens Damaged Teeth'],
@@ -444,9 +446,10 @@ export const SERVICES: Service[] = [
     title: 'Tooth Extractions',
     category: 'Restorative',
     icon: Scissors,
-    image: '/services/photo-1579684453423-f84349ef60b0-800.jpg',
+    image: '/extraction.png',
     heroImage: '/services/photo-1588776813941-dcf9c55e84d2-1200.jpg',
-    showBeforeAfter: true,
+    showBeforeAfter: false,
+    standaloneImage: '/extraction.png',
     beforeImage: '/services/photo-1664529842504-5743d286ec1b-800.jpg',
     afterImage: '/services/photo-1588776814546-daab30f310ce-800.jpg',
     shortDesc: 'Safe, gentle tooth removal when saving the tooth is no longer possible.',
@@ -461,11 +464,7 @@ export const SERVICES: Service[] = [
       'Patients requiring space creation for orthodontic treatment',
       'Those with advanced gum disease causing tooth loosening',
     ],
-    benefits: [
-      { icon: Shield, title: 'Infection Control', desc: 'Removing a severely infected tooth stops the spread of bacteria to adjacent teeth and surrounding bone.' },
-      { icon: HeartPulse, title: 'Pain Relief', desc: 'Extracting a tooth causing chronic pain provides immediate, long-term relief and allows healing to begin.' },
-      { icon: Sparkles, title: 'Prepares for Replacement', desc: 'After extraction, we can plan for a dental implant or bridge to restore the gap with a natural-looking replacement.' },
-    ],
+    benefits: [],
     steps: [
       { title: 'Clinical Assessment', desc: 'We examine the tooth and surrounding bone to plan the extraction technique and anticipate any complications.' },
       { title: 'Local Anaesthesia', desc: 'The area is thoroughly numbed so you feel only pressure, not pain, throughout the procedure.' },

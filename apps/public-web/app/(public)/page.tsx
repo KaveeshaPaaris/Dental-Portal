@@ -6,6 +6,9 @@ import { ArrowRight, Star, Shield, Clock, Heart } from 'lucide-react';
 import styles from './page.module.css';
 import ReviewsCarousel from '@/components/ReviewsCarousel';
 import { FEATURED_SERVICES } from '@/data/services';
+import { FadeUp, StaggerContainer, ParallaxHeroBg, SlideIn, FloatAnimation } from '@/components/animations';
+import { AnimatedFeatureCard, AnimatedServiceCard, AnimatedServiceLink } from '@/components/animations/AnimatedCards';
+import AnimatedCounter from '@/components/AnimatedCounter';
 
 export const metadata: Metadata = {
   title: 'Charming Dental Clinic — World-Class Dental Care',
@@ -30,27 +33,35 @@ export default function HomePage() {
       {/* ─── Hero ─────────────────────────────────────────── */}
       {/* [FIX #14] Added aria-label for landmark navigation */}
       <section className={styles.hero} aria-label="Hero - Welcome">
-        <div className={styles.heroBg} aria-hidden="true" />
+        <ParallaxHeroBg className={styles.heroBg} aria-hidden="true" />
         <div className="container">
           {/* [FIX #1] heroContent sits cleanly over the hero image */}
           <div className={styles.heroContent}>
-            <h1 className={styles.heroTitle}>
-              World-Class Dental Care,{' '}
-              <span className={styles.heroHighlight}>Close to Home</span>
-            </h1>
+            <FadeUp delay={0}>
+              <h1 className={styles.heroTitle}>
+                World-Class Dental Care,{' '}
+                <span className={styles.heroHighlight}>Close to Home</span>
+              </h1>
+            </FadeUp>
 
             {/* [FIX #19] Added heroSubtext tagline so .heroSubtext CSS is no longer dead */}
-            <p className={styles.heroSubtext}>
-              Trusted by 5,000+ patients. Board-certified specialists, same-week appointments available.
-            </p>
+            <FadeUp delay={0.15}>
+              <p className={styles.heroSubtext}>
+                Trusted by 5,000+ patients. Board-certified specialists, same-week appointments available.
+              </p>
+            </FadeUp>
 
             <div className={styles.heroActions}>
-              <Link href="/book" className="btn btn-primary btn-xl">
-                Book Appointment <ArrowRight size={18} aria-hidden="true" />
-              </Link>
-              <Link href="/services" className="btn btn-secondary btn-xl">
-                Our Services
-              </Link>
+              <FadeUp delay={0.3}>
+                <Link href="/book" className="btn btn-primary btn-xl">
+                  Book Appointment <ArrowRight size={18} aria-hidden="true" />
+                </Link>
+              </FadeUp>
+              <FadeUp delay={0.42}>
+                <Link href="/services" className="btn btn-secondary btn-xl">
+                  Our Services
+                </Link>
+              </FadeUp>
             </div>
 
             {/* [FIX #3] Stats section with a subtle separator/backdrop for contrast */}
@@ -67,7 +78,12 @@ export default function HomePage() {
                     className={styles.stat}
                     aria-label={`${stat.value} ${stat.label}`}
                   >
-                    <div className={styles.statValue}>{stat.value}</div>
+                    <div className={styles.statValue}>
+                      <AnimatedCounter 
+                        value={parseFloat(stat.value.replace(/[^\d.]/g, ''))} 
+                        suffix={stat.value.replace(/[\d.]/g, '')} 
+                      />
+                    </div>
                     <div className={styles.statLabel}>{stat.label}</div>
                   </div>
                 ))}
@@ -81,31 +97,33 @@ export default function HomePage() {
       {/* [FIX #14] Added aria-label for landmark navigation */}
       <section className={styles.features} aria-label="Why Choose Us">
         <div className="container">
-          <div className={styles.featuresGrid}>
+          <StaggerContainer className={styles.featuresGrid}>
             {FEATURES.map(({ icon: Icon, title, desc }) => (
-              <div key={title} className={`card ${styles.featureCard}`}>
+              <AnimatedFeatureCard key={title} className={`card ${styles.featureCard}`}>
                 {/* [FIX #20] aria-hidden on decorative icon wrapper */}
                 <div className={styles.featureIcon} aria-hidden="true">
                   <Icon size={22} />
                 </div>
                 <h3 className={styles.featureTitle}>{title}</h3>
                 <p className={styles.featureDesc}>{desc}</p>
-              </div>
+              </AnimatedFeatureCard>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
       </section>
 
       {/* ─── Services ─────────────────────────────────────── */}
       <section className={styles.services} aria-label="Our Services">
         <div className="container">
-          <div className={styles.sectionHeader}>
-            <h2>Our Services</h2>
-            <p>Comprehensive dental care for your entire family</p>
-          </div>
-          <div className={styles.servicesGrid}>
+          <FadeUp>
+            <div className={styles.sectionHeader}>
+              <h2>Our Services</h2>
+              <p>Comprehensive dental care for your entire family</p>
+            </div>
+          </FadeUp>
+          <StaggerContainer className={styles.servicesGrid}>
             {FEATURED_SERVICES.map((s) => (
-              <Link key={s.slug} href={`/services/${s.slug}`} className={`card ${styles.serviceCard}`}>
+              <AnimatedServiceLink key={s.slug} href={`/services/${s.slug}`} className={`card ${styles.serviceCard}`}>
                 <div className={styles.serviceCardImgWrap}>
                   <Image
                     src={s.image}
@@ -122,13 +140,48 @@ export default function HomePage() {
                     Learn More <ArrowRight size={13} />
                   </span>
                 </div>
-              </Link>
+              </AnimatedServiceLink>
             ))}
-          </div>
-          <div className={styles.servicesCTA}>
-            <Link href="/services" className="btn btn-secondary btn-lg">
-              View All Services <ArrowRight size={16} aria-hidden="true" />
-            </Link>
+          </StaggerContainer>
+          <FadeUp delay={0.3}>
+            <div className={styles.servicesCTA}>
+              <Link href="/services" className="btn btn-secondary btn-lg">
+                View All Services <ArrowRight size={16} aria-hidden="true" />
+              </Link>
+            </div>
+          </FadeUp>
+        </div>
+      </section>
+
+      {/* ─── Meet the Doctor ──────────────────────────────── */}
+      <section className={styles.doctorSection} aria-label="Meet the Doctor">
+        <div className="container">
+          <FadeUp>
+            <div className={styles.doctorHeader}>
+              <h2>Meet the Doctor</h2>
+              <span className={styles.doctorLabel}>CARING FOR YOUR SMILE WITH EXPERIENCE</span>
+            </div>
+          </FadeUp>
+          <div className={styles.doctorGrid}>
+            <SlideIn direction="left" className={styles.doctorCard}>
+              <FloatAnimation className={styles.doctorImageWrapper}>
+                <Image
+                  src="/doctor_croped.jpg"
+                  alt="Dr. Chaaminda Paaris"
+                  fill
+                  unoptimized={true}
+                  style={{ objectFit: 'cover', objectPosition: 'center' }}
+                  sizes="(max-width: 768px) 100vw, 350px"
+                />
+              </FloatAnimation>
+              <SlideIn direction="right" delay={0.2} className={styles.doctorInfo}>
+                <h3 className={styles.doctorName}>Dr. Chaaminda Paaris</h3>
+                <div className={styles.doctorSpecialty}>Chief Dentist</div>
+                <p className={styles.doctorBio}>
+                  Delivering trusted dental care with over two decades of experience
+                </p>
+              </SlideIn>
+            </SlideIn>
           </div>
         </div>
       </section>

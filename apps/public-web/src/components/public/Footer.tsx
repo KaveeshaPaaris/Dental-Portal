@@ -5,6 +5,8 @@ import Image from 'next/image';
 import {
   Phone, MessageCircle, Mail, MapPin, Clock, Heart, ChevronRight,
 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { VIEWPORT_CONFIG, staggerContainer, fadeUpVariant, DURATIONS, EASE_OUT } from '@/utils/animations';
 import { useTheme } from '@/context/ThemeContext';
 import { FaFacebookF, FaInstagram, FaWhatsapp } from 'react-icons/fa';
 import styles from './Footer.module.css';
@@ -36,11 +38,17 @@ export default function Footer() {
   const { theme } = useTheme();
 
   return (
-    <footer className={styles.footer}>
+    <motion.footer 
+      className={styles.footer}
+      initial="hidden"
+      whileInView="visible"
+      viewport={VIEWPORT_CONFIG}
+      variants={staggerContainer}
+    >
       <div className={`container ${styles.grid}`}>
 
         {/* ── Col 1: Brand ─────────────────────── */}
-        <div className={styles.brand}>
+        <motion.div variants={fadeUpVariant} className={styles.brand}>
           <div className={styles.logo}>
             <Image
               src={theme === 'dark' ? '/logo_dark.png' : '/logo.png'}
@@ -58,7 +66,7 @@ export default function Footer() {
           </p>
           <div className={styles.socials} aria-label="Social media links">
             {SOCIAL.map(({ icon: Icon, href, label }) => (
-              <a
+              <motion.a
                 key={label}
                 href={href}
                 target={href.startsWith('http') ? '_blank' : undefined}
@@ -66,15 +74,17 @@ export default function Footer() {
                 className={styles.socialIcon}
                 aria-label={label}
                 title={label}
+                whileHover={{ scale: 1.1, y: -3 }}
+                transition={{ duration: 0.2 }}
               >
                 <Icon size={15} aria-hidden="true" />
-              </a>
+              </motion.a>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* ── Col 2: Quick Links ───────────────── */}
-        <div className={styles.col}>
+        <motion.div variants={fadeUpVariant} className={styles.col}>
           <h4 className={styles.colTitle}>Quick Links</h4>
           <nav aria-label="Footer navigation">
             {QUICK_LINKS.map(({ label, href }) => (
@@ -84,10 +94,10 @@ export default function Footer() {
               </Link>
             ))}
           </nav>
-        </div>
+        </motion.div>
 
         {/* ── Col 3: Contact ───────────────────── */}
-        <div className={styles.col}>
+        <motion.div variants={fadeUpVariant} className={styles.col}>
           <h4 className={styles.colTitle}>Contact</h4>
           <div className={styles.contactList}>
             <a href="tel:+94718109283" className={styles.contactRow}>
@@ -112,10 +122,10 @@ export default function Footer() {
               <span>WhatsApp Us</span>
             </a>
           </div>
-        </div>
+        </motion.div>
 
         {/* ── Col 4: Clinic Hours ──────────────── */}
-        <div className={styles.col}>
+        <motion.div variants={fadeUpVariant} className={styles.col}>
           <h4 className={styles.colTitle}>Clinic Hours</h4>
           <div className={styles.hoursList}>
             {HOURS.map(({ day, times }) => (
@@ -140,19 +150,19 @@ export default function Footer() {
             <MapPin size={13} aria-hidden="true" />
             View on Google Maps
           </a>
-        </div>
+        </motion.div>
 
       </div>
 
       {/* ── Bottom bar ───────────────────────── */}
-      <div className={styles.bottom}>
+      <motion.div variants={fadeUpVariant} className={styles.bottom}>
         <div className="container">
           <p>© {new Date().getFullYear()} Charming Dental Clinic. All rights reserved.</p>
           <p className={styles.madeWith}>
             Made with <Heart size={12} className={styles.heart} aria-hidden="true" /> for healthy smiles
           </p>
         </div>
-      </div>
-    </footer>
+      </motion.div>
+    </motion.footer>
   );
 }
