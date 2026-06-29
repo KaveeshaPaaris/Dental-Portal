@@ -23,9 +23,18 @@ export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
   const { user, signOut } = usePatientAuth();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <header className={styles.header}>
+    <header className={`${styles.header} ${scrolled ? styles.headerScrolled : ''}`}>
       <div className={styles.nav}>
         {/* Logo */}
         <Link href="/" className={`${styles.logoBox} ${styles.glassBox}`}>

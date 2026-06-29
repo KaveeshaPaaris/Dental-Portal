@@ -71,26 +71,44 @@ export default async function ServiceDetailPage({
         </div>
       </section>
 
+      {/* ── SECTION 2: Standalone Image ────────────────────── */}
+      {service.standaloneImage && (
+        <section style={{ paddingBottom: '80px' }}>
+          <div className="container" style={{ display: 'flex', justifyContent: 'center' }}>
+            <div style={{ position: 'relative', width: '100%', maxWidth: '800px', aspectRatio: '16/9', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
+              <Image
+                src={service.standaloneImage}
+                alt={`${service.title} representation`}
+                fill
+                style={{ objectFit: 'cover' }}
+              />
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* ── SECTION 3: Benefits ───────────────────────────────── */}
-      <section className={styles.sectionBenefits}>
-        <div className="container">
-          <div className={styles.sectionHeaderCenter}>
-            <h2>Benefits of Treatment</h2>
-            <p>Why patients choose this procedure at Charming Dental Clinic.</p>
-          </div>
-          <div className={styles.benefitsGrid}>
-            {service.benefits.map((benefit, i) => (
-              <div key={i} className={styles.benefitCard}>
-                <div className={styles.benefitIconWrap}>
-                  <benefit.icon size={28} />
+      {service.benefits.length > 0 && (
+        <section className={styles.sectionBenefits}>
+          <div className="container">
+            <div className={styles.sectionHeaderCenter}>
+              <h2>Benefits of Treatment</h2>
+              <p>Why patients choose this procedure at Charming Dental Clinic.</p>
+            </div>
+            <div className={styles.benefitsGrid}>
+              {service.benefits.map((benefit, i) => (
+                <div key={i} className={styles.benefitCard}>
+                  <div className={styles.benefitIconWrap}>
+                    <benefit.icon size={28} />
+                  </div>
+                  <h3>{benefit.title}</h3>
+                  <p>{benefit.desc}</p>
                 </div>
-                <h3>{benefit.title}</h3>
-                <p>{benefit.desc}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ── SECTION 4: FAQs ──────────────────────────────────── */}
       {service.faqs.length > 0 && (
