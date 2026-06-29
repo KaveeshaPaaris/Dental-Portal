@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { CheckCircle, XCircle, Star, MessageSquare, Lock, Sparkles } from 'lucide-react';
+import { CheckCircle, XCircle, Star, MessageSquare, Lock, Sparkles, EyeOff, Eye } from 'lucide-react';
 import api from '@/lib/api';
 import { Review } from '@/types';
 import { useAuth } from '@/context/AuthContext';
@@ -14,6 +14,7 @@ export default function AdminReviewsPage() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [featuringId, setFeaturingId] = useState<string | null>(null);
+  const [hidingId, setHidingId] = useState<string | null>(null);
 
   const fetchReviews = async () => {
     try {
@@ -54,6 +55,20 @@ export default function AdminReviewsPage() {
     }
   };
 
+  const handleHide = async (review: Review) => {
+    const newValue = !review.is_hidden;
+    setHidingId(review.id);
+    try {
+      await api.patch(`/reviews/${review.id}/hide`, { hidden: newValue });
+      toast.success(newValue ? 'Review hidden from public view' : 'Review is now visible to the public');
+      fetchReviews();
+    } catch {
+      toast.error('Failed to update review visibility');
+    } finally {
+      setHidingId(null);
+    }
+  };
+
   if (loading) {
     return (
       <div>
@@ -89,6 +104,19 @@ export default function AdminReviewsPage() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))', gap: 24 }}>
           {reviews.map((review) => (
             <div key={review.id} className="card" style={{ display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden' }}>
+
+              {/* Hidden ribbon */}
+              {review.is_hidden && (
+                <div style={{
+                  position: 'absolute', top: 0, left: 0,
+                  background: 'linear-gradient(135deg, #64748b, #475569)',
+                  color: 'white', fontSize: '0.6875rem', fontWeight: 700,
+                  padding: '4px 12px', borderBottomRightRadius: 8,
+                  display: 'flex', alignItems: 'center', gap: 4,
+                }}>
+                  <EyeOff size={10} /> HIDDEN
+                </div>
+              )}
 
               {/* Featured ribbon */}
               {review.is_featured && (
@@ -168,6 +196,23 @@ export default function AdminReviewsPage() {
                         : review.is_featured
                           ? 'Remove from Homepage'
                           : 'Feature on Homepage'}
+                    </button>
+                  )}
+
+                  {/* Hide / Show toggle (for any accepted review) */}
+                  {review.status === 'ACCEPTED' && (
+                    <button
+                      onClick={() => handleHide(review)}
+                      disabled={hidingId === review.id}
+                      className={review.is_hidden ? 'btn btn-secondary' : 'btn btn-danger'}
+                      style={{ width: '100%', opacity: review.is_hidden ? 1 : 0.85 }}
+                    >
+                      {review.is_hidden ? <Eye size={16} /> : <EyeOff size={16} />}
+                      {hidingId === review.id
+                        ? 'Updating...'
+                        : review.is_hidden
+                          ? 'Show to Public'
+                          : 'Hide from Public'}
                     </button>
                   )}
                 </div>

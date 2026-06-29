@@ -6,6 +6,7 @@ export async function getPublicReviews() {
     .from('reviews')
     .select('id, patient_name, content, rating, created_at')
     .eq('status', 'ACCEPTED')
+    .eq('is_hidden', false)
     .order('created_at', { ascending: false });
 
   if (error) {
@@ -21,6 +22,7 @@ export async function getFeaturedReviews() {
     .select('id, patient_name, content, rating, created_at')
     .eq('status', 'ACCEPTED')
     .eq('is_featured', true)
+    .eq('is_hidden', false)
     .order('created_at', { ascending: false });
 
   if (error) {
@@ -140,5 +142,17 @@ export async function featureReview(id: string, featured: boolean) {
     .single();
 
   if (error || !data) throw createError('Failed to update review', 500);
+  return data;
+}
+
+export async function hideReview(id: string, hidden: boolean) {
+  const { data, error } = await supabase
+    .from('reviews')
+    .update({ is_hidden: hidden })
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error || !data) throw createError('Failed to update review visibility', 500);
   return data;
 }
