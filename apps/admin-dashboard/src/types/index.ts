@@ -81,6 +81,7 @@ export interface InventoryItem {
   current_quantity: number;
   minimum_threshold: number;
   is_low_stock: boolean;
+  image_url?: string;
   created_at: string;
   updated_at: string;
 }

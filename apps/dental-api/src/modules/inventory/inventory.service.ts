@@ -16,6 +16,7 @@ export async function createItem(input: {
   unit?: string;
   current_quantity: number;
   minimum_threshold: number;
+  image_url?: string;
 }, adminId: string) {
   const { data, error } = await supabase
     .from('inventory')
@@ -31,6 +32,7 @@ export async function updateItem(id: string, input: Partial<{
   description: string;
   unit: string;
   minimum_threshold: number;
+  image_url: string;
 }>, adminId: string) {
   const { data, error } = await supabase
     .from('inventory')
