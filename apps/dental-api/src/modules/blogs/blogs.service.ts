@@ -2,7 +2,42 @@ import { supabase } from '../../config/supabase';
 import { createError } from '../../middleware/error.middleware';
 import type { CreateBlogInput, UpdateBlogInput } from './blogs.schema';
 
-// ─── PUBLIC ──────────────────────────────────────────────────
+// ─── Helpers ─────────────────────────────────────────────────────
+
+/**
+ * Convert is_published boolean (from UI) → status string (DB source of truth).
+ * The DB column `is_published` is a GENERATED column, so we never write it directly.
+ */
+function toStatus(isPublished: boolean): 'PUBLISHED' | 'DRAFT' {
+  return isPublished ? 'PUBLISHED' : 'DRAFT';
+}
+
+/**
+ * Build a clean DB insert/update payload from a validated input object.
+ * Strips is_published and maps it to status. Clears empty strings to null.
+ */
+function buildPayload(input: CreateBlogInput | UpdateBlogInput): Record<string, unknown> {
+  const { is_published, cover_image, tags, ...rest } = input as CreateBlogInput;
+
+  const payload: Record<string, unknown> = { ...rest };
+
+  // Map boolean → status enum
+  if (is_published !== undefined) {
+    payload.status = toStatus(is_published);
+  }
+
+  // Empty string → null for nullable URL field
+  payload.cover_image = cover_image || null;
+
+  // Ensure tags is always an array (not undefined)
+  if (tags !== undefined) {
+    payload.tags = tags;
+  }
+
+  return payload;
+}
+
+// ─── PUBLIC ──────────────────────────────────────────────────────
 
 export async function getPublishedBlogs(page = 1, limit = 12) {
   const from = (page - 1) * limit;
@@ -10,8 +45,8 @@ export async function getPublishedBlogs(page = 1, limit = 12) {
 
   const { data, error, count } = await supabase
     .from('blogs')
-    .select('id, title, slug, excerpt, category, cover_image, published_at, created_at', { count: 'exact' })
-    .eq('is_published', true)
+    .select('id, title, slug, excerpt, category, cover_image, author, reading_time, published_at, created_at', { count: 'exact' })
+    .eq('status', 'PUBLISHED')
     .order('published_at', { ascending: false })
     .range(from, to);
 
@@ -24,14 +59,14 @@ export async function getBlogBySlug(slug: string) {
     .from('blogs')
     .select('*')
     .eq('slug', slug)
-    .eq('is_published', true)
+    .eq('status', 'PUBLISHED')
     .single();
 
   if (error || !data) throw createError('Blog post not found', 404);
   return data;
 }
 
-// ─── ADMIN ───────────────────────────────────────────────────
+// ─── ADMIN ───────────────────────────────────────────────────────
 
 export async function getAllBlogs() {
   const { data, error } = await supabase
@@ -44,14 +79,17 @@ export async function getAllBlogs() {
 }
 
 export async function createBlog(input: CreateBlogInput, authorId: string) {
+  const payload = buildPayload(input);
+  payload.author_id = authorId;
+
+  // Set published_at when first published
+  if (input.is_published) {
+    payload.published_at = new Date().toISOString();
+  }
+
   const { data, error } = await supabase
     .from('blogs')
-    .insert({
-      ...input,
-      cover_image: input.cover_image || null,
-      author_id: authorId,
-      published_at: input.is_published ? new Date().toISOString() : null,
-    })
+    .insert(payload)
     .select()
     .single();
 
@@ -63,12 +101,10 @@ export async function createBlog(input: CreateBlogInput, authorId: string) {
 }
 
 export async function updateBlog(id: string, input: UpdateBlogInput) {
-  // If publishing for the first time, set published_at
-  const updateData: Record<string, unknown> = { ...input };
-  if (input.cover_image === '') updateData.cover_image = null;
+  const updateData = buildPayload(input as CreateBlogInput);
 
+  // Set published_at only on first publish (not if already published)
   if (input.is_published === true) {
-    // Check if it was previously unpublished
     const { data: existing } = await supabase
       .from('blogs')
       .select('published_at')
