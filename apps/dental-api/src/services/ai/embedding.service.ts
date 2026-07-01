@@ -31,6 +31,7 @@ export async function generateEmbedding(text: string): Promise<number[]> {
     const result = await client.models.embedContent({
       model: env.EMBEDDING_MODEL,
       contents: text.trim(),
+      config: { outputDimensionality: 768 },
     });
 
     const values = result.embeddings?.[0]?.values;
