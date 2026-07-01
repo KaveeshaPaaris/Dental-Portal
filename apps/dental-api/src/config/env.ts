@@ -31,8 +31,8 @@ const envSchema = z.object({
   // AI (Gemini)
   GEMINI_API_KEY: z.string().min(1, 'GEMINI_API_KEY is required'),
   EMBEDDING_MODEL: z.string().default('gemini-embedding-2'),
-  CHAT_MODEL: z.string().default('gemini-2.0-flash'),
-  SIMILARITY_THRESHOLD: z.coerce.number().min(0).max(1).default(0.7),
+  CHAT_MODEL: z.string().default('gemini-2.5-flash'),
+  SIMILARITY_THRESHOLD: z.coerce.number().min(0).max(1).default(0.5),
   MAX_RETRIEVAL_RESULTS: z.coerce.number().int().min(1).max(20).default(5),
 });
 
