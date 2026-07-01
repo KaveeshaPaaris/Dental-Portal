@@ -112,14 +112,17 @@ export interface Notification {
   created_at: string;
 }
 
-// ─── FAQs ────────────────────────────────────────────────────
-export interface FAQ {
+// ─── Knowledge Base (RAG) ──────────────────────────────────
+export type KnowledgeBaseStatus = 'DRAFT' | 'PUBLISHED';
+
+export interface KnowledgeBaseArticle {
   id: string;
-  question: string;
-  answer: string;
-  keywords?: string[];
-  is_active: boolean;
+  title: string;
+  category: string;
+  content: string;
+  status: KnowledgeBaseStatus;
   created_at: string;
+  updated_at: string;
 }
 
 // ─── Site Content ─────────────────────────────────────────────
