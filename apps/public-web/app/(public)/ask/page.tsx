@@ -30,23 +30,31 @@ export default function AskPage() {
 
     const userMessage = input.trim();
     setInput('');
-    setMessages(prev => [...prev, { id: Date.now().toString(), sender: 'user', text: userMessage }]);
+
+    const newUserMsg: Message = { id: Date.now().toString(), sender: 'user', text: userMessage };
+    setMessages(prev => [...prev, newUserMsg]);
     setIsTyping(true);
 
     try {
-      const res = await api.post('/faqs/ask', { question: userMessage });
+      // Build conversation history for future multi-turn RAG support
+      const history = [...messages, newUserMsg].map(m => ({
+        role: m.sender === 'user' ? 'user' : 'assistant' as 'user' | 'assistant',
+        content: m.text,
+      }));
+
+      const res = await api.post('/ai-chat/message', { message: userMessage, history });
       const answer = res.data.answer;
-      
+
       setTimeout(() => {
         setMessages(prev => [...prev, { id: (Date.now() + 1).toString(), sender: 'bot', text: answer }]);
         setIsTyping(false);
-      }, 500); // Small delay to feel more natural
+      }, 500);
     } catch (error) {
       setTimeout(() => {
-        setMessages(prev => [...prev, { 
-          id: (Date.now() + 1).toString(), 
-          sender: 'bot', 
-          text: 'I’m sorry, I am having trouble connecting to my knowledge base right now. Please call us at +1 (555) 123-4567.' 
+        setMessages(prev => [...prev, {
+          id: (Date.now() + 1).toString(),
+          sender: 'bot',
+          text: "I'm sorry, I'm having trouble connecting right now. Please call us at +94 71 810 9283 or WhatsApp us.",
         }]);
         setIsTyping(false);
       }, 500);

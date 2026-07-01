@@ -12,33 +12,33 @@ import { FaFacebookF, FaInstagram, FaWhatsapp } from 'react-icons/fa';
 import styles from './Footer.module.css';
 
 const QUICK_LINKS = [
-  { label: 'Home',             href: '/' },
-  { label: 'Services',         href: '/services' },
-  { label: 'Blogs',            href: '/blogs' },
-  { label: 'About Us',         href: '/about' },
-  { label: 'Contact',          href: '/contact' },
+  { label: 'Home', href: '/' },
+  { label: 'Services', href: '/services' },
+  { label: 'Blogs', href: '/blogs' },
+  { label: 'About Us', href: '/about' },
+  { label: 'Contact', href: '/contact' },
   { label: 'Book Appointment', href: '/book' },
 ];
 
 const SOCIAL = [
-  { icon: FaFacebookF, href: 'https://facebook.com',              label: 'Facebook' },
-  { icon: FaInstagram, href: 'https://instagram.com',             label: 'Instagram' },
-  { icon: FaWhatsapp,  href: 'https://wa.me/94718109283',         label: 'WhatsApp' },
+  { icon: FaFacebookF, href: 'https://facebook.com', label: 'Facebook' },
+  { icon: FaInstagram, href: 'https://instagram.com', label: 'Instagram' },
+  { icon: FaWhatsapp, href: 'https://wa.me/94718109283', label: 'WhatsApp' },
 ];
 
 const HOURS = [
   { day: 'Mon – Wed', times: ['9 AM – 1 PM', '5 PM – 11 PM'] },
-  { day: 'Thursday',  times: ['9 AM – 1 PM'] },
-  { day: 'Friday',    times: ['9 AM – 5 PM'] },
-  { day: 'Saturday',  times: ['3:30 PM – 11 PM'] },
-  { day: 'Sunday',    times: ['Call in Advance'] },
+  { day: 'Thursday', times: ['9 AM – 1 PM'] },
+  { day: 'Friday', times: ['9 AM – 5 PM'] },
+  { day: 'Saturday', times: ['3:30 PM – 11 PM'] },
+  { day: 'Sunday', times: ['Call in Advance'] },
 ];
 
 export default function Footer() {
   const { theme } = useTheme();
 
   return (
-    <motion.footer 
+    <motion.footer
       className={styles.footer}
       initial="hidden"
       whileInView="visible"
@@ -53,9 +53,9 @@ export default function Footer() {
             <Image
               src={theme === 'dark' ? '/logo_dark.png' : '/logo.png'}
               alt="Charming Dental Clinic"
-              width={200}
-              height={56}
-              style={{ objectFit: 'contain', width: 'auto', height: '56px' }}
+              width={250}
+              height={110}
+              style={{ objectFit: 'contain', objectPosition: 'left', width: 'auto', height: '110px' }}
             />
           </div>
           <p className={styles.tagline}>

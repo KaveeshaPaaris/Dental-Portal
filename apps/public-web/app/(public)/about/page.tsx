@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import { Shield } from 'lucide-react';
+import { FadeUp, SlideIn, FloatAnimation, RevealOnScroll } from '@/components/animations';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
@@ -72,32 +74,61 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className={styles.teamSection}>
-          <div className={styles.teamHeader}>
-            <h2>Meet the Doctor</h2>
-            <span className={styles.doctorLabel}>CARING FOR YOUR SMILE WITH EXPERIENCE</span>
-          </div>
+        <section className={styles.teamSection} aria-label="Meet the Doctor">
+          <div className={styles.doctorGrid}>
+            
+            {/* Left Column: Image */}
+            <SlideIn direction="left" delay={0} className={styles.doctorImageCol}>
+              <div className={styles.doctorAbstractShape} />
+              <FloatAnimation className={styles.doctorImageWrapper}>
+                <Image
+                  src="/doctor_croped.jpg"
+                  alt="Dr. Chaaminda Paaris"
+                  fill
+                  unoptimized={true}
+                  style={{ objectFit: 'cover', objectPosition: 'center' }}
+                  sizes="(max-width: 992px) 100vw, 45vw"
+                />
+              </FloatAnimation>
+            </SlideIn>
 
-          <div className={styles.teamGrid}>
-            {DOCTORS.map((doc) => (
-              <div key={doc.id} className={styles.doctorCard}>
-                <div className={styles.doctorImageWrapper}>
-                  <Image
-                    src={doc.imageUrl}
-                    alt={doc.name}
-                    fill
-                    unoptimized={true}
-                    style={{ objectFit: 'cover', objectPosition: 'center' }}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
-                  />
+            {/* Right Column: Content */}
+            <div className={styles.doctorContentCol}>
+              <FadeUp delay={0.1}>
+                <span className={styles.doctorLabel}>MEET THE DOCTOR</span>
+              </FadeUp>
+              
+              <FadeUp delay={0.2}>
+                <h2 className={styles.doctorName}>Dr. Chaaminda Paaris</h2>
+                <div className={styles.doctorSpecialty}>Chief Dentist</div>
+              </FadeUp>
+
+              <FadeUp delay={0.35}>
+                <div className={styles.doctorQualifications}>
+                  BDS (University of Peradeniya)<br/>
+                  DHDP (University of Colombo)
                 </div>
-                <div className={styles.doctorInfo}>
-                  <h3 className={styles.doctorName}>{doc.name}</h3>
-                  <div className={styles.doctorSpecialty}>{doc.specialty}</div>
-                  <p className={styles.doctorBio}>{doc.bio}</p>
+              </FadeUp>
+
+              <RevealOnScroll delay={0.5} className={styles.doctorRegBadge}>
+                <Shield className={styles.doctorRegIcon} size={18} />
+                <span>SLMC Registration No. 1634</span>
+              </RevealOnScroll>
+
+              <FadeUp delay={0.5}>
+                <p className={styles.doctorBio}>
+                  Delivering trusted, ethical and patient-focused dental care with over two decades of clinical experience, combining modern dentistry with a gentle and compassionate approach.
+                </p>
+              </FadeUp>
+
+              <FadeUp delay={0.65}>
+                <div className={styles.doctorExpBadge}>
+                  <span className={styles.expNumber}>20+</span>
+                  <span className={styles.expText}>Years of<br/>Experience</span>
                 </div>
-              </div>
-            ))}
+              </FadeUp>
+            </div>
+            
           </div>
         </section>
       </div>

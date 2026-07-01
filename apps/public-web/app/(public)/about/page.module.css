@@ -91,86 +91,181 @@
   letter-spacing: 0.05em;
 }
 
+/* ─── Meet the Doctor Redesign ───────────────────────────── */
 .teamSection {
   margin-top: 80px;
+  padding: 80px 0;
+  background-color: #F8FAFC;
+  overflow: hidden;
 }
 
-.teamHeader {
-  text-align: center;
-  max-width: 600px;
-  margin: 0 auto 56px;
+.doctorGrid {
+  display: grid;
+  grid-template-columns: 38% 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+@media (max-width: 992px) {
+  .doctorGrid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+}
+
+.doctorImageCol {
+  position: relative;
+  width: 100%;
+}
+
+.doctorAbstractShape {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  right: -20px;
+  bottom: -20px;
+  background: #D9ECFF;
+  border-radius: 40px;
+  z-index: 0;
+  transform: rotate(-3deg);
+  animation: slowRotate 12s infinite linear;
+}
+
+@keyframes slowRotate {
+  0% { transform: rotate(-3deg); }
+  50% { transform: rotate(1deg); }
+  100% { transform: rotate(-3deg); }
+}
+
+.doctorImageWrapper {
+  position: relative;
+  width: 100%;
+  height: 460px;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(15, 94, 168, 0.08);
+  z-index: 1;
+  background: white;
+}
+
+.doctorImageWrapper img {
+  transition: transform 0.4s ease;
+}
+
+.doctorImageWrapper:hover img {
+  transform: scale(1.03);
+}
+
+@media (max-width: 992px) {
+  .doctorImageWrapper {
+    height: 400px;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+}
+
+.doctorContentCol {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 16px;
+  align-items: flex-start;
+  gap: 20px;
+  z-index: 2;
+}
+
+@media (max-width: 992px) {
+  .doctorContentCol {
+    align-items: center;
+  }
 }
 
 .doctorLabel {
   font-size: 0.8125rem;
   font-weight: 700;
   letter-spacing: 0.1em;
-  color: var(--color-primary);
-}
-
-.teamHeader h2 {
-  font-size: 2.25rem;
-  font-weight: 800;
-  margin: 0;
-  color: var(--color-text-primary);
-  line-height: 1.2;
-}
-
-.teamGrid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 32px;
-}
-
-.doctorCard {
-  width: 100%;
-  max-width: 350px;
-  text-align: center;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
-}
-
-
-.doctorCard:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-}
-
-.doctorImageWrapper {
-  position: relative;
-  width: 100%;
-  height: 320px;
-  background: var(--color-surface-2);
-}
-
-.doctorInfo {
-  padding: 24px;
+  color: #0F5EA8;
+  text-transform: uppercase;
 }
 
 .doctorName {
-  font-size: 1.5rem;
-  margin-bottom: 4px;
-  color: var(--color-text-primary);
+  font-size: 36px;
+  font-weight: 700;
+  color: #1E293B;
+  margin: 0;
+  line-height: 1.2;
 }
 
 .doctorSpecialty {
-  color: var(--color-primary);
+  color: #0F5EA8;
+  font-weight: 600;
+  font-size: 1.125rem;
+}
+
+.doctorQualifications {
+  font-size: 18px;
+  color: #334155;
+  line-height: 1.6;
+}
+
+.doctorRegBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid #D9ECFF;
+  border-radius: 12px;
+  background: white;
+  font-size: 16px;
+  color: #1E293B;
   font-weight: 500;
-  margin-bottom: 16px;
+  transition: box-shadow 0.3s ease;
+}
+
+.doctorRegBadge:hover {
+  box-shadow: 0 0 15px rgba(217, 236, 255, 0.8);
+}
+
+.doctorRegIcon {
+  color: #0F5EA8;
 }
 
 .doctorBio {
-  color: var(--color-text-secondary);
-  font-size: 0.9375rem;
-  line-height: 1.6;
+  font-size: 17px;
+  line-height: 1.8;
+  color: #475569;
+  max-width: 500px;
+}
+
+@media (max-width: 992px) {
+  .doctorBio {
+    margin: 0 auto;
+  }
+}
+
+.doctorExpBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+  padding: 12px 20px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(15, 94, 168, 0.05);
+}
+
+.expNumber {
+  font-size: 32px;
+  font-weight: 800;
+  color: #0F5EA8;
+  line-height: 1;
+}
+
+.expText {
+  font-size: 14px;
+  color: #64748B;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: left;
 }
 
 @media (max-width: 992px) {
