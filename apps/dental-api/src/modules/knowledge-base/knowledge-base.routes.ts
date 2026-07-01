@@ -1,17 +1,24 @@
 import { Router } from 'express';
 import { verifyToken } from '../../middleware/auth.middleware';
 import { requireRole } from '../../middleware/role.middleware';
-import * as controller from './knowledge-base.controller';
+import * as articleController from './knowledge-base.controller';
+import * as chunkController from './chunks.controller';
 
 const router = Router();
 
-// All knowledge base routes are admin-only
+// All routes require admin authentication
 router.use(verifyToken, requireRole('ADMIN'));
 
-router.get('/',         controller.getAllArticles);
-router.get('/:id',      controller.getArticleById);
-router.post('/',        controller.createArticle);
-router.patch('/:id',    controller.updateArticle);
-router.delete('/:id',   controller.deleteArticle);
+// ─── Articles ─────────────────────────────────────────────────
+router.get('/',           articleController.getAllArticles);
+router.get('/:id',        articleController.getArticleById);
+router.post('/',          articleController.createArticle);
+router.patch('/:id',      articleController.updateArticle);
+router.delete('/:id',     articleController.deleteArticle);
+
+// ─── Chunks ───────────────────────────────────────────────────
+router.get('/chunks/stats',       chunkController.getChunkStats);
+router.get('/:id/chunks',         chunkController.getChunks);
+router.post('/:id/rechunk',       chunkController.rechunkArticle);
 
 export default router;
