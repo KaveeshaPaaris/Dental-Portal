@@ -156,14 +156,11 @@ export default function HomePage() {
       {/* ─── Meet the Doctor ──────────────────────────────── */}
       <section className={styles.doctorSection} aria-label="Meet the Doctor">
         <div className="container">
-          <FadeUp>
-            <div className={styles.doctorHeader}>
-              <h2>Meet the Doctor</h2>
-              <span className={styles.doctorLabel}>CARING FOR YOUR SMILE WITH EXPERIENCE</span>
-            </div>
-          </FadeUp>
           <div className={styles.doctorGrid}>
-            <SlideIn direction="left" className={styles.doctorCard}>
+            
+            {/* Left Column: Image */}
+            <SlideIn direction="left" delay={0} className={styles.doctorImageCol}>
+              <div className={styles.doctorAbstractShape} />
               <FloatAnimation className={styles.doctorImageWrapper}>
                 <Image
                   src="/doctor_croped.jpg"
@@ -171,17 +168,49 @@ export default function HomePage() {
                   fill
                   unoptimized={true}
                   style={{ objectFit: 'cover', objectPosition: 'center' }}
-                  sizes="(max-width: 768px) 100vw, 350px"
+                  sizes="(max-width: 992px) 100vw, 45vw"
                 />
               </FloatAnimation>
-              <FadeUp delay={0.25} className={styles.doctorInfo}>
-                <h3 className={styles.doctorName}>Dr. Chaaminda Paaris</h3>
+            </SlideIn>
+
+            {/* Right Column: Content */}
+            <div className={styles.doctorContentCol}>
+              <FadeUp delay={0.1}>
+                <span className={styles.doctorLabel}>MEET THE DOCTOR</span>
+              </FadeUp>
+              
+              <FadeUp delay={0.2}>
+                <h2 className={styles.doctorName}>Dr. Chaaminda Paaris</h2>
                 <div className={styles.doctorSpecialty}>Chief Dentist</div>
+              </FadeUp>
+
+              <FadeUp delay={0.35}>
+                <div className={styles.doctorQualifications}>
+                  BDS (University of Peradeniya)<br/>
+                  DHDP (University of Colombo)
+                </div>
+              </FadeUp>
+
+              <RevealOnScroll delay={0.5} className={styles.doctorRegBadge}>
+                <Shield className={styles.doctorRegIcon} size={18} />
+                <span>SLMC Registration No. 1634</span>
+              </RevealOnScroll>
+
+              <FadeUp delay={0.5}>
                 <p className={styles.doctorBio}>
-                  Delivering trusted dental care with over two decades of experience
+                  Delivering trusted, ethical and patient-focused dental care with over two decades of clinical experience, combining modern dentistry with a gentle and compassionate approach.
                 </p>
               </FadeUp>
-            </SlideIn>
+
+              <FadeUp delay={0.65}>
+                <div className={styles.doctorExpBadge}>
+                  <span className={styles.expNumber}>20+</span>
+                  <span className={styles.expText}>Years of<br/>Experience</span>
+                </div>
+              </FadeUp>
+
+            </div>
+            
           </div>
         </div>
       </section>

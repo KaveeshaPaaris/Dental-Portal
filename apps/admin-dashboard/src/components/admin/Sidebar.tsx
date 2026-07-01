@@ -6,18 +6,18 @@ import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import {
   LayoutDashboard, Calendar, Star, Package,
-  HelpCircle, FileText, Users, Settings, LogOut, Newspaper,
+  FileText, Users, Settings, LogOut, Newspaper, BookOpen,
 } from 'lucide-react';
 import styles from './Sidebar.module.css';
 
 const NAV_ITEMS = [
-  { label: 'Dashboard',   href: '/admin/dashboard',      icon: LayoutDashboard },
-  { label: 'Bookings',    href: '/admin/bookings',        icon: Calendar },
-  { label: 'Schedule',    href: '/admin/bookings/schedule', icon: Calendar },
-  { label: 'Reviews',     href: '/admin/reviews',         icon: Star },
-  { label: 'Inventory',   href: '/admin/inventory',       icon: Package },
-  { label: 'FAQs',        href: '/admin/faqs',            icon: HelpCircle },
-  { label: 'Blog Posts',  href: '/admin/blogs',           icon: Newspaper },
+  { label: 'Dashboard',      href: '/admin/dashboard',        icon: LayoutDashboard },
+  { label: 'Bookings',       href: '/admin/bookings',          icon: Calendar },
+  { label: 'Schedule',       href: '/admin/bookings/schedule', icon: Calendar },
+  { label: 'Reviews',        href: '/admin/reviews',           icon: Star },
+  { label: 'Inventory',      href: '/admin/inventory',         icon: Package },
+  { label: 'Blog Posts',     href: '/admin/blogs',             icon: Newspaper },
+  { label: 'Knowledge Base', href: '/admin/knowledge-base',    icon: BookOpen },
 ];
 
 const SUPER_ADMIN_ITEMS = [
