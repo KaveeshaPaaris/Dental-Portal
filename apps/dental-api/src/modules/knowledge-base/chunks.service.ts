@@ -2,24 +2,17 @@
  * Knowledge Base Chunks Service
  *
  * Manages the chunked representations of knowledge base articles.
- * Each article is split into overlapping text chunks which will later
- * receive vector embeddings for semantic search (RAG).
+ * Each article is split into overlapping text chunks, each of which
+ * receives a 768-dim vector embedding via Gemini text-embedding-004.
  *
- * Current state:
- *   - Chunking pipeline: ACTIVE  (text → chunks stored in DB)
- *   - Embedding pipeline: PENDING (chunks have embedding_status = 'PENDING')
- *   - Vector search:      STUB    (falls back to full-text until embeddings exist)
- *
- * When embeddings are ready:
- *   1. A background job reads chunks with embedding_status = 'PENDING'
- *   2. It calls the embedding model (e.g. Gemini text-embedding-004)
- *   3. It writes the vector to the `embedding` column and sets status = 'DONE'
- *   4. searchSimilarChunks() switches to the pgvector RPC automatically
+ * Pipeline:
+ *   Article save → regenerateChunks() → embedArticleChunks() → pgvector search
  */
 
 import { supabase } from '../../config/supabase';
 import { createError } from '../../middleware/error.middleware';
 import { chunkText } from '../../utils/text-chunker';
+import { embedArticleChunks } from '../../services/ai/embedding.service';
 
 export type EmbeddingStatus = 'PENDING' | 'PROCESSING' | 'DONE' | 'FAILED';
 
@@ -112,6 +105,12 @@ export async function regenerateChunks(
     .select('id, article_id, chunk_index, content, token_count, embedding_status, created_at, updated_at');
 
   if (error || !data) throw createError('Failed to create chunks', 500);
+
+  // Fire embedding pipeline asynchronously — does not block the response
+  embedArticleChunks(articleId).catch(err =>
+    console.error(`[ChunksService] Embedding pipeline failed for article ${articleId}:`, err.message),
+  );
+
   return data as KnowledgeBaseChunk[];
 }
 
@@ -130,59 +129,26 @@ export async function deleteChunksByArticleId(articleId: string): Promise<void> 
 }
 
 // ─── RAG RETRIEVAL ────────────────────────────────────────────
+// Note: The primary retrieval path is now in services/ai/retrieval.service.ts
+// which calls match_knowledge_chunks() directly.
+// This function is retained for backward compatibility.
 
-/**
- * searchSimilarChunks — Semantic retrieval surface for the RAG pipeline.
- *
- * Current state: STUB — returns random published chunks because embeddings
- * don't exist yet. This function's signature will not change when the
- * vector search is activated.
- *
- * Activation checklist:
- *   [ ] Embedding pipeline is running (chunks have embedding_status = 'DONE')
- *   [ ] pgvector extension is enabled in Supabase
- *   [ ] match_knowledge_chunks() SQL function is deployed
- *   [ ] Uncomment the supabase.rpc() call below and remove the fallback
- */
 export async function searchSimilarChunks(
   queryEmbedding: number[],
   options: { topK?: number; matchThreshold?: number } = {},
 ): Promise<ChunkSearchResult[]> {
   const { topK = 5, matchThreshold = 0.7 } = options;
 
-  // ── ACTIVE (uncomment when embeddings are ready) ──────────────
-  // const { data, error } = await supabase.rpc('match_knowledge_chunks', {
-  //   query_embedding:  queryEmbedding,
-  //   match_threshold:  matchThreshold,
-  //   match_count:      topK,
-  // });
-  // if (error) throw createError('Vector search failed', 500);
-  // return (data ?? []) as ChunkSearchResult[];
-  // ─────────────────────────────────────────────────────────────
+  const { data, error } = await supabase.rpc('match_knowledge_chunks', {
+    query_embedding:  queryEmbedding,
+    match_threshold:  matchThreshold,
+    match_count:      topK,
+  });
 
-  // ── STUB fallback ─────────────────────────────────────────────
-  // Returns published chunks ordered by creation date until embeddings exist.
-  const { data, error } = await supabase
-    .from('knowledge_base_chunks')
-    .select(`
-      id,
-      article_id,
-      chunk_index,
-      content,
-      token_count,
-      knowledge_base!inner ( status )
-    `)
-    .eq('knowledge_base.status', 'PUBLISHED')
-    .order('created_at', { ascending: false })
-    .limit(topK);
+  if (error) {
+    console.error('[ChunksService] pgvector RPC error:', error.message);
+    return [];
+  }
 
-  if (error) return [];
-  return (data ?? []).map((row: any) => ({
-    id:          row.id,
-    article_id:  row.article_id,
-    chunk_index: row.chunk_index,
-    content:     row.content,
-    token_count: row.token_count,
-  }));
-  // ─────────────────────────────────────────────────────────────
+  return (data ?? []) as ChunkSearchResult[];
 }
