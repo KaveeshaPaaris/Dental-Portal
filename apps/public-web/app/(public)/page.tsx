@@ -2,12 +2,12 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Suspense } from 'react';
-import { ArrowRight, Star, Shield, Clock, Heart } from 'lucide-react';
+import { ArrowRight, Shield } from 'lucide-react';
 import styles from './page.module.css';
 import ReviewsCarousel from '@/components/ReviewsCarousel';
 import { FEATURED_SERVICES } from '@/data/services';
 import { FadeUp, StaggerContainer, ParallaxHeroBg, SlideIn, FloatAnimation, RevealOnScroll } from '@/components/animations';
-import { AnimatedFeatureCard, AnimatedServiceCard, AnimatedServiceLink } from '@/components/animations/AnimatedCards';
+import { AnimatedServiceLink } from '@/components/animations/AnimatedCards';
 import AnimatedCounter from '@/components/AnimatedCounter';
 
 export const metadata: Metadata = {
@@ -16,11 +16,34 @@ export const metadata: Metadata = {
     'Book your dental appointment online. Expert care for all your dental needs — teeth whitening, orthodontics, implants, and more.',
 };
 
-const FEATURES = [
-  { icon: Shield, title: 'Expert Doctors', desc: 'Board-certified specialists with 20+ years of experience.' },
-  { icon: Clock, title: 'Flexible Hours', desc: 'Morning and evening sessions to fit your schedule.' },
-  { icon: Heart, title: 'Gentle Care', desc: 'Patient-first approach in a comfortable environment.' },
-  { icon: Star, title: '5-Star Rated', desc: 'Hundreds of happy patients trust us with their smiles.' },
+const PILLARS = [
+  {
+    id: 'flexible-hours',
+    title: 'We work around your day',
+    points: [
+      'Morning & evening slots available',
+      'Book online, anytime',
+      'Same-week appointments on request',
+    ],
+  },
+  {
+    id: 'gentle-care',
+    title: 'Kind care for every age',
+    points: [
+      'Gentle treatment for kids & adults',
+      'Calm, unhurried environment',
+      'No rush, no judgment — ever',
+    ],
+  },
+  {
+    id: 'sterilization',
+    title: 'Clean tools. Every single time.',
+    points: [
+      'Hospital-grade sterilization',
+      'Strict protocols before & after every procedure',
+      'Your safety is never a trade-off',
+    ],
+  },
 ];
 
 export default function HomePage() {
@@ -93,22 +116,19 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── Features ─────────────────────────────────────── */}
-      {/* [FIX #14] Added aria-label for landmark navigation */}
-      <section className={styles.features} aria-label="Why Choose Us">
-        <div className="container">
-          <StaggerContainer className={styles.featuresGrid}>
-            {FEATURES.map(({ icon: Icon, title, desc }) => (
-              <AnimatedFeatureCard key={title} className={`card ${styles.featureCard}`}>
-                {/* [FIX #20] aria-hidden on decorative icon wrapper */}
-                <div className={styles.featureIcon} aria-hidden="true">
-                  <Icon size={22} />
-                </div>
-                <h3 className={styles.featureTitle}>{title}</h3>
-                <p className={styles.featureDesc}>{desc}</p>
-              </AnimatedFeatureCard>
-            ))}
-          </StaggerContainer>
+      {/* ─── Why Choose Us (3-Pillar Strip) ─────────────────── */}
+      <section className={styles.pillars} aria-label="Why Choose Us">
+        <div className={`container ${styles.pillarsInner}`}>
+          {PILLARS.map((pillar, i) => (
+            <FadeUp key={pillar.id} delay={i * 0.12} className={styles.pillar}>
+              <h3 className={styles.pillarTitle}>{pillar.title}</h3>
+              <ul className={styles.pillarList}>
+                {pillar.points.map((pt) => (
+                  <li key={pt} className={styles.pillarPoint}>{pt}</li>
+                ))}
+              </ul>
+            </FadeUp>
+          ))}
         </div>
       </section>
 
