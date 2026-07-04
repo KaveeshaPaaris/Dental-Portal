@@ -79,7 +79,6 @@ export default function AboutPage() {
             
             {/* Left Column: Image */}
             <SlideIn direction="left" delay={0} className={styles.doctorImageCol}>
-              <div className={styles.doctorAbstractShape} />
               <FloatAnimation className={styles.doctorImageWrapper}>
                 <Image
                   src="/doctor_croped.jpg"
