@@ -58,6 +58,15 @@ export default function AdminBookingsPage() {
     fetchBookings(page);
   }, [page, sortBy, sortOrder, statusFilter, sessionFilter, dateFilter]);
 
+  // Listen for admin-created manual bookings to auto-refresh
+  useEffect(() => {
+    const handleRefresh = () => {
+      fetchBookings(page);
+    };
+    window.addEventListener('booking-created', handleRefresh);
+    return () => window.removeEventListener('booking-created', handleRefresh);
+  }, [page, sortBy, sortOrder, statusFilter, sessionFilter, dateFilter]);
+
   const handleSort = (column: string) => {
     if (sortBy === column) {
       setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');

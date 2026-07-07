@@ -178,3 +178,10 @@ export async function restoreBooking(req: Request, res: Response, next: NextFunc
     res.json(data);
   } catch (err) { next(err); }
 }
+
+export async function hardDeleteBooking(req: Request, res: Response, next: NextFunction) {
+  try {
+    const data = await bookingsService.hardDeleteBooking(req.params.id);
+    res.json(data);
+  } catch (err) { next(err); }
+}
