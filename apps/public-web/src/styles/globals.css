@@ -26,6 +26,11 @@
   --color-surface-hover:  #F0F7FF;
   --color-surface-2:      #EEF4FB;
 
+  /* Custom Section Backgrounds */
+  --color-cta-bg:         linear-gradient(135deg, #5DADE2 0%, #1a6ab5 100%);
+  --color-cta-text:       #FFFFFF;
+  --color-cta-text-sec:   rgba(255, 255, 255, 0.85);
+
   /* Text */
   --color-text-primary:   #1E293B;
   --color-text-secondary: #64748B;
@@ -81,6 +86,11 @@
   --color-surface:        #172033;
   --color-surface-hover:  #1F2A40;
   --color-surface-2:      #243045;
+
+  /* Custom Section Backgrounds */
+  --color-cta-bg:         linear-gradient(135deg, #172033 0%, #0B1220 100%);
+  --color-cta-text:       #F8FAFC;
+  --color-cta-text-sec:   #94A3B8;
 
   --color-text-primary:   #F8FAFC;
   --color-text-secondary: #94A3B8;

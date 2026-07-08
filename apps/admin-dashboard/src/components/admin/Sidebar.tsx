@@ -3,10 +3,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import AdminBookingModal from '@/components/admin/AdminBookingModal';
 import {
   LayoutDashboard, Calendar, Star, Package,
-  FileText, Users, Settings, LogOut, Newspaper, BookOpen,
+  FileText, Users, Settings, LogOut, Newspaper, BookOpen, Plus,
 } from 'lucide-react';
 import styles from './Sidebar.module.css';
 
@@ -27,6 +29,7 @@ const SUPER_ADMIN_ITEMS = [
 export default function AdminSidebar() {
   const pathname = usePathname();
   const { user, signOut } = useAuth();
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
 
   const isActive = (href: string) => {
     if (href === '/admin/dashboard') return pathname === href;
@@ -51,6 +54,16 @@ export default function AdminSidebar() {
       <nav className={styles.nav}>
         <div className={styles.navSection}>
           <span className={styles.navLabel}>Menu</span>
+          
+          <button
+            onClick={() => setIsBookingModalOpen(true)}
+            className={`${styles.navItem} ${styles.bookApptBtn}`}
+            style={{ width: '100%', textAlign: 'left', cursor: 'pointer', background: 'var(--color-primary)', color: 'white', border: 'none', fontWeight: 600, justifyContent: 'center' }}
+          >
+            <Plus size={18} />
+            Book Appointment
+          </button>
+
           {NAV_ITEMS.map(({ label, href, icon: Icon }) => (
             <Link
               key={href}
@@ -96,6 +109,11 @@ export default function AdminSidebar() {
           Sign Out
         </button>
       </div>
+
+      <AdminBookingModal
+        isOpen={isBookingModalOpen}
+        onClose={() => setIsBookingModalOpen(false)}
+      />
     </aside>
   );
 }
