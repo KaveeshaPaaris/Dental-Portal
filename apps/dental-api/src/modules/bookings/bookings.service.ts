@@ -427,3 +427,15 @@ export async function restoreBooking(id: string, adminId: string) {
   return data;
 }
 
+export async function hardDeleteBooking(id: string) {
+  const { data, error } = await supabase
+    .from('bookings')
+    .delete()
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) throw createError('Failed to permanently delete booking', 500);
+  return data;
+}
+

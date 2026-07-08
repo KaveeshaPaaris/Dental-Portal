@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { format } from 'date-fns';
-import { ArrowLeft, RefreshCw, Clock, Calendar, AlertCircle } from 'lucide-react';
+import { ArrowLeft, RefreshCw, Clock, Calendar, AlertCircle, Trash2 } from 'lucide-react';
 import api from '@/lib/api';
 import { Booking } from '@/types';
 import toast from 'react-hot-toast';
@@ -12,6 +12,7 @@ export default function RecycleBinPage() {
   const [deletedBookings, setDeletedBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [restoringId, setRestoringId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const fetchDeleted = async () => {
     setLoading(true);
@@ -39,6 +40,20 @@ export default function RecycleBinPage() {
       toast.error('Failed to restore appointment');
     } finally {
       setRestoringId(null);
+    }
+  };
+
+  const handlePermanentDelete = async (id: string) => {
+    if (!confirm('Are you absolutely sure you want to permanently delete this appointment? This action cannot be undone.')) return;
+    setDeletingId(id);
+    try {
+      await api.delete(`/bookings/${id}/permanent`);
+      toast.success('Appointment permanently deleted');
+      fetchDeleted();
+    } catch (error) {
+      toast.error('Failed to permanently delete appointment');
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -107,14 +122,26 @@ export default function RecycleBinPage() {
                     {booking.deleted_at ? format(new Date(booking.deleted_at), 'MMM dd, yyyy hh:mm a') : 'Unknown'}
                   </td>
                   <td style={{ padding: '16px 24px', textAlign: 'right' }}>
-                    <button 
-                      onClick={() => handleRestore(booking.id)} 
-                      disabled={restoringId === booking.id}
-                      className="btn btn-sm" 
-                      style={{ color: 'var(--color-primary)', background: 'color-mix(in srgb, var(--color-primary) 10%, transparent)', border: '1px solid var(--color-primary)' }}
-                    >
-                      {restoringId === booking.id ? 'Restoring...' : <><RefreshCw size={14} /> Restore</>}
-                    </button>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                      <button 
+                        onClick={() => handleRestore(booking.id)} 
+                        disabled={restoringId === booking.id || deletingId === booking.id}
+                        className="btn btn-sm" 
+                        style={{ color: 'var(--color-primary)', background: 'color-mix(in srgb, var(--color-primary) 10%, transparent)', border: '1px solid var(--color-primary)' }}
+                        title="Restore"
+                      >
+                        {restoringId === booking.id ? 'Restoring...' : <><RefreshCw size={14} /> Restore</>}
+                      </button>
+                      <button 
+                        onClick={() => handlePermanentDelete(booking.id)} 
+                        disabled={restoringId === booking.id || deletingId === booking.id}
+                        className="btn btn-sm" 
+                        style={{ color: 'var(--color-error, #ef4444)', background: 'rgba(239,68,68,0.1)', border: '1px solid var(--color-error, #ef4444)' }}
+                        title="Permanently Delete"
+                      >
+                        {deletingId === booking.id ? 'Deleting...' : <><Trash2 size={14} /> Delete</>}
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

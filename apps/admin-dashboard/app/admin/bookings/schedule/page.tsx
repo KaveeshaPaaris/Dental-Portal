@@ -133,11 +133,12 @@ function MiniCalendar({
 // onClick fires only if the pointer didn't travel (dnd-kit handles this via activationConstraint).
 
 function SortableBookingCard({
-  booking, onClick, showDate,
+  booking, onClick, showDate, queueNumber,
 }: {
   booking: Booking;
   onClick: () => void;
   showDate?: boolean;
+  queueNumber: number;
 }) {
   const {
     attributes, listeners, setNodeRef, transform, transition, isDragging,
@@ -182,15 +183,13 @@ function SortableBookingCard({
 
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-          {booking.appointment_number && (
-            <span style={{
-              background: 'var(--color-primary)', color: '#fff',
-              borderRadius: 6, fontSize: '0.6875rem', fontWeight: 700,
-              padding: '1px 7px', flexShrink: 0,
-            }}>
-              #{booking.appointment_number}
-            </span>
-          )}
+          <span style={{
+            background: 'var(--color-primary)', color: '#fff',
+            borderRadius: 6, fontSize: '0.6875rem', fontWeight: 700,
+            padding: '1px 7px', flexShrink: 0,
+          }}>
+            {queueNumber}
+          </span>
           <span style={{
             fontWeight: 600, color: 'var(--color-text-primary)', fontSize: '0.9rem',
             overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
@@ -214,7 +213,7 @@ function SortableBookingCard({
 
 // ─── Drag Overlay Ghost Card ───────────────────────────────────
 
-function GhostCard({ booking, showDate }: { booking: Booking; showDate?: boolean }) {
+function GhostCard({ booking, showDate, queueNumber }: { booking: Booking; showDate?: boolean; queueNumber: number }) {
   return (
     <div style={{
       display: 'flex', alignItems: 'center', gap: 10,
@@ -231,14 +230,12 @@ function GhostCard({ booking, showDate }: { booking: Booking; showDate?: boolean
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-          {booking.appointment_number && (
-            <span style={{
-              background: 'var(--color-primary)', color: '#fff',
-              borderRadius: 6, fontSize: '0.6875rem', fontWeight: 700, padding: '1px 7px', flexShrink: 0,
-            }}>
-              #{booking.appointment_number}
-            </span>
-          )}
+          <span style={{
+            background: 'var(--color-primary)', color: '#fff',
+            borderRadius: 6, fontSize: '0.6875rem', fontWeight: 700, padding: '1px 7px', flexShrink: 0,
+          }}>
+            {queueNumber}
+          </span>
           <span style={{ fontWeight: 600, color: 'var(--color-text-primary)', fontSize: '0.9rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {booking.patient_name}
           </span>
@@ -327,12 +324,13 @@ function DroppableColumn({
               {isOver ? '↓ Release to drop here' : 'Drop bookings here'}
             </div>
           ) : (
-            items.map(b => (
+            items.map((b, index) => (
               <SortableBookingCard
                 key={b.id}
                 booking={b}
                 onClick={() => onCardClick(b)}
                 showDate={showDate}
+                queueNumber={index + 1}
               />
             ))
           )}
@@ -535,7 +533,13 @@ export default function ScheduleBoardPage() {
   useEffect(() => { fetchBookedDates(); }, [fetchBookedDates]);
   useEffect(() => { fetchSchedule(selectedDate); }, [selectedDate, fetchSchedule]);
 
-  const refresh = () => { fetchSchedule(selectedDate); fetchBookedDates(); };
+  const refresh = useCallback(() => { fetchSchedule(selectedDate); fetchBookedDates(); }, [fetchSchedule, fetchBookedDates, selectedDate]);
+
+  // Listen for admin-created manual bookings to auto-refresh
+  useEffect(() => {
+    window.addEventListener('booking-created', refresh);
+    return () => window.removeEventListener('booking-created', refresh);
+  }, [refresh]);
 
   // ─── Drag handlers ────────────────────────────────────────────
 
@@ -573,9 +577,10 @@ export default function ScheduleBoardPage() {
       if (activeIndex === -1) return prev;
 
       const [moved] = activeItems.splice(activeIndex, 1);
-      const overItemIndex = overItems.findIndex(b => b.id === over.id);
-      // Insert before hovered item, or at end if not over an item
-      const insertAt = overItemIndex >= 0 ? overItemIndex : overItems.length;
+      
+      // The user requested that dragged appointments should ALWAYS go to the end
+      // of the new column, matching the backend acceptBooking behavior.
+      const insertAt = overItems.length;
       overItems.splice(insertAt, 0, moved);
 
       return { ...prev, [activeContainer]: activeItems, [overContainer]: overItems };
@@ -703,6 +708,13 @@ export default function ScheduleBoardPage() {
   const allBookings = [...columns.pending, ...columns.MORNING, ...columns.EVENING];
   const activeBooking = activeId ? allBookings.find(b => b.id === activeId) ?? null : null;
 
+  const getActiveBookingQueueNumber = () => {
+    if (!activeId) return 0;
+    const container = findContainer(activeId, columns);
+    if (!container) return 0;
+    return columns[container].findIndex(b => b.id === activeId) + 1;
+  };
+
   return (
     <div>
       {/* Page header */}
@@ -761,7 +773,7 @@ export default function ScheduleBoardPage() {
               duration: 180,
               easing: 'cubic-bezier(0.18, 0.67, 0.6, 1.22)',
             }}>
-              {activeBooking ? <GhostCard booking={activeBooking} showDate /> : null}
+              {activeBooking ? <GhostCard booking={activeBooking} showDate queueNumber={getActiveBookingQueueNumber()} /> : null}
             </DragOverlay>
           </DndContext>
         )}
