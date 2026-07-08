@@ -1,30 +1,10 @@
-'use client';
-
-import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Search, CheckCircle2 } from 'lucide-react';
-import { SERVICES, CATEGORIES } from '@/data/services';
-import type { ServiceCategory } from '@/data/services';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { SERVICES } from '@/data/services';
 import styles from './page.module.css';
 
-type FilterCategory = 'All' | ServiceCategory;
-
 export default function ServicesPage() {
-  const [query, setQuery] = useState('');
-  const [activeCategory, setActiveCategory] = useState<FilterCategory>('All');
-
-  const filtered = useMemo(() => {
-    return SERVICES.filter((s) => {
-      const matchesCategory = activeCategory === 'All' || s.category === activeCategory;
-      const matchesSearch =
-        query.trim() === '' ||
-        s.title.toLowerCase().includes(query.toLowerCase()) ||
-        s.listingDesc.toLowerCase().includes(query.toLowerCase()) ||
-        s.category.toLowerCase().includes(query.toLowerCase());
-      return matchesCategory && matchesSearch;
-    });
-  }, [query, activeCategory]);
 
   return (
     <div className={styles.page}>
@@ -52,21 +32,8 @@ export default function ServicesPage() {
       {/* ── Grid ─────────────────────────────────── */}
       <section className={styles.gridSection} aria-label="Services list">
         <div className="container">
-          {filtered.length === 0 ? (
-            <div className={styles.empty}>
-              <p>
-                No services match your search.{' '}
-                <button
-                  onClick={() => { setQuery(''); setActiveCategory('All'); }}
-                  className={styles.resetBtn}
-                >
-                  Reset filters
-                </button>
-              </p>
-            </div>
-          ) : (
             <div className={styles.grid}>
-              {filtered.map((s) => (
+              {SERVICES.map((s) => (
                 <Link
                   key={s.slug}
                   href={`/services/${s.slug}`}
@@ -104,7 +71,6 @@ export default function ServicesPage() {
                 </Link>
               ))}
             </div>
-          )}
         </div>
       </section>
 
