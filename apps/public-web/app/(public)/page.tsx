@@ -29,6 +29,9 @@ export const metadata: Metadata = {
   title: 'Charming Dental Clinic — World-Class Dental Care',
   description:
     'Book your dental appointment online. Expert care for all your dental needs — teeth whitening, orthodontics, implants, and more.',
+  alternates: {
+    canonical: 'https://charmingdental.com',
+  },
 };
 
 const PILLARS = [
@@ -164,7 +167,7 @@ export default async function HomePage() {
                 <div className={styles.serviceCardImgWrap}>
                   <Image
                     src={s.image}
-                    alt={s.title}
+                    alt={`${s.title} treatment at Charming Dental Clinic, Negombo`}
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 960px) 50vw, 33vw"
                     className={styles.serviceCardImg}
@@ -200,9 +203,8 @@ export default async function HomePage() {
               <FloatAnimation className={styles.doctorImageWrapper}>
                 <Image
                   src="/doctor_croped.jpg"
-                  alt="Dr. Chaaminda Paaris"
+                  alt="Dr. Chaaminda Paaris — Expert dentist at Charming Dental Clinic, Negombo"
                   fill
-                  unoptimized={true}
                   style={{ objectFit: 'cover', objectPosition: 'center' }}
                   sizes="(max-width: 992px) 100vw, 45vw"
                 />

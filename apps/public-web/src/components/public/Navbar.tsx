@@ -40,9 +40,10 @@ export default function Navbar() {
         <Link href="/" className={`${styles.logoBox} ${styles.glassBox}`}>
           <Image
             src={theme === 'dark' ? '/logo_dark.png' : '/logo.png'}
-            alt="Charming Dental Clinic"
+            alt="Charming Dental Clinic logo — Dentist in Negombo"
             width={240}
             height={64}
+            sizes="140px"
             style={{ objectFit: 'contain', width: '140px', height: '140px' }}
             priority
           />

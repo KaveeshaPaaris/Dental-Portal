@@ -39,7 +39,7 @@ export default function Footer() {
           <div className={styles.logo}>
             <Image
               src="/logo.png"
-              alt="Charming Dental Clinic"
+              alt="Charming Dental Clinic — Dental Clinic in Negombo, Sri Lanka"
               width={250}
               height={110}
               className={styles.logoLight}
@@ -47,7 +47,7 @@ export default function Footer() {
             />
             <Image
               src="/logo_dark.png"
-              alt="Charming Dental Clinic"
+              alt=""
               width={250}
               height={110}
               className={styles.logoDark}
