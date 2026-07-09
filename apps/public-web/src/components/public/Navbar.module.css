@@ -17,14 +17,14 @@
 
 .headerScrolled .glassBox {
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
-  border-color: rgba(255, 255, 255, 0.8);
+  border-color: transparent;
   backdrop-filter: blur(24px) saturate(200%);
   -webkit-backdrop-filter: blur(24px) saturate(200%);
 }
 
 [data-theme='dark'] .headerScrolled .glassBox {
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
-  border-color: rgba(255, 255, 255, 0.25);
+  border-color: transparent;
 }
 
 .glassBox {
@@ -33,9 +33,7 @@
       rgba(255, 255, 255, 0.9) 100%);
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(30px) saturate(300%);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-top-color: rgba(255, 255, 255, 0.7);
-  border-left-color: rgba(255, 255, 255, 0.7);
+  border: none;
   border-radius: 16px;
   box-shadow:
     0 8px 32px 0 rgba(31, 38, 135, 0.07),
@@ -51,9 +49,7 @@
   background: linear-gradient(135deg,
       rgba(23, 32, 51, 0.6) 0%,
       rgba(23, 32, 51, 0.2) 100%);
-  border-color: rgba(255, 255, 255, 0.1);
-  border-top-color: rgba(255, 255, 255, 0.2);
-  border-left-color: rgba(255, 255, 255, 0.2);
+  border: none;
   box-shadow:
     0 8px 32px 0 rgba(0, 0, 0, 0.3),
     inset 0 1px 2px rgba(255, 255, 255, 0.05);
