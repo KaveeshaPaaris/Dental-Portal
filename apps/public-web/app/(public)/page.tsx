@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Suspense } from 'react';
 import { ArrowRight, Shield } from 'lucide-react';
 import styles from './page.module.css';
 import ReviewsCarousel from '@/components/ReviewsCarousel';
@@ -9,6 +8,22 @@ import { FEATURED_SERVICES } from '@/data/services';
 import { FadeUp, StaggerContainer, ParallaxHeroBg, SlideIn, FloatAnimation, RevealOnScroll } from '@/components/animations';
 import { AnimatedServiceLink } from '@/components/animations/AnimatedCards';
 import AnimatedCounter from '@/components/AnimatedCounter';
+import type { Review } from '@/components/ReviewsCarousel';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api/v1';
+
+async function getFeaturedReviews(): Promise<Review[]> {
+  try {
+    const res = await fetch(`${API_URL}/reviews/featured`, {
+      next: { revalidate: 3600 },
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
+}
 
 export const metadata: Metadata = {
   title: 'Charming Dental Clinic — World-Class Dental Care',
@@ -46,7 +61,9 @@ const PILLARS = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const reviews = await getFeaturedReviews();
+
   return (
     // [FIX #16] Wrapped content in <main> for correct landmark semantics
     <main id="main-content">
@@ -235,10 +252,8 @@ export default function HomePage() {
       </section>
 
       {/* ─── Reviews Carousel ──────────────────────────────── */}
-      {/* [FIX #15] Wrapped in Suspense with shimmer skeleton fallback */}
-      <Suspense fallback={<div className={styles.reviewsSkeleton} aria-label="Loading reviews…" />}>
-        <ReviewsCarousel />
-      </Suspense>
+      {/* [FIX #15] Passed reviews directly, removing client-side fetch and Suspense skeleton */}
+      <ReviewsCarousel reviews={reviews} />
 
       {/* ─── CTA Banner ───────────────────────────────────── */}
       {/* [FIX #14] Added aria-label for landmark navigation */}

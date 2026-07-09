@@ -21,6 +21,13 @@
   margin-bottom: 12px;
 }
 
+/* Theme-aware logo toggle */
+.logoLight { display: block; }
+.logoDark  { display: none; }
+
+:global([data-theme="dark"]) .logoLight { display: none; }
+:global([data-theme="dark"]) .logoDark  { display: block; }
+
 .tagline {
   font-size: 0.875rem;
   color: var(--color-text-secondary);

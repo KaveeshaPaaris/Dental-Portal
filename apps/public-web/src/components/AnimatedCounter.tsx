@@ -33,5 +33,12 @@ export default function AnimatedCounter({
     return Math.floor(current) + suffix;
   });
 
-  return <motion.span ref={ref}>{displayValue}</motion.span>;
+  const staticValue = value % 1 !== 0 ? value.toFixed(1) + suffix : Math.floor(value) + suffix;
+
+  return (
+    <>
+      <motion.span ref={ref}>{displayValue}</motion.span>
+      <noscript>{staticValue}</noscript>
+    </>
+  );
 }

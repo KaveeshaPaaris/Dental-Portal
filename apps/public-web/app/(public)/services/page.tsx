@@ -2,7 +2,27 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { SERVICES } from '@/data/services';
+import type { Metadata } from 'next';
 import styles from './page.module.css';
+
+export const metadata: Metadata = {
+  title: 'Our Dental Services — Charming Dental Clinic',
+  description:
+    'Explore our full range of dental services in Negombo — teeth whitening, orthodontics, implants, scaling & polishing, and more. Book your appointment today.',
+  keywords:
+    'dental services, teeth whitening, orthodontics, dental implants, scaling polishing, Negombo dentist, Charming Dental Clinic',
+  alternates: {
+    canonical: 'https://charmingdental.com/services',
+  },
+  openGraph: {
+    title: 'Our Dental Services — Charming Dental Clinic',
+    description:
+      'Comprehensive dental care for your entire family — from routine check-ups to advanced restorative procedures.',
+    url: 'https://charmingdental.com/services',
+    siteName: 'Charming Dental Clinic',
+    type: 'website',
+  },
+};
 
 export default function ServicesPage() {
 
