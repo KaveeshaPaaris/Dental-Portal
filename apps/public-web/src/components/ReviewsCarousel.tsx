@@ -62,7 +62,7 @@ function ReviewCard({ review }: { review: Review }) {
       )}
       <div className={styles.cardFooter}>
         <div className={styles.flagIcon}>
-          <img src="https://flagcdn.com/w40/lk.png" alt="Sri Lanka" width="32" />
+          <img src="https://flagcdn.com/w40/lk.png" alt="Sri Lanka" width="32" height="22" loading="lazy" />
         </div>
         <div>
           <div className={styles.patientName}>{review.patient_name}</div>

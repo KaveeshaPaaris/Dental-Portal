@@ -63,7 +63,7 @@ export default function BookAppointmentPage() {
           <div className={styles.photoCard}>
             <img
               src="/clinic-interior.png"
-              alt="Dental Clinic Interior"
+              alt="Interior of Charming Dental Clinic, Negombo — Book a dental appointment"
               className={styles.clinicImage}
             />
             <div className={styles.photoOverlay}>

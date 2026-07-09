@@ -6,6 +6,9 @@ import styles from './page.module.css';
 export const metadata: Metadata = {
   title: 'Patient Reviews — Charming Dental Clinic',
   description: 'Read genuine reviews from our patients and see why hundreds of families trust Charming Dental Clinic for their smiles.',
+  alternates: {
+    canonical: 'https://charmingdental.com/reviews',
+  },
 };
 
 interface Review {
