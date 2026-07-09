@@ -64,7 +64,7 @@ export default function ServicesPage() {
                   <div className={styles.cardImgWrap}>
                     <Image
                       src={s.image}
-                      alt={s.title}
+                      alt={`${s.title} — dental service in Negombo, Sri Lanka`}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className={styles.cardImg}

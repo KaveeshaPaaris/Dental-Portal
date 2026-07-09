@@ -5,6 +5,9 @@ import styles from './page.module.css';
 export const metadata: Metadata = {
   title: 'Contact Us — Charming Dental Clinic',
   description: 'Get in touch with us for appointments, inquiries, or dental emergencies.',
+  alternates: {
+    canonical: 'https://charmingdental.com/contact',
+  },
 };
 
 const WORKING_HOURS = [

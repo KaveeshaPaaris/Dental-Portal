@@ -21,6 +21,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: `${service.title} | Charming Dental Clinic`,
     description: service.shortDesc,
+    alternates: {
+      canonical: `https://charmingdental.com/services/${p.slug}`,
+    },
   };
 }
 
@@ -65,6 +68,8 @@ export default async function ServiceDetailPage({
                 beforeSrc={service.beforeImage}
                 afterSrc={service.afterImage}
                 caption={`${service.title} Treatment`}
+                beforeAlt={`Before ${service.title} treatment at Charming Dental Clinic, Negombo`}
+                afterAlt={`After ${service.title} result — Charming Dental Clinic, Negombo`}
               />
             </div>
           )}
@@ -78,9 +83,10 @@ export default async function ServiceDetailPage({
             <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
               <Image
                 src={service.standaloneImage}
-                alt={`${service.title} representation`}
+                alt={`${service.title} at Charming Dental Clinic, Negombo`}
                 width={1200}
                 height={600}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
                 style={{ width: '100%', height: 'auto', display: 'block' }}
               />
             </div>
