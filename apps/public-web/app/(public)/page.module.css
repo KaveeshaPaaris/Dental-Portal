@@ -10,6 +10,7 @@
   height: 1px;
   overflow: hidden;
 }
+
 .skipLink:focus {
   position: fixed;
   top: 12px;
@@ -133,7 +134,7 @@
 /* ─── Why Choose Us (3-Pillar Strip) ───────────────── */
 .pillars {
   padding: 52px 0;
-  background: var(--color-surface);
+  background: #f1f5f9;
   border-top: 1px solid var(--color-border);
   border-bottom: 1px solid var(--color-border);
 }
@@ -204,6 +205,7 @@
 /* ─── Services ──────────────────────────────────────────── */
 .services {
   padding: 80px 0;
+  background-color: #ffffff;
 }
 
 .sectionHeader {
@@ -292,7 +294,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 0 8px 0; /* left-aligned inside card, not centred like featureIcon */
+  margin: 0 0 8px 0;
+  /* left-aligned inside card, not centred like featureIcon */
   box-shadow: var(--shadow-md);
 }
 
@@ -316,6 +319,7 @@
   padding: 80px 0;
   background-color: var(--color-surface-2);
   overflow: hidden;
+  border-top: 1px solid var(--color-border);
 }
 
 .doctorGrid {
@@ -511,12 +515,10 @@
 /* [FIX #15] Shimmer placeholder shown while ReviewsCarousel loads */
 .reviewsSkeleton {
   height: 220px;
-  background: linear-gradient(
-    90deg,
-    var(--color-surface) 25%,
-    var(--color-border) 50%,
-    var(--color-surface) 75%
-  );
+  background: linear-gradient(90deg,
+      var(--color-surface) 25%,
+      var(--color-border) 50%,
+      var(--color-surface) 75%);
   background-size: 200% 100%;
   border-radius: var(--radius-lg);
   margin: 40px 0;
@@ -558,14 +560,26 @@
 /* ─── Keyframes ─────────────────────────────────────────── */
 /* [FIX #23] Added missing fadeIn keyframe — was referenced but never defined */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* [FIX #15] Shimmer keyframe for ReviewsCarousel skeleton */
 @keyframes shimmer {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 /* ─── Motion preferences ─────────────────────────────────── */
@@ -659,6 +673,7 @@
 }
 
 @media (max-width: 600px) {
+
   /* [FIX #10] Mobile hero sizing using svh unit */
   .hero {
     min-height: 100svh;
