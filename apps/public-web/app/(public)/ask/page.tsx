@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { Send, Bot } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import api from '@/lib/api';
 import styles from './page.module.css';
 
@@ -54,7 +56,7 @@ export default function AskPage() {
         setMessages(prev => [...prev, {
           id: (Date.now() + 1).toString(),
           sender: 'bot',
-          text: "I'm sorry, I'm having trouble connecting right now. Please call us at +94 71 810 9283 or WhatsApp us.",
+          text: "⚠️ I'm sorry, I'm having a little trouble connecting right now.\n\n📞 Please call or WhatsApp us at **+94 71 810 9283**.",
         }]);
         setIsTyping(false);
       }, 500);
@@ -79,7 +81,15 @@ export default function AskPage() {
                     <Bot size={16} /> Dental Assistant
                   </div>
                 )}
-                {msg.text}
+                {msg.sender === 'bot' ? (
+                  <div className={styles.markdownWrapper}>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      {msg.text}
+                    </ReactMarkdown>
+                  </div>
+                ) : (
+                  msg.text
+                )}
               </div>
             ))}
             {isTyping && (

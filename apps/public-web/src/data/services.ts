@@ -46,10 +46,12 @@ export interface Service {
   highlights: string[];
   featured: boolean;
 
-  // Detail page
   heroSummary: string;
+  intro?: string;
+  commonSigns?: string[];
   whatIs: string;
   whoBenefits: string[];
+  bottomLine?: string;
   benefits: ServiceBenefit[];
   steps: ServiceStep[];
   beforeCare: string[];
@@ -57,6 +59,12 @@ export interface Service {
   faqs: ServiceFaq[];
   relatedSlugs: string[];
 }
+
+export const REVIEWER_INFO = {
+  name: 'Dr. Chaaminda Paaris',
+  credentials: 'Dental Surgeon',
+  dateUpdated: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+};
 
 // ─── Services ────────────────────────────────────────────────
 export const SERVICES: Service[] = [
