@@ -47,8 +47,7 @@
   --shadow-glow: 0 0 20px rgba(93,173,226,0.3);
 
   /* Typography */
-  --font-sans:    'Inter', system-ui, -apple-system, sans-serif;
-  --font-display: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  /* Fonts are injected via next/font/google in layout.tsx as --font-sans and --font-display */
 
   /* Spacing */
   --radius-sm: 6px;

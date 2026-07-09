@@ -46,7 +46,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: url('/hero-bg.png') right center / cover no-repeat;
+  background: url('/hero-bg.webp') right center / cover no-repeat;
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 60%);
   mask-image: linear-gradient(to right, transparent 0%, black 60%);
 }
