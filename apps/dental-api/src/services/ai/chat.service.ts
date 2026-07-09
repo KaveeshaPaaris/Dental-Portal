@@ -42,13 +42,18 @@ export interface StreamChunk {
 // ─── Fallback message ─────────────────────────────────────────
 
 const NO_CONTEXT_FALLBACK =
-  "I couldn't find information about that in our clinic's knowledge base. " +
-  'Please contact the clinic directly for further assistance — ' +
-  'you can call or WhatsApp us at +94 71 810 9283.';
+  "🤔 I couldn't find that information in our clinic knowledge base.\n\n" +
+  "📞 Please contact Charming Dental Clinic for personalized assistance.\n\n" +
+  "**Phone / WhatsApp:**\n" +
+  "+94 71 810 9283\n\n" +
+  "😊 We're happy to help.";
 
 const GENERAL_ERROR_FALLBACK =
-  "I'm sorry, I'm having trouble processing your request right now. " +
-  'Please try again in a moment, or contact the clinic directly at +94 71 810 9283.';
+  "⚠️ I'm sorry, I'm having a little trouble connecting right now.\n\n" +
+  "📞 Please contact Charming Dental Clinic directly.\n\n" +
+  "**Phone / WhatsApp:**\n" +
+  "+94 71 810 9283\n\n" +
+  "😊 We're happy to help.";
 
 // ─── Standard Chat ────────────────────────────────────────────
 

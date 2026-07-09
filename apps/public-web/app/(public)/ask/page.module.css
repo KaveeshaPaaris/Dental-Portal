@@ -144,3 +144,26 @@
     border-radius: var(--radius-lg);
   }
 }
+
+/* Markdown Styles */
+.markdownWrapper p {
+  margin-bottom: 0.75rem;
+}
+
+.markdownWrapper p:last-child {
+  margin-bottom: 0;
+}
+
+.markdownWrapper ul {
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.markdownWrapper li {
+  margin-bottom: 0.35rem;
+}
+
+.markdownWrapper strong {
+  color: var(--color-primary-dark, var(--color-primary));
+  font-weight: 600;
+}
