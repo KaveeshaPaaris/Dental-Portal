@@ -38,9 +38,19 @@ export default function AboutPage() {
 
         <div className={styles.clinicImageContainer}>
           <Image
+            src="/afternoon clinic view.png"
+            alt="Charming Dental Clinic exterior — Dental clinic in Negombo, Sri Lanka"
+            fill
+            className="show-in-light"
+            style={{ objectFit: 'cover' }}
+            sizes="(max-width: 1000px) 100vw, 1000px"
+            priority
+          />
+          <Image
             src="/about-clinic-v2.jpg"
             alt="Charming Dental Clinic exterior — Dental clinic in Negombo, Sri Lanka"
             fill
+            className="show-in-dark"
             style={{ objectFit: 'cover' }}
             sizes="(max-width: 1000px) 100vw, 1000px"
             priority
@@ -62,7 +72,7 @@ export default function AboutPage() {
 
             <div className={styles.statsGrid}>
               <div className={styles.statItem}>
-                <div className={styles.statValue}>15+</div>
+                <div className={styles.statValue}>25+</div>
                 <div className={styles.statLabel}>Years of Excellence</div>
               </div>
               <div className={styles.statItem}>
@@ -124,7 +134,7 @@ export default function AboutPage() {
 
               <FadeUp delay={0.65}>
                 <div className={styles.doctorExpBadge}>
-                  <span className={styles.expNumber}>20+</span>
+                  <span className={styles.expNumber}>25+</span>
                   <span className={styles.expText}>Years of<br/>Experience</span>
                 </div>
               </FadeUp>

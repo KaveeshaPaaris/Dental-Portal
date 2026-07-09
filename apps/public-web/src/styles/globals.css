@@ -137,6 +137,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ─── Utility Classes ────────────────────────────────────── */
+.show-in-light { display: block !important; }
+.show-in-dark { display: none !important; }
+
+[data-theme='dark'] .show-in-light { display: none !important; }
+[data-theme='dark'] .show-in-dark { display: block !important; }
+
 .container {
   width: 100%;
   max-width: 1200px;

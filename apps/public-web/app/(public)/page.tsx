@@ -169,7 +169,7 @@ export default async function HomePage() {
             <div className={styles.heroStatsWrapper}>
               <div className={styles.heroStats}>
                 {[
-                  { value: '20+', label: 'Years Experience' },
+                  { value: '25+', label: 'Years Experience' },
                   { value: '5K+', label: 'Happy Patients' },
                   { value: '4.9', label: 'Star Rating' },
                 ].map((stat) => (
@@ -300,7 +300,7 @@ export default async function HomePage() {
 
               <FadeUp delay={0.65}>
                 <div className={styles.doctorExpBadge}>
-                  <span className={styles.expNumber}>20+</span>
+                  <span className={styles.expNumber}>25+</span>
                   <span className={styles.expText}>Years of<br/>Experience</span>
                 </div>
               </FadeUp>
