@@ -7,7 +7,6 @@ import {
   ArrowRight,
   Calendar,
   Clock,
-  Search,
   ChevronLeft,
   ChevronRight,
   User,
@@ -46,7 +45,6 @@ function formatDate(dateStr: string): string {
  * The server-rendered header (<h1>, description) lives in blogs/page.tsx above this.
  */
 export default function BlogFilterClient({ allBlogs }: { allBlogs: Blog[] }) {
-  const [search, setSearch] = useState('');
   const [category, setCategory] = useState('All');
   const [page, setPage] = useState(1);
 
@@ -56,19 +54,15 @@ export default function BlogFilterClient({ allBlogs }: { allBlogs: Blog[] }) {
     return ['All', ...Array.from(cats)].sort();
   }, [allBlogs]);
 
-  // Filter blogs by active search and category
+  // Filter blogs by active category
   const filteredBlogs = useMemo(() => {
     return allBlogs.filter((b) => {
-      const matchCat = category === 'All' || b.category === category;
-      const matchSearch =
-        b.title.toLowerCase().includes(search.toLowerCase()) ||
-        b.excerpt.toLowerCase().includes(search.toLowerCase());
-      return matchCat && matchSearch;
+      return category === 'All' || b.category === category;
     });
-  }, [allBlogs, category, search]);
+  }, [allBlogs, category]);
 
   // In the default (no-filter) view the first blog is the featured hero
-  const isDefaultView = search === '' && category === 'All';
+  const isDefaultView = category === 'All';
   const featuredBlog =
     isDefaultView && filteredBlogs.length > 0 ? filteredBlogs[0] : null;
 
@@ -80,26 +74,15 @@ export default function BlogFilterClient({ allBlogs }: { allBlogs: Blog[] }) {
     page * ITEMS_PER_PAGE,
   );
 
-  // Reset to page 1 whenever search or category changes
+  // Reset to page 1 whenever category changes
   useEffect(() => {
     setPage(1);
-  }, [search, category]);
+  }, [category]);
 
   return (
     <>
-      {/* ── Controls: Search & Category Filter ── */}
+      {/* ── Controls: Category Filter ── */}
       <div className={styles.controls}>
-        <div className={styles.searchWrapper}>
-          <Search className={styles.searchIcon} size={20} />
-          <input
-            type="text"
-            className={styles.searchInput}
-            placeholder="Search articles..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-
         {categories.length > 1 && (
           <div className={styles.categories}>
             {categories.map((c) => (
@@ -142,7 +125,7 @@ export default function BlogFilterClient({ allBlogs }: { allBlogs: Blog[] }) {
               color: 'var(--color-text-muted)',
             }}
           >
-            <Search size={28} />
+            <div style={{ fontSize: '28px' }}>📂</div>
           </div>
           <h3
             style={{
@@ -159,7 +142,6 @@ export default function BlogFilterClient({ allBlogs }: { allBlogs: Blog[] }) {
           </p>
           <button
             onClick={() => {
-              setSearch('');
               setCategory('All');
             }}
             className="btn btn-secondary"

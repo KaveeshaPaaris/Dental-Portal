@@ -31,10 +31,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.6,
     }));
 
-    return [...routes, ...blogRoutes];
+    const { SERVICES } = await import('@/data/services');
+    const serviceRoutes = SERVICES.map((service) => ({
+      url: `${baseUrl}/services/${service.slug}`,
+      lastModified: new Date().toISOString(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    }));
+
+    return [...routes, ...serviceRoutes, ...blogRoutes];
   } catch (error) {
     console.error('Failed to generate dynamic sitemap for blogs:', error);
-    // If API fails, just return static routes
-    return routes;
+    // If API fails, just return static routes and service routes
+    const { SERVICES } = await import('@/data/services');
+    const serviceRoutes = SERVICES.map((service) => ({
+      url: `${baseUrl}/services/${service.slug}`,
+      lastModified: new Date().toISOString(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    }));
+    return [...routes, ...serviceRoutes];
   }
 }
