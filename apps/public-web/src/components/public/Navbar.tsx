@@ -41,12 +41,23 @@ export default function Navbar() {
         <SpotlightCard className={`${styles.logoBox} ${styles.glassBox}`} spotlightColor="rgba(0, 22, 70, 0.25)">
           <Link href="/" style={{ display: 'flex', alignItems: 'center', height: '100%', textDecoration: 'none' }}>
             <Image
-              src={theme === 'dark' ? '/logo_dark.png' : '/logo.png'}
+              src="/logo.png"
               alt="Charming Dental Clinic logo — Dentist in Negombo"
               width={240}
               height={64}
               sizes="140px"
               style={{ objectFit: 'contain', width: '140px', height: '140px' }}
+              className={styles.logoLight}
+              priority
+            />
+            <Image
+              src="/logo_dark.png"
+              alt="Charming Dental Clinic logo — Dentist in Negombo"
+              width={240}
+              height={64}
+              sizes="140px"
+              style={{ objectFit: 'contain', width: '140px', height: '140px' }}
+              className={styles.logoDark}
               priority
             />
           </Link>

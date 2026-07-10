@@ -3,7 +3,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Shield } from 'lucide-react';
 import styles from './page.module.css';
-import ReviewsCarousel from '@/components/ReviewsCarousel';
+import dynamic from 'next/dynamic';
+
+const ReviewsCarousel = dynamic(() => import('@/components/ReviewsCarousel'));
 import { FEATURED_SERVICES } from '@/data/services';
 import { FadeUp, StaggerContainer, ParallaxHeroBg, SlideIn, FloatAnimation, RevealOnScroll } from '@/components/animations';
 import { AnimatedServiceLink } from '@/components/animations/AnimatedCards';
@@ -134,7 +136,15 @@ export default async function HomePage() {
       {/* ─── Hero ─────────────────────────────────────────── */}
       {/* [FIX #14] Added aria-label for landmark navigation */}
       <section className={styles.hero} aria-label="Hero - Welcome">
-        <ParallaxHeroBg className={styles.heroBg} aria-hidden="true" />
+        <ParallaxHeroBg className={styles.heroBg} aria-hidden="true">
+          <Image
+            src="/hero-bg.webp"
+            alt="Dental clinic background"
+            fill
+            priority
+            className={styles.heroImage}
+          />
+        </ParallaxHeroBg>
         <div className="container">
           {/* [FIX #1] heroContent sits cleanly over the hero image */}
           <div className={styles.heroContent}>
@@ -199,7 +209,7 @@ export default async function HomePage() {
         <div className={`container ${styles.pillarsInner}`}>
           {PILLARS.map((pillar, i) => (
             <FadeUp key={pillar.id} delay={i * 0.12} className={styles.pillar}>
-              <h3 className={styles.pillarTitle}>{pillar.title}</h3>
+              <h2 className={styles.pillarTitle}>{pillar.title}</h2>
               <ul className={styles.pillarList}>
                 {pillar.points.map((pt) => (
                   <li key={pt} className={styles.pillarPoint}>{pt}</li>

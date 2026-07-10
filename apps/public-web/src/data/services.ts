@@ -178,7 +178,7 @@ export const SERVICES: Service[] = [
     title: 'Teeth Whitening',
     category: 'Cosmetic',
     icon: Sun,
-    image: '/services/Gemini_Generated_Image_8st2s88st2s88st2 (1).png',
+    image: '/services/Gemini_Generated_Image_kqvinlkqvinlkqvi.png',
     showBeforeAfter: true,
     beforeImage: '/services/Gemini_Generated_Image_kqvinlkqvinlkqvi.png',
     afterImage: '/services/Gemini_Generated_Image_sdvylwsdvylwsdvy.png',
