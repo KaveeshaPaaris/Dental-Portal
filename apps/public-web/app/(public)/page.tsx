@@ -3,10 +3,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Shield } from 'lucide-react';
 import styles from './page.module.css';
-import dynamic from 'next/dynamic';
-
-const ReviewsCarousel = dynamic(() => import('@/components/ReviewsCarousel'));
-import { FEATURED_SERVICES } from '@/data/services';
+import ReviewsCarousel from '@/components/ReviewsCarousel';
+import { getFeaturedServices } from '@/data/services';
 import { FadeUp, StaggerContainer, ParallaxHeroBg, SlideIn, FloatAnimation, RevealOnScroll } from '@/components/animations';
 import { AnimatedServiceLink } from '@/components/animations/AnimatedCards';
 import AnimatedCounter from '@/components/AnimatedCounter';
@@ -67,6 +65,7 @@ const PILLARS = [
 ];
 
 export default async function HomePage() {
+  const FEATURED_SERVICES = await getFeaturedServices();
   const reviews = await getFeaturedReviews();
 
   const clinicSchema = {

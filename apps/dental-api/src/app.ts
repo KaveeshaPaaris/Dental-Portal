@@ -19,7 +19,7 @@ import blogsRouter from './modules/blogs/blogs.routes';
 import authRouter from './modules/auth/auth.routes';
 import aiChatRouter from './modules/ai-chat/ai-chat.routes';
 import knowledgeBaseRouter from './modules/knowledge-base/knowledge-base.routes';
-
+import servicesRouter from './modules/services/services.routes';
 const app = express();
 
 // ─── Security ────────────────────────────────────────────────
@@ -62,6 +62,7 @@ app.use(`${BASE}/reviews`, publicLimiter, reviewsRouter);
 
 app.use(`${BASE}/content`, publicLimiter, contentRouter);
 app.use(`${BASE}/blogs`, publicLimiter, blogsRouter);
+app.use(`${BASE}/services`, publicLimiter, servicesRouter);
 app.use(`${BASE}/ai-chat`, aiChatRouter);
 
 // Admin — JWT + role enforced inside each router

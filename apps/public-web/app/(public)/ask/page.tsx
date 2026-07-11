@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Send, Bot } from 'lucide-react';
+import { Send, Bot, CreditCard, Banknote, Mail, Phone } from 'lucide-react';
 import ReactMarkdown, { defaultUrlTransform } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 import api from '@/lib/api';
 import styles from './page.module.css';
 
@@ -14,9 +16,7 @@ type Message = {
 };
 
 export default function AskPage() {
-  const [messages, setMessages] = useState<Message[]>([
-    { id: 'initial', sender: 'bot', text: 'Hello! I am the Charming Dental Assistant. Ask me anything about our services, opening hours, or treatments.' }
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   
@@ -31,11 +31,12 @@ export default function AskPage() {
     }
   }, [messages, isTyping]);
 
-  const handleSend = async (e?: React.FormEvent) => {
+  const handleSend = async (e?: React.FormEvent, customInput?: string) => {
     e?.preventDefault();
-    if (!input.trim()) return;
+    const textToSend = customInput || input;
+    if (!textToSend.trim()) return;
 
-    const userMessage = input.trim();
+    const userMessage = textToSend.trim();
     setInput('');
 
     const newUserMsg: Message = { id: Date.now().toString(), sender: 'user', text: userMessage };
@@ -79,54 +80,175 @@ export default function AskPage() {
 
         <div className={styles.chatContainer}>
           <div className={styles.chatWindow} ref={chatWindowRef}>
-            {messages.map((msg) => (
-              <div key={msg.id} className={`${styles.message} ${msg.sender === 'user' ? styles.messageUser : styles.messageBot}`}>
-                {msg.sender === 'bot' && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, color: 'var(--color-primary)', fontWeight: 600, fontSize: '0.875rem' }}>
-                    <Bot size={16} /> Dental Assistant
+            {messages.length === 0 ? (
+              <div className={styles.welcomeContainer}>
+                <motion.div 
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
+                  className={styles.logoContainer}
+                >
+                  <Image src="/logo.png" alt="Charming Dental Clinic Logo" width={140} height={140} className="show-in-light" style={{ objectFit: 'contain' }} />
+                  <Image src="/logo_dark.png" alt="Charming Dental Clinic Logo" width={140} height={140} className="show-in-dark" style={{ objectFit: 'contain' }} />
+                </motion.div>
+                
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.1 }}
+                >
+                  <h2 className={styles.welcomeTitle}>👋 Welcome to Charming Dental Clinic AI</h2>
+                  <p className={styles.welcomeSubtitle}>I'm here to answer your dental questions, help you find treatments, explain procedures, and assist you with booking an appointment.</p>
+                </motion.div>
+
+                <div className={styles.faqSection}>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.4, delay: 0.2 }}
+                  >
+                    <h3 className={styles.faqTitle}>Frequently Asked Questions</h3>
+                  </motion.div>
+                  
+                  <div className={styles.faqGrid}>
+                    {[
+                      { icon: '🏥', text: 'What dental treatments do you offer?' },
+                      { icon: '📅', text: 'How do I book an appointment?' },
+                      { icon: '🗺️', text: 'Where is the clinic located?' },
+                      { icon: '🕒', text: 'What are your opening hours?' },
+                      { icon: '✨', text: 'Do you provide teeth whitening?' },
+                      { icon: '🦷', text: 'Do you offer dental implants?' },
+                      { icon: '🧸', text: 'Do you treat children?' },
+                      { icon: '💳', text: 'What payment methods are accepted?' }
+                    ].map((faq, idx) => (
+                      <motion.button
+                        key={idx}
+                        className={styles.faqChip}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, delay: 0.25 + (idx * 0.05) }}
+                        onClick={() => handleSend(undefined, faq.text)}
+                      >
+                        <span className={styles.faqChipIcon}>{faq.icon}</span>
+                        <span>{faq.text}</span>
+                      </motion.button>
+                    ))}
                   </div>
-                )}
-                {msg.sender === 'bot' ? (
-                  <div className={styles.markdownWrapper}>
-                    <ReactMarkdown 
-                      remarkPlugins={[remarkGfm]}
-                      urlTransform={(url) => (url.startsWith('tel:') ? url : defaultUrlTransform(url))}
-                    >
-                      {(() => {
-                        let text = msg.text.replace('[SHOW_CONTACT_BUTTONS]', '').trim();
-                        text = text.replace(/\[[^\]]+\]\(tel:[^\)]+\)|(\+94\s*71\s*810\s*9283)/g, (match, group1) => {
-                          if (group1) {
-                            return `[${group1}](tel:+94718109283)`;
-                          }
-                          return match;
-                        });
-                        return text;
-                      })()}
-                    </ReactMarkdown>
-                    {msg.text.includes('[SHOW_CONTACT_BUTTONS]') && (
-                      <div className={styles.actionButtons}>
-                        <a 
-                          href="https://wa.me/94718109283?text=Hello%20Charming%20Dental%20Clinic,%20I%20would%20like%20to%20book%20an%20appointment." 
-                          className={`btn ${styles.btnWhatsapp}`} 
-                          target="_blank" 
-                          rel="noreferrer"
-                        >
-                          💬 Chat on WhatsApp
-                        </a>
-                        <a 
-                          href="tel:+94718109283" 
-                          className="btn btn-outline"
-                        >
-                          📞 Call the Clinic
-                        </a>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  msg.text
-                )}
+                </div>
               </div>
-            ))}
+            ) : (
+              messages.map((msg) => (
+                <div key={msg.id} className={`${styles.message} ${msg.sender === 'user' ? styles.messageUser : styles.messageBot}`}>
+                  {msg.sender === 'bot' && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, color: 'var(--color-primary)', fontWeight: 600, fontSize: '0.875rem' }}>
+                      <Bot size={16} /> Dental Assistant
+                    </div>
+                  )}
+                  {msg.sender === 'bot' ? (
+                    <div className={styles.markdownWrapper}>
+                      {msg.text.includes('[PAYMENT_METHODS_CARD]') ? (
+                        <div className={styles.paymentCard}>
+                          <div className={styles.paymentCardHeader}>
+                            <CreditCard size={24} />
+                            <span>Payment Methods</span>
+                          </div>
+                          
+                          <p className={styles.paymentCardText}>
+                            We want to make your visit as convenient as possible. We currently accept:
+                          </p>
+                          
+                          <div className={styles.paymentMethodsList}>
+                            <div className={styles.paymentBadge}>
+                              <Banknote size={20} className={styles.paymentBadgeIcon} />
+                              <span>Cash</span>
+                            </div>
+                            <div className={styles.paymentBadge}>
+                              <CreditCard size={20} className={styles.paymentBadgeIcon} />
+                              <span>Credit Cards</span>
+                            </div>
+                            <div className={styles.paymentBadge}>
+                              <CreditCard size={20} className={styles.paymentBadgeIcon} />
+                              <span>Debit Cards</span>
+                            </div>
+                          </div>
+
+                          <p className={styles.paymentCardText}>
+                            If you have any questions about payments, insurance, or billing, our team will be happy to assist you.
+                          </p>
+
+                          <div className={styles.paymentContactSection}>
+                            <div className={styles.paymentContactItem}>
+                              <Phone size={16} className={styles.paymentContactIcon} />
+                              <span>+94 71 810 9283</span>
+                            </div>
+                            <div className={styles.paymentContactItem}>
+                              <Mail size={16} className={styles.paymentContactIcon} />
+                              <span>charmingdental@gmail.com</span>
+                            </div>
+                          </div>
+                          
+                          <div className={styles.actionButtons}>
+                            <a 
+                              href="https://wa.me/94718109283?text=Hello%20Charming%20Dental%20Clinic,%20I%20have%20a%20question%20about%20payments." 
+                              className={`btn ${styles.btnWhatsapp}`} 
+                              target="_blank" 
+                              rel="noreferrer"
+                            >
+                              💬 Chat on WhatsApp
+                            </a>
+                            <a 
+                              href="tel:+94718109283" 
+                              className="btn btn-outline"
+                            >
+                              📞 Call the Clinic
+                            </a>
+                          </div>
+                        </div>
+                      ) : (
+                        <>
+                          <ReactMarkdown 
+                            remarkPlugins={[remarkGfm]}
+                            urlTransform={(url) => (url.startsWith('tel:') ? url : defaultUrlTransform(url))}
+                          >
+                            {(() => {
+                              let text = msg.text.replace('[SHOW_CONTACT_BUTTONS]', '').trim();
+                              text = text.replace(/\[[^\]]+\]\(tel:[^\)]+\)|(\+94\s*71\s*810\s*9283)/g, (match, group1) => {
+                                if (group1) {
+                                  return `[${group1}](tel:+94718109283)`;
+                                }
+                                return match;
+                              });
+                              return text;
+                            })()}
+                          </ReactMarkdown>
+                          
+                          {msg.text.includes('[SHOW_CONTACT_BUTTONS]') && (
+                            <div className={styles.actionButtons}>
+                              <a 
+                                href="https://wa.me/94718109283?text=Hello%20Charming%20Dental%20Clinic,%20I%20would%20like%20to%20book%20an%20appointment." 
+                                className={`btn ${styles.btnWhatsapp}`} 
+                                target="_blank" 
+                                rel="noreferrer"
+                              >
+                                💬 Chat on WhatsApp
+                              </a>
+                              <a 
+                                href="tel:+94718109283" 
+                                className="btn btn-outline"
+                              >
+                                📞 Call the Clinic
+                              </a>
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  ) : (
+                    msg.text
+                  )}
+                </div>
+              ))
+            )}
             {isTyping && (
               <div className={`${styles.message} ${styles.messageBot}`}>
                 <div className={styles.typingIndicator}>
@@ -138,12 +260,12 @@ export default function AskPage() {
             )}
           </div>
 
-          <form className={styles.inputArea} onSubmit={handleSend}>
+          <form className={styles.inputArea} onSubmit={(e) => handleSend(e)}>
             <input 
               id="ai-chat-input"
               type="text" 
               className={styles.inputField} 
-              placeholder="Type your question here..." 
+              placeholder="Ask anything about your dental care..." 
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={isTyping}

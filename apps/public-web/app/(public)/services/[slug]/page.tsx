@@ -2,20 +2,21 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronDown, CalendarCheck } from 'lucide-react';
-import { getServiceBySlug, getRelatedServices, SERVICES, REVIEWER_INFO } from '@/data/services';
+import { getServiceBySlug, getRelatedServices, getServices, REVIEWER_INFO } from '@/data/services';
 import BeforeAfterSlider from '@/components/BeforeAfterSlider';
 import styles from './page.module.css';
 import { Metadata } from 'next';
 
 export async function generateStaticParams() {
-  return SERVICES.map((service) => ({
+  const services = await getServices();
+  return services.map((service) => ({
     slug: service.slug,
   }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const p = await params;
-  const service = getServiceBySlug(p.slug);
+  const service = await getServiceBySlug(p.slug);
   if (!service) return { title: 'Service Not Found' };
 
   return {
@@ -33,13 +34,13 @@ export default async function ServiceDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const p = await params;
-  const service = getServiceBySlug(p.slug);
+  const service = await getServiceBySlug(p.slug);
 
   if (!service) {
     notFound();
   }
 
-  const relatedServices = getRelatedServices(service.relatedSlugs).slice(0, 3);
+  const relatedServices = (await getRelatedServices(service.relatedSlugs)).slice(0, 3);
 
   // Schema.org JSON-LD Generation
   const baseUrl = 'https://charmingdentalclinic.com'; // Adjust to actual production URL

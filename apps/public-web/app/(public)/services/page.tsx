@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
-import { SERVICES } from '@/data/services';
+import { getServices } from '@/data/services';
 import type { Metadata } from 'next';
 import styles from './page.module.css';
 
@@ -24,7 +24,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const SERVICES = await getServices();
 
   return (
     <div className={styles.page}>
