@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { SERVICES } from '../../public-web/src/data/services';
+import { SERVICES } from './old_services';
 import * as servicesService from '../src/modules/services/services.service';
 
 async function run() {
