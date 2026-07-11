@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { Phone, MessageCircle, BotMessageSquare } from 'lucide-react';
+import { Phone, MessageCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 const WHATSAPP_NUMBER = '94776429760';
 const PHONE_NUMBER = '+94776429760';
@@ -43,9 +44,10 @@ export default function FABButtons() {
         title="Ask our AI Dental Assistant"
       >
         <div className={`ai-icon-container ${!hasOpenedChat ? 'ai-icon-animating' : ''}`}>
-          <BotMessageSquare size={22} className="ai-icon-svg" />
+          <Image src="/logo.png" alt="Dental Logo" width={32} height={32} className="show-in-light" style={{ objectFit: 'contain' }} />
+          <Image src="/logo_dark.png" alt="Dental Logo" width={32} height={32} className="show-in-dark" style={{ objectFit: 'contain' }} />
         </div>
-        <span>Ask AI</span>
+        <span className="fab-ai-text">Ask AI</span>
       </button>
 
       <motion.a
