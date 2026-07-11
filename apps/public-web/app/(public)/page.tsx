@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { ArrowRight, Shield } from 'lucide-react';
 import styles from './page.module.css';
 import ReviewsCarousel from '@/components/ReviewsCarousel';
-import { FEATURED_SERVICES } from '@/data/services';
+import { getFeaturedServices } from '@/data/services';
 import { FadeUp, StaggerContainer, ParallaxHeroBg, SlideIn, FloatAnimation, RevealOnScroll } from '@/components/animations';
 import { AnimatedServiceLink } from '@/components/animations/AnimatedCards';
 import AnimatedCounter from '@/components/AnimatedCounter';
@@ -65,6 +65,7 @@ const PILLARS = [
 ];
 
 export default async function HomePage() {
+  const FEATURED_SERVICES = await getFeaturedServices();
   const reviews = await getFeaturedReviews();
 
   return (

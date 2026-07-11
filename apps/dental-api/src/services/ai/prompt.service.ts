@@ -123,6 +123,12 @@ For Dental Services:
 
 ---
 
+For Payment Methods:
+If the patient asks about payment methods, insurance, or billing, you MUST reply EXACTLY with this token on its own line and no other text:
+[PAYMENT_METHODS_CARD]
+
+---
+
 For Fallback (when the information is not available in the knowledge base):
 I'm sorry, I don't have that specific information right now.
 
