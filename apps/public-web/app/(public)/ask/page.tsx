@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { Send, Bot } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown, { defaultUrlTransform } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import api from '@/lib/api';
 import styles from './page.module.css';
@@ -20,10 +20,15 @@ export default function AskPage() {
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   
-  const endOfMessagesRef = useRef<HTMLDivElement>(null);
+  const chatWindowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (chatWindowRef.current) {
+      chatWindowRef.current.scrollTo({
+        top: chatWindowRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
   }, [messages, isTyping]);
 
   const handleSend = async (e?: React.FormEvent) => {
@@ -73,7 +78,7 @@ export default function AskPage() {
         </header>
 
         <div className={styles.chatContainer}>
-          <div className={styles.chatWindow}>
+          <div className={styles.chatWindow} ref={chatWindowRef}>
             {messages.map((msg) => (
               <div key={msg.id} className={`${styles.message} ${msg.sender === 'user' ? styles.messageUser : styles.messageBot}`}>
                 {msg.sender === 'bot' && (
@@ -83,9 +88,39 @@ export default function AskPage() {
                 )}
                 {msg.sender === 'bot' ? (
                   <div className={styles.markdownWrapper}>
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                      {msg.text}
+                    <ReactMarkdown 
+                      remarkPlugins={[remarkGfm]}
+                      urlTransform={(url) => (url.startsWith('tel:') ? url : defaultUrlTransform(url))}
+                    >
+                      {(() => {
+                        let text = msg.text.replace('[SHOW_CONTACT_BUTTONS]', '').trim();
+                        text = text.replace(/\[[^\]]+\]\(tel:[^\)]+\)|(\+94\s*71\s*810\s*9283)/g, (match, group1) => {
+                          if (group1) {
+                            return `[${group1}](tel:+94718109283)`;
+                          }
+                          return match;
+                        });
+                        return text;
+                      })()}
                     </ReactMarkdown>
+                    {msg.text.includes('[SHOW_CONTACT_BUTTONS]') && (
+                      <div className={styles.actionButtons}>
+                        <a 
+                          href="https://wa.me/94718109283?text=Hello%20Charming%20Dental%20Clinic,%20I%20would%20like%20to%20book%20an%20appointment." 
+                          className={`btn ${styles.btnWhatsapp}`} 
+                          target="_blank" 
+                          rel="noreferrer"
+                        >
+                          💬 Chat on WhatsApp
+                        </a>
+                        <a 
+                          href="tel:+94718109283" 
+                          className="btn btn-outline"
+                        >
+                          📞 Call the Clinic
+                        </a>
+                      </div>
+                    )}
                   </div>
                 ) : (
                   msg.text
@@ -101,11 +136,11 @@ export default function AskPage() {
                 </div>
               </div>
             )}
-            <div ref={endOfMessagesRef} />
           </div>
 
           <form className={styles.inputArea} onSubmit={handleSend}>
             <input 
+              id="ai-chat-input"
               type="text" 
               className={styles.inputField} 
               placeholder="Type your question here..." 

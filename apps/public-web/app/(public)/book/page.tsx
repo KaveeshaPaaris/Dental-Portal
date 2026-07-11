@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useRouter } from 'next/navigation';
@@ -10,10 +10,15 @@ import api from '@/lib/api';
 import { User, Mail, Phone, Calendar, ArrowRight } from 'lucide-react';
 import styles from './page.module.css';
 
+import { isValidPhoneNumber } from 'react-phone-number-input';
+import PhoneInput from '@/components/PhoneInput';
+
 const schema = z.object({
   patient_name: z.string().min(2, 'Name must be at least 2 characters'),
   patient_email: z.string().email('Invalid email').optional().or(z.literal('')),
-  patient_phone: z.string().regex(/^\+[1-9]\d{6,14}$/, 'Phone must start with + and country code (e.g. +94771234567)'),
+  patient_phone: z.string()
+    .min(1, 'Phone number is required')
+    .refine((val) => val && isValidPhoneNumber(val), 'Invalid phone number for the selected country'),
   preferred_date: z.string().min(1, 'Please select a date'),
   preferred_session: z.enum(['MORNING', 'EVENING']).refine((v) => v !== undefined, { message: 'Please select a session' }),
 });
@@ -25,7 +30,7 @@ export default function BookAppointmentPage() {
   const [loading, setLoading] = useState(false);
 
   const {
-    register, handleSubmit,
+    register, handleSubmit, control,
     formState: { errors },
     watch,
   } = useForm<FormData>({ resolver: zodResolver(schema) });
@@ -113,18 +118,21 @@ export default function BookAppointmentPage() {
               {/* Phone */}
               <div className="form-group">
                 <label className="form-label" htmlFor="patient_phone">
-                  Phone Number * <span className={styles.hint}>(include country code, e.g. +1)</span>
+                  Phone Number *
                 </label>
-                <div className={styles.inputWrap}>
-                  <Phone size={16} className={styles.inputIcon} />
-                  <input
-                    id="patient_phone"
-                    type="tel"
-                    className={`form-input ${styles.inputWithIcon}`}
-                    placeholder="+1 555 000 0000"
-                    {...register('patient_phone')}
-                  />
-                </div>
+                <Controller
+                  name="patient_phone"
+                  control={control}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <PhoneInput
+                      id="patient_phone"
+                      value={value}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                      placeholder="+94 77 123 4567"
+                    />
+                  )}
+                />
                 {errors.patient_phone && <span className="form-error">{errors.patient_phone.message}</span>}
               </div>
 

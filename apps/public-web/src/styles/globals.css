@@ -452,6 +452,110 @@ h1, h2, h3, h4, h5, h6 {
 
 .fab-whatsapp { background: #25D366; color: white; }
 .fab-phone    { background: var(--color-primary); color: white; }
+.fab-ai       { background: var(--color-primary); color: white; }
+
+/* Premium Pill Button with overlapping logo */
+.fab-ai-pill {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 52px;
+  padding: 0 20px 0 34px;
+  background: linear-gradient(135deg, var(--color-primary) 0%, #1e40af 100%);
+  color: white;
+  border-radius: 26px;
+  box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.39);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  border: none;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+  font-family: var(--font-inter), sans-serif;
+  margin-left: 14px; /* Space for the overlapping logo */
+}
+
+.fab-ai-text {
+  margin-left: 8px;
+}
+
+/* The badge that overlaps the left side */
+.ai-icon-container {
+  position: absolute;
+  left: -14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--color-surface);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  overflow: hidden;
+  z-index: 2;
+}
+
+/* Hover effects */
+.fab-ai-pill:hover {
+  transform: scale(1.1) translateY(-2px);
+  background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.6);
+}
+
+.fab-ai-pill:hover .ai-icon-animating {
+  animation: none !important;
+  transform: scale(1.1);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+/* The new heavy breathing animation */
+.ai-icon-animating {
+  animation: premiumBreathing 1.6s infinite ease-in-out;
+  transform-origin: center;
+}
+
+@keyframes premiumBreathing {
+  0% { 
+    transform: scale(1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    filter: brightness(1);
+  }
+  12% { 
+    transform: scale(0.8);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    filter: brightness(1);
+  }
+  30% { 
+    transform: scale(1.25);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    filter: brightness(1.1);
+  }
+  42% { 
+    transform: scale(1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    filter: brightness(1);
+  }
+  100% { 
+    transform: scale(1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    filter: brightness(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-icon-animating {
+    animation: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-icon-animating,
+  .ai-icon-animating::before,
+  .ai-icon-animating::after,
+  .ai-icon-svg {
+    animation: none !important;
+  }
+}
 
 /* ─── Star Rating ────────────────────────────────────────── */
 .star-rating { display: flex; gap: 2px; }

@@ -45,4 +45,5 @@ if (!parsed.success) {
 }
 
 export const env = parsed.data;
+console.log(`[Config] Running with CHAT_MODEL: ${env.CHAT_MODEL}`);
 export type Env = typeof env;
