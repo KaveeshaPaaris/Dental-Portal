@@ -68,16 +68,82 @@ export default async function HomePage() {
   const FEATURED_SERVICES = await getFeaturedServices();
   const reviews = await getFeaturedReviews();
 
+  const clinicSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Dentist',
+    name: 'Charming Dental Clinic',
+    image: 'https://charmingdental.com/about-clinic-v2.jpg',
+    '@id': 'https://charmingdental.com',
+    url: 'https://charmingdental.com',
+    telephone: '+94718109283',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '97,7 Archbishop Nicholas Marcus Fernando Mawatha',
+      addressLocality: 'Negombo',
+      addressCountry: 'LK'
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: 7.2000254,
+      longitude: 79.8471448
+    },
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday'],
+        opens: '09:00',
+        closes: '13:00'
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday'],
+        opens: '17:00',
+        closes: '23:00'
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: 'Thursday',
+        opens: '09:00',
+        closes: '13:00'
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: 'Friday',
+        opens: '09:00',
+        closes: '17:00'
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: 'Saturday',
+        opens: '15:30',
+        closes: '23:00'
+      }
+    ]
+  };
+
   return (
     // [FIX #16] Wrapped content in <main> for correct landmark semantics
     <main id="main-content">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(clinicSchema) }}
+      />
+
       {/* [FIX #17] Skip navigation link for keyboard / screen-reader users */}
       <a href="#main-content" className={styles.skipLink}>Skip to main content</a>
 
       {/* ─── Hero ─────────────────────────────────────────── */}
       {/* [FIX #14] Added aria-label for landmark navigation */}
       <section className={styles.hero} aria-label="Hero - Welcome">
-        <ParallaxHeroBg className={styles.heroBg} aria-hidden="true" />
+        <ParallaxHeroBg className={styles.heroBg} aria-hidden="true">
+          <Image
+            src="/hero-bg.webp"
+            alt="Dental clinic background"
+            fill
+            priority
+            className={styles.heroImage}
+          />
+        </ParallaxHeroBg>
         <div className="container">
           {/* [FIX #1] heroContent sits cleanly over the hero image */}
           <div className={styles.heroContent}>
@@ -142,7 +208,7 @@ export default async function HomePage() {
         <div className={`container ${styles.pillarsInner}`}>
           {PILLARS.map((pillar, i) => (
             <FadeUp key={pillar.id} delay={i * 0.12} className={styles.pillar}>
-              <h3 className={styles.pillarTitle}>{pillar.title}</h3>
+              <h2 className={styles.pillarTitle}>{pillar.title}</h2>
               <ul className={styles.pillarList}>
                 {pillar.points.map((pt) => (
                   <li key={pt} className={styles.pillarPoint}>{pt}</li>

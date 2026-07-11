@@ -42,11 +42,9 @@
   z-index: 0;
 }
 
-.heroBg::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: url('/hero-bg.png') right center / cover no-repeat;
+.heroImage {
+  object-fit: cover;
+  object-position: right center;
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 60%);
   mask-image: linear-gradient(to right, transparent 0%, black 60%);
 }
@@ -666,7 +664,7 @@
   }
 
   /* [FIX #12] On mobile, show image below text instead of beside it */
-  .heroBg::before {
+  .heroImage {
     -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 30%);
     mask-image: linear-gradient(to bottom, transparent 0%, black 30%);
   }
