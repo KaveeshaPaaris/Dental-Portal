@@ -101,6 +101,15 @@
   text-transform: uppercase;
 }
 
+:global([data-theme='dark']) .logoLight {
+  display: none !important;
+}
+
+:global([data-theme='light']) .logoDark,
+:global(:root:not([data-theme='dark'])) .logoDark {
+  display: none !important;
+}
+
 .desktopNav {
   display: flex;
   align-items: center;
@@ -168,10 +177,14 @@
 
 .themeBtn {
   color: var(--color-text-secondary);
+  min-width: 48px;
+  min-height: 48px;
 }
 
 .menuBtn {
   display: none;
+  min-width: 48px;
+  min-height: 48px;
 }
 
 .mobileMenu {
