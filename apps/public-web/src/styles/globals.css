@@ -455,6 +455,113 @@ h1, h2, h3, h4, h5, h6 {
 
 .fab-whatsapp { background: #25D366; color: white; }
 .fab-phone    { background: var(--color-primary); color: white; }
+.fab-ai       { background: var(--color-primary); color: white; }
+
+.fab-ai-pill {
+  height: 56px;
+  border-radius: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 24px;
+  background: linear-gradient(135deg, var(--color-primary) 0%, #1e40af 100%);
+  color: white;
+  box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.39);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  border: none;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+  font-family: var(--font-inter), sans-serif;
+  position: relative;
+}
+
+/* Stop animation on hover and apply slight scale/shadow */
+.fab-ai-pill:hover {
+  transform: scale(1.03) translateY(-2px);
+  background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.6);
+}
+/* Ensure hover effects only apply to the main button */
+.fab-ai-pill:hover .ai-icon-animating,
+.fab-ai-pill:hover .ai-icon-animating::before,
+.fab-ai-pill:hover .ai-icon-animating::after,
+.fab-ai-pill:hover .ai-icon-svg {
+  animation: none !important;
+}
+
+/* ─── Robot Icon Animation ─── */
+.ai-icon-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.ai-icon-animating .ai-icon-svg {
+  animation: iconHeartbeat 3s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+.ai-icon-animating::before,
+.ai-icon-animating::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(147, 197, 253, 0.8);
+  box-shadow: 0 0 10px rgba(147, 197, 253, 0.4);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ai-icon-animating::before {
+  animation: iconRipple 3s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ai-icon-animating::after {
+  animation: iconRipple 3s infinite cubic-bezier(0.4, 0, 0.2, 1) 0.4s;
+}
+
+@keyframes iconHeartbeat {
+  0%   { transform: scale(1); }
+  5%   { transform: scale(0.9); }
+  15%  { transform: scale(1.15); }
+  25%  { transform: scale(1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes iconRipple {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  25% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-icon-animating,
+  .ai-icon-animating::before,
+  .ai-icon-animating::after,
+  .ai-icon-svg {
+    animation: none !important;
+  }
+}
 
 /* ─── Star Rating ────────────────────────────────────────── */
 .star-rating { display: flex; gap: 2px; }

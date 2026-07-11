@@ -140,6 +140,7 @@ export default function AskPage() {
 
           <form className={styles.inputArea} onSubmit={handleSend}>
             <input 
+              id="ai-chat-input"
               type="text" 
               className={styles.inputField} 
               placeholder="Type your question here..." 
