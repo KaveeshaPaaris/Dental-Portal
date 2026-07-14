@@ -47,6 +47,9 @@ export interface Service {
   afterCare: string[];
   faqs: ServiceFaq[];
   relatedSlugs: string[];
+  intro?: string;
+  commonSigns?: string[];
+  bottomLine?: string;
 }
 
 export const REVIEWER_INFO = {
