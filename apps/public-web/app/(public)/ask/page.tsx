@@ -88,8 +88,8 @@ export default function AskPage() {
                   transition={{ duration: 0.4 }}
                   className={styles.logoContainer}
                 >
-                  <Image src="/logo.png" alt="Charming Dental Clinic Logo" width={140} height={140} className="show-in-light" style={{ objectFit: 'contain' }} />
-                  <Image src="/logo_dark.png" alt="Charming Dental Clinic Logo" width={140} height={140} className="show-in-dark" style={{ objectFit: 'contain' }} />
+                  <Image src="/logo.png" alt="Charming Dental Clinic Logo" width={180} height={180} className="show-in-light" style={{ objectFit: 'contain' }} />
+                  <Image src="/logo_dark.png" alt="Charming Dental Clinic Logo" width={180} height={180} className="show-in-dark" style={{ objectFit: 'contain' }} />
                 </motion.div>
                 
                 <motion.div
@@ -97,7 +97,7 @@ export default function AskPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.1 }}
                 >
-                  <h2 className={styles.welcomeTitle}>👋 Welcome to Charming Dental Clinic AI</h2>
+                  <h2 className={styles.welcomeTitle}>Welcome to Charming Dental Clinic AI</h2>
                   <p className={styles.welcomeSubtitle}>I'm here to answer your dental questions, help you find treatments, explain procedures, and assist you with booking an appointment.</p>
                 </motion.div>
 
@@ -112,14 +112,11 @@ export default function AskPage() {
                   
                   <div className={styles.faqGrid}>
                     {[
-                      { icon: '🏥', text: 'What dental treatments do you offer?' },
-                      { icon: '📅', text: 'How do I book an appointment?' },
-                      { icon: '🗺️', text: 'Where is the clinic located?' },
-                      { icon: '🕒', text: 'What are your opening hours?' },
-                      { icon: '✨', text: 'Do you provide teeth whitening?' },
-                      { icon: '🦷', text: 'Do you offer dental implants?' },
-                      { icon: '🧸', text: 'Do you treat children?' },
-                      { icon: '💳', text: 'What payment methods are accepted?' }
+                      { text: 'What dental treatments do you offer?' },
+                      { text: 'How do I book an appointment?' },
+                      { text: 'Where is the clinic located?' },
+                      { text: 'What are your opening hours?' },
+                      { text: 'What payment methods are accepted?' }
                     ].map((faq, idx) => (
                       <motion.button
                         key={idx}
@@ -129,7 +126,6 @@ export default function AskPage() {
                         transition={{ duration: 0.3, delay: 0.25 + (idx * 0.05) }}
                         onClick={() => handleSend(undefined, faq.text)}
                       >
-                        <span className={styles.faqChipIcon}>{faq.icon}</span>
                         <span>{faq.text}</span>
                       </motion.button>
                     ))}
