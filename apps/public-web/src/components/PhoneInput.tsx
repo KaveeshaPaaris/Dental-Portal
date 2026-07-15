@@ -25,6 +25,7 @@ export default function PhoneInput({
       <PhoneInputLib
         international
         withCountryCallingCode
+        countryCallingCodeEditable={false}
         defaultCountry="LK"
         value={value}
         onChange={onChange}

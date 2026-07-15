@@ -1,10 +1,9 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  // Strict mode for better DX
   reactStrictMode: true,
 
-  // Allow images from common external sources
+  // Allow images from Supabase and Unsplash
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [

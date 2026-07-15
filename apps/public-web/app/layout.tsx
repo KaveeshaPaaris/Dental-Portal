@@ -29,6 +29,17 @@ export const metadata: Metadata = {
     description: 'World-class dental care, close to home.',
     type: 'website',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Charming Dental Clinic',
+    description: 'World-class dental care, close to home.',
+  },
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
