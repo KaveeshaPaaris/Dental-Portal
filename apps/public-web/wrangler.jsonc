@@ -1,0 +1,7 @@
+{
+  // Wrangler config for Cloudflare Pages + Next.js (next-on-pages)
+  "name": "dental-portal-public-web",
+  "compatibility_date": "2024-09-23",
+  "compatibility_flags": ["nodejs_compat"],
+  "pages_build_output_dir": ".vercel/output/static"
+}
