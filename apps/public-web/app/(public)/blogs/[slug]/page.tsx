@@ -10,9 +10,8 @@ import styles from './page.module.css';
 const baseUrl = 'https://charmingdental.com';
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api/v1';
 
-// ─── Static Params (required for output: 'export') ───────────────────────────
-export const dynamicParams = false;
-
+// ─── Static Pre-rendering (optional, improves performance) ───────────────────
+// Pre-renders known blog slugs at build time. New slugs are ISR on-demand.
 export async function generateStaticParams() {
   try {
     const res = await fetch(`${API_URL}/blogs?limit=100`);

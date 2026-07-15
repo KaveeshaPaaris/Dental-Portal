@@ -1,16 +1,15 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  // Static export for Cloudflare Pages
-  output: 'export',
-  trailingSlash: true,
-
-  // Strict mode for better DX
   reactStrictMode: true,
 
-  // Image optimization must be disabled for static export
+  // Allow images from Supabase and Unsplash
   images: {
-    unoptimized: true,
+    formats: ['image/avif', 'image/webp'],
+    remotePatterns: [
+      { protocol: 'https', hostname: '**.supabase.co' },
+      { protocol: 'https', hostname: 'images.unsplash.com' },
+    ],
   },
 
   // Environment variables exposed to the browser
@@ -22,4 +21,3 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
-
