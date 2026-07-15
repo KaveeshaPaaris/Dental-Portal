@@ -1,0 +1,20 @@
+{
+  "/(public)/about/page": "app/(public)/about/page.js",
+  "/(public)/ask/page": "app/(public)/ask/page.js",
+  "/(public)/blogs/[slug]/page": "app/(public)/blogs/[slug]/page.js",
+  "/(public)/blogs/page": "app/(public)/blogs/page.js",
+  "/(public)/book/page": "app/(public)/book/page.js",
+  "/(public)/book/verify/page": "app/(public)/book/verify/page.js",
+  "/(public)/contact/page": "app/(public)/contact/page.js",
+  "/(public)/login/page": "app/(public)/login/page.js",
+  "/(public)/page": "app/(public)/page.js",
+  "/(public)/review/[token]/page": "app/(public)/review/[token]/page.js",
+  "/(public)/reviews/page": "app/(public)/reviews/page.js",
+  "/(public)/services/[slug]/page": "app/(public)/services/[slug]/page.js",
+  "/(public)/services/page": "app/(public)/services/page.js",
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/robots.txt/route": "app/robots.txt/route.js",
+  "/sitemap.xml/route": "app/sitemap.xml/route.js"
+}

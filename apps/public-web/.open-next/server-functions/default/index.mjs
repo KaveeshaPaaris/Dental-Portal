@@ -1,0 +1,1 @@
+export { handler } from "./apps/public-web/index.mjs";
