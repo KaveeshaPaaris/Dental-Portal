@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm install @tanstack/react-query @cloudflare/next-on-pages && npx @cloudflare/next-on-pages@1",
+    "build": "npm install @tanstack/react-query @cloudflare/next-on-pages --legacy-peer-deps && npx @cloudflare/next-on-pages@1",
     "start": "next start",
     "lint": "eslint"
   },
