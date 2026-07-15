@@ -1,22 +1,16 @@
 import type { NextConfig } from 'next';
-import { setupDevPlatform } from '@cloudflare/next-on-pages/next-dev';
-
-// Setup Cloudflare dev platform (only runs in development)
-if (process.env.NODE_ENV === 'development') {
-  await setupDevPlatform();
-}
 
 const nextConfig: NextConfig = {
+  // Static export for Cloudflare Pages
+  output: 'export',
+  trailingSlash: true,
+
   // Strict mode for better DX
   reactStrictMode: true,
 
-  // Allow images from common external sources
+  // Image optimization must be disabled for static export
   images: {
-    formats: ['image/avif', 'image/webp'],
-    remotePatterns: [
-      { protocol: 'https', hostname: '**.supabase.co' },
-      { protocol: 'https', hostname: 'images.unsplash.com' },
-    ],
+    unoptimized: true,
   },
 
   // Environment variables exposed to the browser
@@ -28,3 +22,4 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+

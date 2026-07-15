@@ -6,8 +6,6 @@ import { PatientAuthProvider } from '@/context/PatientAuthContext';
 import { Toaster } from 'react-hot-toast';
 import ReactQueryProvider from '@/components/providers/ReactQueryProvider';
 
-export const runtime = 'edge';
-
 const inter = Inter({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700', '800'],

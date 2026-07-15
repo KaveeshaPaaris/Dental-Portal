@@ -10,6 +10,22 @@ import styles from './page.module.css';
 const baseUrl = 'https://charmingdental.com';
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api/v1';
 
+// ─── Static Params (required for output: 'export') ───────────────────────────
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  try {
+    const res = await fetch(`${API_URL}/blogs?limit=100`);
+    if (!res.ok) return [];
+    const data = await res.json();
+    const blogs: { slug: string }[] = data.data || [];
+    return blogs.map((blog) => ({ slug: blog.slug }));
+  } catch {
+    return [];
+  }
+}
+
+
 // ─── Types ───────────────────────────────────────────────────────────────────
 interface BlogDetail {
   id: string;
