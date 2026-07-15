@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 
+export const runtime = 'edge';
+
 export const metadata: Metadata = {
   title: 'Submit Your Review — Charming Dental Clinic',
   robots: {

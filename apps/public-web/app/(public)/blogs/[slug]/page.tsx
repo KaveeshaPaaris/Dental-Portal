@@ -6,6 +6,9 @@ import { ArrowLeft, Calendar, Clock } from 'lucide-react';
 import ShareCopyButton from './ShareCopyButton';
 import styles from './page.module.css';
 
+// ─── Edge Runtime (required for Cloudflare Pages) ────────────────────────────
+export const runtime = 'edge';
+
 // ─── Constants ───────────────────────────────────────────────────────────────
 const baseUrl = 'https://charmingdental.com';
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api/v1';
