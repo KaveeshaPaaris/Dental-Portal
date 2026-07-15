@@ -218,12 +218,12 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: #fff8ee;
-  border: 1px solid #ffedd5;
+  background: rgba(245,158,11,0.12);
+  border: 1px solid rgba(245,158,11,0.2);
   border-radius: 8px;
   padding: 14px;
   margin: 0 32px 32px 32px;
-  color: #c26115;
+  color: var(--color-warning);
   font-size: 0.85rem;
   font-weight: 600;
 }
@@ -267,6 +267,12 @@
   overflow: hidden;
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-sm);
+  background: var(--color-surface-2);
+}
+
+:global([data-theme='dark']) .mapWrapper iframe {
+  filter: invert(100%) hue-rotate(180deg) contrast(110%) saturate(180%) brightness(90%);
+  opacity: 0.95;
 }
 
 /* ── Responsive ── */

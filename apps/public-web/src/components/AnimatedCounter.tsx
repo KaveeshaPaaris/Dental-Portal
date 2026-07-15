@@ -30,8 +30,15 @@ export default function AnimatedCounter({
     if (value % 1 !== 0) {
       return current.toFixed(1) + suffix;
     }
-    return Math.floor(current) + suffix;
+    return Math.round(current) + suffix;
   });
 
-  return <motion.span ref={ref}>{displayValue}</motion.span>;
+  const staticValue = value % 1 !== 0 ? value.toFixed(1) + suffix : Math.round(value) + suffix;
+
+  return (
+    <>
+      <motion.span ref={ref}>{displayValue}</motion.span>
+      <noscript>{staticValue}</noscript>
+    </>
+  );
 }

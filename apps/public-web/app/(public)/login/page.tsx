@@ -5,6 +5,9 @@ import styles from './page.module.css';
 export const metadata: Metadata = {
   title: 'Patient Login | Charming Dental Clinic',
   description: 'Log in to manage your appointments and view your dental records.',
+  alternates: {
+    canonical: 'https://charmingdental.com/login',
+  },
 };
 
 export default function LoginPage() {

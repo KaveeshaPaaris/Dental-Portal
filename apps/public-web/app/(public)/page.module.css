@@ -10,6 +10,7 @@
   height: 1px;
   overflow: hidden;
 }
+
 .skipLink:focus {
   position: fixed;
   top: 12px;
@@ -41,11 +42,9 @@
   z-index: 0;
 }
 
-.heroBg::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: url('/hero-bg.png') right center / cover no-repeat;
+.heroImage {
+  object-fit: cover;
+  object-position: right center;
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 60%);
   mask-image: linear-gradient(to right, transparent 0%, black 60%);
 }
@@ -130,55 +129,81 @@
   margin-top: 4px;
 }
 
-/* ─── Features ──────────────────────────────────────────── */
-.features {
-  padding: 80px 0;
-  background: var(--color-surface);
+/* ─── Why Choose Us (3-Pillar Strip) ───────────────── */
+.pillars {
+  padding: 52px 0;
+  background: var(--color-surface-2);
   border-top: 1px solid var(--color-border);
   border-bottom: 1px solid var(--color-border);
 }
 
-.featuresGrid {
+.pillarsInner {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
 }
 
-/* [FIX #22] transform removed from base rule — moved into prefers-reduced-motion guard */
-.featureCard {
-  text-align: center;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.featureIcon {
-  width: 52px;
-  height: 52px;
-  border-radius: var(--radius-lg);
-  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-  color: white;
+.pillar {
+  padding: 36px 44px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 16px;
-  box-shadow: var(--shadow-md);
+  flex-direction: column;
+  gap: 10px;
+  cursor: default;
+  /* transitions handled in motion media query below */
 }
 
-.featureTitle {
-  font-size: 1.0625rem;
-  font-weight: 700;
-  margin-bottom: 8px;
+/* vertical dividers between pillars */
+.pillar:not(:last-child) {
+  border-right: 1px solid var(--color-border);
 }
 
-.featureDesc {
+.pillarTitle {
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  margin: 0;
+  transform-origin: left center;
+  transition: color 0.3s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pillarList {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  transform-origin: left top;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pillarPoint {
   font-size: 0.875rem;
   color: var(--color-text-secondary);
-  line-height: 1.6;
+  line-height: 1.5;
+  padding-left: 18px;
+  position: relative;
+}
+
+.pillarPoint::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  opacity: 0.65;
+  transition: opacity 0.25s ease;
 }
 
 /* ─── Services ──────────────────────────────────────────── */
 .services {
   padding: 80px 0;
+  background-color: var(--color-surface);
 }
 
 .sectionHeader {
@@ -267,7 +292,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 0 8px 0; /* left-aligned inside card, not centred like featureIcon */
+  margin: 0 0 8px 0;
+  /* left-aligned inside card, not centred like featureIcon */
   box-shadow: var(--shadow-md);
 }
 
@@ -289,8 +315,9 @@
 /* ─── Meet the Doctor Redesign ───────────────────────────── */
 .doctorSection {
   padding: 80px 0;
-  background-color: #F8FAFC;
+  background-color: var(--color-surface-2);
   overflow: hidden;
+  border-top: 1px solid var(--color-border);
 }
 
 .doctorGrid {
@@ -313,34 +340,28 @@
   width: 100%;
 }
 
-.doctorAbstractShape {
-  position: absolute;
-  top: -20px;
-  left: -20px;
-  right: -20px;
-  bottom: -20px;
-  background: #D9ECFF;
-  border-radius: 40px;
-  z-index: 0;
-  transform: rotate(-3deg);
-  animation: slowRotate 12s infinite linear;
-}
-
-@keyframes slowRotate {
-  0% { transform: rotate(-3deg); }
-  50% { transform: rotate(1deg); }
-  100% { transform: rotate(-3deg); }
-}
-
 .doctorImageWrapper {
   position: relative;
   width: 100%;
   height: 460px;
-  border-radius: 28px;
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 20px 40px rgba(15, 94, 168, 0.08);
+  box-shadow:
+    0 24px 48px rgba(15, 94, 168, 0.12),
+    0 4px 16px rgba(15, 94, 168, 0.06);
   z-index: 1;
-  background: white;
+  background: var(--color-surface);
+}
+
+/* Clean offset frame behind the image */
+.doctorImageWrapper::before {
+  content: '';
+  position: absolute;
+  inset: -12px -12px 12px 12px;
+  border: 2px solid var(--color-border);
+  border-radius: 24px;
+  z-index: -1;
+  pointer-events: none;
 }
 
 .doctorImageWrapper img {
@@ -377,27 +398,27 @@
   font-size: 0.8125rem;
   font-weight: 700;
   letter-spacing: 0.1em;
-  color: #0F5EA8;
+  color: var(--color-primary);
   text-transform: uppercase;
 }
 
 .doctorName {
   font-size: 36px;
   font-weight: 700;
-  color: #1E293B;
+  color: var(--color-text-primary);
   margin: 0;
   line-height: 1.2;
 }
 
 .doctorSpecialty {
-  color: #0F5EA8;
+  color: var(--color-primary);
   font-weight: 600;
   font-size: 1.125rem;
 }
 
 .doctorQualifications {
   font-size: 18px;
-  color: #334155;
+  color: var(--color-text-secondary);
   line-height: 1.6;
 }
 
@@ -406,27 +427,27 @@
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  border: 1px solid #D9ECFF;
+  border: 1px solid var(--color-border);
   border-radius: 12px;
-  background: white;
+  background: var(--color-surface);
   font-size: 16px;
-  color: #1E293B;
+  color: var(--color-text-primary);
   font-weight: 500;
   transition: box-shadow 0.3s ease;
 }
 
 .doctorRegBadge:hover {
-  box-shadow: 0 0 15px rgba(217, 236, 255, 0.8);
+  box-shadow: 0 0 15px rgba(93, 173, 226, 0.2);
 }
 
 .doctorRegIcon {
-  color: #0F5EA8;
+  color: var(--color-primary);
 }
 
 .doctorBio {
   font-size: 17px;
   line-height: 1.8;
-  color: #475569;
+  color: var(--color-text-secondary);
   max-width: 500px;
 }
 
@@ -442,21 +463,21 @@
   gap: 12px;
   margin-top: 10px;
   padding: 12px 20px;
-  background: white;
+  background: var(--color-surface);
   border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(15, 94, 168, 0.05);
+  box-shadow: var(--shadow-md);
 }
 
 .expNumber {
   font-size: 32px;
   font-weight: 800;
-  color: #0F5EA8;
+  color: var(--color-primary);
   line-height: 1;
 }
 
 .expText {
   font-size: 14px;
-  color: #64748B;
+  color: var(--color-text-muted);
   font-weight: 500;
   line-height: 1.3;
   text-align: left;
@@ -471,9 +492,9 @@
   align-items: center;
   gap: 8px;
   padding: 14px 28px;
-  border: 2px solid #0F5EA8;
+  border: 2px solid var(--color-primary);
   border-radius: 50px;
-  color: #0F5EA8;
+  color: var(--color-primary);
   font-weight: 600;
   font-size: 16px;
   text-decoration: none;
@@ -482,22 +503,20 @@
 }
 
 .btnPremium:hover {
-  background: #0F5EA8;
-  color: white;
+  background: var(--color-primary);
+  color: var(--color-text-on-primary);
   transform: translateY(-4px);
-  box-shadow: 0 10px 20px rgba(15, 94, 168, 0.15);
+  box-shadow: var(--shadow-md);
 }
 
 /* ─── Reviews Skeleton ───────────────────────────────────── */
 /* [FIX #15] Shimmer placeholder shown while ReviewsCarousel loads */
 .reviewsSkeleton {
   height: 220px;
-  background: linear-gradient(
-    90deg,
-    var(--color-surface) 25%,
-    var(--color-border) 50%,
-    var(--color-surface) 75%
-  );
+  background: linear-gradient(90deg,
+      var(--color-surface) 25%,
+      var(--color-border) 50%,
+      var(--color-surface) 75%);
   background-size: 200% 100%;
   border-radius: var(--radius-lg);
   margin: 40px 0;
@@ -506,7 +525,7 @@
 /* ─── CTA Banner ────────────────────────────────────────── */
 .ctaBanner {
   padding: 80px 0;
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 50%, var(--color-secondary) 100%);
+  background: var(--color-cta-bg);
   position: relative;
   overflow: hidden;
 }
@@ -521,32 +540,44 @@
 .ctaContent {
   position: relative;
   text-align: center;
-  color: white;
+  color: var(--color-cta-text);
 }
 
 .ctaContent h2 {
   font-size: clamp(1.75rem, 4vw, 2.75rem);
-  color: white;
+  color: var(--color-cta-text);
   margin-bottom: 16px;
 }
 
 .ctaContent p {
   font-size: 1.125rem;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--color-cta-text-sec);
   margin-bottom: 36px;
 }
 
 /* ─── Keyframes ─────────────────────────────────────────── */
 /* [FIX #23] Added missing fadeIn keyframe — was referenced but never defined */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* [FIX #15] Shimmer keyframe for ReviewsCarousel skeleton */
 @keyframes shimmer {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 /* ─── Motion preferences ─────────────────────────────────── */
@@ -557,11 +588,6 @@
     animation: fadeIn 0.6s ease-out;
   }
 
-  .featureCard:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-lg);
-  }
-
   .serviceCard:hover {
     transform: translateY(-6px);
     box-shadow: var(--shadow-lg);
@@ -570,16 +596,60 @@
   .reviewsSkeleton {
     animation: shimmer 1.4s infinite;
   }
-}
 
-/* ─── Responsive ────────────────────────────────────────── */
-@media (max-width: 960px) {
-  .featuresGrid {
-    grid-template-columns: repeat(2, 1fr);
+  /* ─── Pillar hover animation ── */
+  .pillar {
+    transition:
+      transform 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+      background-color 0.3s ease,
+      box-shadow 0.38s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
+  .pillar:hover {
+    transform: translateY(-6px);
+    background-color: var(--color-surface-hover);
+    box-shadow: var(--shadow-lg);
+    z-index: 2;
+  }
+
+  /* Title scales up — grows from left */
+  .pillar:hover .pillarTitle {
+    color: var(--color-primary);
+    transform: scale(1.07);
+  }
+
+  /* Bullet list scales up slightly — grows from left */
+  .pillar:hover .pillarList {
+    transform: scale(1.04);
+  }
+
+  /* Bullet dots go full opacity */
+  .pillar:hover .pillarPoint::before {
+    opacity: 1;
+  }
+}
+
+/* ─── Responsive ────────────────────────────────── */
+@media (max-width: 960px) {
   .servicesGrid {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Tablet: stack pillars at 640px */
+@media (max-width: 640px) {
+  .pillarsInner {
+    grid-template-columns: 1fr;
+  }
+
+  .pillar {
+    padding: 32px 24px;
+    border-right: none !important;
+  }
+
+  .pillar:not(:last-child) {
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
   }
 }
 
@@ -594,13 +664,14 @@
   }
 
   /* [FIX #12] On mobile, show image below text instead of beside it */
-  .heroBg::before {
+  .heroImage {
     -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 30%);
     mask-image: linear-gradient(to bottom, transparent 0%, black 30%);
   }
 }
 
 @media (max-width: 600px) {
+
   /* [FIX #10] Mobile hero sizing using svh unit */
   .hero {
     min-height: 100svh;
@@ -610,8 +681,19 @@
     padding: 120px 20px 40px;
   }
 
-  .featuresGrid {
+  /* Pillars stack vertically; remove right borders, add bottom divider */
+  .pillarsInner {
     grid-template-columns: 1fr;
+  }
+
+  .pillar {
+    padding: 32px 24px;
+    border-right: none !important;
+  }
+
+  .pillar:not(:last-child) {
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
   }
 
   .servicesGrid {

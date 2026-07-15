@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import { useTheme } from '@/context/ThemeContext';
 import { usePatientAuth } from '@/context/PatientAuthContext';
 import { Sun, Moon, Menu, X, Phone, User, LogOut } from 'lucide-react';
+import SpotlightCard from './SpotlightCard';
 import styles from './Navbar.module.css';
 
 const NAV_LINKS = [
@@ -37,19 +38,33 @@ export default function Navbar() {
     <header className={`${styles.header} ${scrolled ? styles.headerScrolled : ''}`}>
       <div className={styles.nav}>
         {/* Logo */}
-        <Link href="/" className={`${styles.logoBox} ${styles.glassBox}`}>
-          <Image
-            src={theme === 'dark' ? '/logo_dark.png' : '/logo.png'}
-            alt="Charming Dental Clinic"
-            width={240}
-            height={64}
-            style={{ objectFit: 'contain', width: '140px', height: '140px' }}
-            priority
-          />
-        </Link>
+        <SpotlightCard className={`${styles.logoBox} ${styles.glassBox}`} spotlightColor="rgba(0, 22, 70, 0.25)">
+          <Link href="/" style={{ display: 'flex', alignItems: 'center', height: '100%', textDecoration: 'none' }}>
+            <Image
+              src="/logo.png"
+              alt="Charming Dental Clinic logo — Dentist in Negombo"
+              width={240}
+              height={64}
+              sizes="140px"
+              style={{ objectFit: 'contain', width: '140px', height: '140px' }}
+              className={styles.logoLight}
+              priority
+            />
+            <Image
+              src="/logo_dark.png"
+              alt="Charming Dental Clinic logo — Dentist in Negombo"
+              width={240}
+              height={64}
+              sizes="140px"
+              style={{ objectFit: 'contain', width: '140px', height: '140px' }}
+              className={styles.logoDark}
+              priority
+            />
+          </Link>
+        </SpotlightCard>
 
         {/* Desktop Nav & Actions */}
-        <div className={`${styles.navBox} ${styles.glassBox}`}>
+        <SpotlightCard className={`${styles.navBox} ${styles.glassBox}`} spotlightColor="rgba(0, 22, 70, 0.25)">
           <nav className={styles.desktopNav}>
             {NAV_LINKS.map((link) => {
               const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
@@ -112,7 +127,7 @@ export default function Navbar() {
               {menuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
-        </div>
+        </SpotlightCard>
       </div>
 
       {/* Mobile Menu */}

@@ -1,39 +1,149 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Suspense } from 'react';
-import { ArrowRight, Star, Shield, Clock, Heart } from 'lucide-react';
+import { ArrowRight, Shield } from 'lucide-react';
 import styles from './page.module.css';
 import ReviewsCarousel from '@/components/ReviewsCarousel';
-import { FEATURED_SERVICES } from '@/data/services';
+import { getFeaturedServices } from '@/data/services';
 import { FadeUp, StaggerContainer, ParallaxHeroBg, SlideIn, FloatAnimation, RevealOnScroll } from '@/components/animations';
-import { AnimatedFeatureCard, AnimatedServiceCard, AnimatedServiceLink } from '@/components/animations/AnimatedCards';
+import { AnimatedServiceLink } from '@/components/animations/AnimatedCards';
 import AnimatedCounter from '@/components/AnimatedCounter';
+import type { Review } from '@/components/ReviewsCarousel';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api/v1';
+
+async function getFeaturedReviews(): Promise<Review[]> {
+  try {
+    const res = await fetch(`${API_URL}/reviews/featured`, {
+      next: { revalidate: 3600 },
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
+}
 
 export const metadata: Metadata = {
   title: 'Charming Dental Clinic — World-Class Dental Care',
   description:
     'Book your dental appointment online. Expert care for all your dental needs — teeth whitening, orthodontics, implants, and more.',
+  alternates: {
+    canonical: 'https://charmingdental.com',
+  },
 };
 
-const FEATURES = [
-  { icon: Shield, title: 'Expert Doctors', desc: 'Board-certified specialists with 20+ years of experience.' },
-  { icon: Clock, title: 'Flexible Hours', desc: 'Morning and evening sessions to fit your schedule.' },
-  { icon: Heart, title: 'Gentle Care', desc: 'Patient-first approach in a comfortable environment.' },
-  { icon: Star, title: '5-Star Rated', desc: 'Hundreds of happy patients trust us with their smiles.' },
+const PILLARS = [
+  {
+    id: 'flexible-hours',
+    title: 'We work around your day',
+    points: [
+      'Morning & evening slots available',
+      'Book online, anytime',
+      'Same-week appointments on request',
+    ],
+  },
+  {
+    id: 'gentle-care',
+    title: 'Kind care for every age',
+    points: [
+      'Gentle treatment for kids & adults',
+      'Calm, unhurried environment',
+      'No rush, no judgment — ever',
+    ],
+  },
+  {
+    id: 'sterilization',
+    title: 'Clean tools. Every single time.',
+    points: [
+      'Hospital-grade sterilization',
+      'Strict protocols before & after every procedure',
+      'Your safety is never a trade-off',
+    ],
+  },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const FEATURED_SERVICES = await getFeaturedServices();
+  const reviews = await getFeaturedReviews();
+
+  const clinicSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Dentist',
+    name: 'Charming Dental Clinic',
+    image: 'https://charmingdental.com/about-clinic-v2.jpg',
+    '@id': 'https://charmingdental.com',
+    url: 'https://charmingdental.com',
+    telephone: '+94718109283',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '97,7 Archbishop Nicholas Marcus Fernando Mawatha',
+      addressLocality: 'Negombo',
+      addressCountry: 'LK'
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: 7.2000254,
+      longitude: 79.8471448
+    },
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday'],
+        opens: '09:00',
+        closes: '13:00'
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday'],
+        opens: '17:00',
+        closes: '23:00'
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: 'Thursday',
+        opens: '09:00',
+        closes: '13:00'
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: 'Friday',
+        opens: '09:00',
+        closes: '17:00'
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: 'Saturday',
+        opens: '15:30',
+        closes: '23:00'
+      }
+    ]
+  };
+
   return (
     // [FIX #16] Wrapped content in <main> for correct landmark semantics
     <main id="main-content">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(clinicSchema) }}
+      />
+
       {/* [FIX #17] Skip navigation link for keyboard / screen-reader users */}
       <a href="#main-content" className={styles.skipLink}>Skip to main content</a>
 
       {/* ─── Hero ─────────────────────────────────────────── */}
       {/* [FIX #14] Added aria-label for landmark navigation */}
       <section className={styles.hero} aria-label="Hero - Welcome">
-        <ParallaxHeroBg className={styles.heroBg} aria-hidden="true" />
+        <ParallaxHeroBg className={styles.heroBg} aria-hidden="true">
+          <Image
+            src="/hero-bg.webp"
+            alt="Dental clinic background"
+            fill
+            priority
+            className={styles.heroImage}
+          />
+        </ParallaxHeroBg>
         <div className="container">
           {/* [FIX #1] heroContent sits cleanly over the hero image */}
           <div className={styles.heroContent}>
@@ -68,7 +178,7 @@ export default function HomePage() {
             <div className={styles.heroStatsWrapper}>
               <div className={styles.heroStats}>
                 {[
-                  { value: '20+', label: 'Years Experience' },
+                  { value: '25+', label: 'Years Experience' },
                   { value: '5K+', label: 'Happy Patients' },
                   { value: '4.9', label: 'Star Rating' },
                 ].map((stat) => (
@@ -93,22 +203,19 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── Features ─────────────────────────────────────── */}
-      {/* [FIX #14] Added aria-label for landmark navigation */}
-      <section className={styles.features} aria-label="Why Choose Us">
-        <div className="container">
-          <StaggerContainer className={styles.featuresGrid}>
-            {FEATURES.map(({ icon: Icon, title, desc }) => (
-              <AnimatedFeatureCard key={title} className={`card ${styles.featureCard}`}>
-                {/* [FIX #20] aria-hidden on decorative icon wrapper */}
-                <div className={styles.featureIcon} aria-hidden="true">
-                  <Icon size={22} />
-                </div>
-                <h3 className={styles.featureTitle}>{title}</h3>
-                <p className={styles.featureDesc}>{desc}</p>
-              </AnimatedFeatureCard>
-            ))}
-          </StaggerContainer>
+      {/* ─── Why Choose Us (3-Pillar Strip) ─────────────────── */}
+      <section className={styles.pillars} aria-label="Why Choose Us">
+        <div className={`container ${styles.pillarsInner}`}>
+          {PILLARS.map((pillar, i) => (
+            <FadeUp key={pillar.id} delay={i * 0.12} className={styles.pillar}>
+              <h2 className={styles.pillarTitle}>{pillar.title}</h2>
+              <ul className={styles.pillarList}>
+                {pillar.points.map((pt) => (
+                  <li key={pt} className={styles.pillarPoint}>{pt}</li>
+                ))}
+              </ul>
+            </FadeUp>
+          ))}
         </div>
       </section>
 
@@ -127,7 +234,7 @@ export default function HomePage() {
                 <div className={styles.serviceCardImgWrap}>
                   <Image
                     src={s.image}
-                    alt={s.title}
+                    alt={`${s.title} treatment at Charming Dental Clinic, Negombo`}
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 960px) 50vw, 33vw"
                     className={styles.serviceCardImg}
@@ -160,13 +267,11 @@ export default function HomePage() {
             
             {/* Left Column: Image */}
             <SlideIn direction="left" delay={0} className={styles.doctorImageCol}>
-              <div className={styles.doctorAbstractShape} />
               <FloatAnimation className={styles.doctorImageWrapper}>
                 <Image
                   src="/doctor_croped.jpg"
-                  alt="Dr. Chaaminda Paaris"
+                  alt="Dr. Chaaminda Paaris — Expert dentist at Charming Dental Clinic, Negombo"
                   fill
-                  unoptimized={true}
                   style={{ objectFit: 'cover', objectPosition: 'center' }}
                   sizes="(max-width: 992px) 100vw, 45vw"
                 />
@@ -204,7 +309,7 @@ export default function HomePage() {
 
               <FadeUp delay={0.65}>
                 <div className={styles.doctorExpBadge}>
-                  <span className={styles.expNumber}>20+</span>
+                  <span className={styles.expNumber}>25+</span>
                   <span className={styles.expText}>Years of<br/>Experience</span>
                 </div>
               </FadeUp>
@@ -216,10 +321,8 @@ export default function HomePage() {
       </section>
 
       {/* ─── Reviews Carousel ──────────────────────────────── */}
-      {/* [FIX #15] Wrapped in Suspense with shimmer skeleton fallback */}
-      <Suspense fallback={<div className={styles.reviewsSkeleton} aria-label="Loading reviews…" />}>
-        <ReviewsCarousel />
-      </Suspense>
+      {/* [FIX #15] Passed reviews directly, removing client-side fetch and Suspense skeleton */}
+      <ReviewsCarousel reviews={reviews} />
 
       {/* ─── CTA Banner ───────────────────────────────────── */}
       {/* [FIX #14] Added aria-label for landmark navigation */}

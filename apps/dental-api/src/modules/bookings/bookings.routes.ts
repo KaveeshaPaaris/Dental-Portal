@@ -30,6 +30,7 @@ router.get('/', verifyToken, requireRole('ADMIN'), controller.getBookings);
 router.post('/admin', verifyToken, requireRole('ADMIN'), validate(adminCreateBookingSchema), controller.adminCreateBooking);
 router.get('/:id', verifyToken, requireRole('ADMIN'), controller.getBookingById);
 router.delete('/:id', verifyToken, requireRole('ADMIN'), controller.softDeleteBooking);
+router.delete('/:id/permanent', verifyToken, requireRole('ADMIN'), controller.hardDeleteBooking);
 router.patch('/:id/restore', verifyToken, requireRole('ADMIN'), controller.restoreBooking);
 router.patch('/:id/accept', verifyToken, requireRole('ADMIN'), validate(acceptBookingSchema), controller.acceptBooking);
 router.patch('/:id/reject', verifyToken, requireRole('ADMIN'), controller.rejectBooking);

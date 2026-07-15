@@ -1,9 +1,24 @@
 import type { Metadata } from 'next';
+import { Inter, Plus_Jakarta_Sans } from 'next/font/google';
 import '@/styles/globals.css';
 import { ThemeProvider } from '@/context/ThemeContext';
 import { PatientAuthProvider } from '@/context/PatientAuthContext';
 import { Toaster } from 'react-hot-toast';
 import ReactQueryProvider from '@/components/providers/ReactQueryProvider';
+
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700', '800'],
+  variable: '--font-sans',
+  display: 'swap',
+});
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  weight: ['600', '700', '800'],
+  variable: '--font-display',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'Charming Dental Clinic',
@@ -14,25 +29,25 @@ export const metadata: Metadata = {
     description: 'World-class dental care, close to home.',
     type: 'website',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Charming Dental Clinic',
+    description: 'World-class dental care, close to home.',
+  },
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${plusJakartaSans.variable}`}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                var saved = localStorage.getItem('dental-theme');
-                var preferred = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-                document.documentElement.setAttribute('data-theme', saved || preferred);
-              })();
-            `,
-          }}
-        />
       </head>
       <body>
         <ThemeProvider>

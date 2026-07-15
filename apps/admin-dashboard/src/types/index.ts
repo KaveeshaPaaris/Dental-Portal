@@ -141,10 +141,16 @@ export interface Blog {
   excerpt: string;
   content: string;
   category: string;
-  cover_image?: string;
-  is_published: boolean;
-  author_id?: string;
-  published_at?: string;
+  cover_image?: string | null;
+  author?: string;
+  reading_time?: number | null;
+  meta_description?: string | null;
+  seo_keywords?: string | null;
+  tags?: string[];
+  status: 'DRAFT' | 'PUBLISHED';
+  is_published: boolean;        // generated column — read-only from DB
+  author_id?: string | null;
+  published_at?: string | null;
   created_at: string;
   updated_at: string;
 }

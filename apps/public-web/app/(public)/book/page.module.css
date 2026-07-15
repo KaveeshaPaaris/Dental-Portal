@@ -129,9 +129,14 @@
   font-size: 1.25rem;
 }
 
-.sessionOption:hover {
+.sessionOption:hover,
+.sessionOption:has(.hiddenRadio:focus-visible) {
   border-color: var(--color-primary);
   background: var(--color-surface-hover);
+  outline: none;
+}
+.sessionOption:has(.hiddenRadio:focus-visible) {
+  box-shadow: 0 0 0 2px var(--color-background), 0 0 0 4px var(--color-primary);
 }
 
 .sessionSelected {

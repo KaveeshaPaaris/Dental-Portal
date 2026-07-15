@@ -8,7 +8,7 @@ import { VIEWPORT_CONFIG, staggerContainer, DURATIONS, EASE_OUT } from '@/utils/
 import { FadeUp } from '@/components/animations';
 import styles from './ReviewsCarousel.module.css';
 
-interface Review {
+export interface Review {
   id: string;
   patient_name: string;
   content: string;
@@ -16,7 +16,6 @@ interface Review {
   created_at: string;
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api/v1';
 const SLIDE_INTERVAL = 5000;
 
 const MotionStar = motion.create(Star);
@@ -63,7 +62,7 @@ function ReviewCard({ review }: { review: Review }) {
       )}
       <div className={styles.cardFooter}>
         <div className={styles.flagIcon}>
-          <img src="https://flagcdn.com/w40/lk.png" alt="Sri Lanka" width="32" />
+          <img src="https://flagcdn.com/w40/lk.png" alt="Sri Lanka" width="32" height="22" loading="lazy" />
         </div>
         <div>
           <div className={styles.patientName}>{review.patient_name}</div>
@@ -74,20 +73,10 @@ function ReviewCard({ review }: { review: Review }) {
   );
 }
 
-export default function ReviewsCarousel() {
-  const [reviews, setReviews] = useState<Review[]>([]);
+export default function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
   const [current, setCurrent] = useState(0);
-  const [loading, setLoading] = useState(true);
   const [paused, setPaused] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => {
-    fetch(`${API_URL}/reviews/featured`)
-      .then((r) => r.json())
-      .then((data) => { if (Array.isArray(data)) setReviews(data); })
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, []);
 
   const totalSlides = reviews.length;
   const visibleCount = Math.min(3, totalSlides);
@@ -107,20 +96,7 @@ export default function ReviewsCarousel() {
     return () => { if (timerRef.current) clearTimeout(timerRef.current); };
   }, [current, paused, next, totalSlides]);
 
-  if (loading) {
-    return (
-      <section className={styles.section}>
-        <div className="container">
-          <div className={styles.header}>
-            <h2 className={styles.title}>See What Our Patients Say</h2>
-          </div>
-          <div className={styles.skeletonGrid}>
-            {[1, 2, 3].map((i) => <div key={i} className="skeleton" style={{ height: 200, borderRadius: 16 }} />)}
-          </div>
-        </div>
-      </section>
-    );
-  }
+
 
   if (reviews.length === 0) return null;
 

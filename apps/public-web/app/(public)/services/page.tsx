@@ -1,30 +1,31 @@
-'use client';
-
-import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Search, CheckCircle2 } from 'lucide-react';
-import { SERVICES, CATEGORIES } from '@/data/services';
-import type { ServiceCategory } from '@/data/services';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { getServices } from '@/data/services';
+import type { Metadata } from 'next';
 import styles from './page.module.css';
 
-type FilterCategory = 'All' | ServiceCategory;
+export const metadata: Metadata = {
+  title: 'Our Dental Services — Charming Dental Clinic',
+  description:
+    'Explore our full range of dental services in Negombo — teeth whitening, orthodontics, implants, scaling & polishing, and more. Book your appointment today.',
+  keywords:
+    'dental services, teeth whitening, orthodontics, dental implants, scaling polishing, Negombo dentist, Charming Dental Clinic',
+  alternates: {
+    canonical: 'https://charmingdental.com/services',
+  },
+  openGraph: {
+    title: 'Our Dental Services — Charming Dental Clinic',
+    description:
+      'Comprehensive dental care for your entire family — from routine check-ups to advanced restorative procedures.',
+    url: 'https://charmingdental.com/services',
+    siteName: 'Charming Dental Clinic',
+    type: 'website',
+  },
+};
 
-export default function ServicesPage() {
-  const [query, setQuery] = useState('');
-  const [activeCategory, setActiveCategory] = useState<FilterCategory>('All');
-
-  const filtered = useMemo(() => {
-    return SERVICES.filter((s) => {
-      const matchesCategory = activeCategory === 'All' || s.category === activeCategory;
-      const matchesSearch =
-        query.trim() === '' ||
-        s.title.toLowerCase().includes(query.toLowerCase()) ||
-        s.listingDesc.toLowerCase().includes(query.toLowerCase()) ||
-        s.category.toLowerCase().includes(query.toLowerCase());
-      return matchesCategory && matchesSearch;
-    });
-  }, [query, activeCategory]);
+export default async function ServicesPage() {
+  const SERVICES = await getServices();
 
   return (
     <div className={styles.page}>
@@ -42,7 +43,7 @@ export default function ServicesPage() {
             <div className={styles.statDivider} />
             <div className={styles.stat}><strong>5K+</strong><span>Patients Treated</span></div>
             <div className={styles.statDivider} />
-            <div className={styles.stat}><strong>20+</strong><span>Years of Excellence</span></div>
+            <div className={styles.stat}><strong>25+</strong><span>Years of Excellence</span></div>
           </div>
         </div>
       </section>
@@ -52,21 +53,8 @@ export default function ServicesPage() {
       {/* ── Grid ─────────────────────────────────── */}
       <section className={styles.gridSection} aria-label="Services list">
         <div className="container">
-          {filtered.length === 0 ? (
-            <div className={styles.empty}>
-              <p>
-                No services match your search.{' '}
-                <button
-                  onClick={() => { setQuery(''); setActiveCategory('All'); }}
-                  className={styles.resetBtn}
-                >
-                  Reset filters
-                </button>
-              </p>
-            </div>
-          ) : (
             <div className={styles.grid}>
-              {filtered.map((s) => (
+              {SERVICES.map((s) => (
                 <Link
                   key={s.slug}
                   href={`/services/${s.slug}`}
@@ -77,7 +65,7 @@ export default function ServicesPage() {
                   <div className={styles.cardImgWrap}>
                     <Image
                       src={s.image}
-                      alt={s.title}
+                      alt={`${s.title} — dental service in Negombo, Sri Lanka`}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className={styles.cardImg}
@@ -104,7 +92,6 @@ export default function ServicesPage() {
                 </Link>
               ))}
             </div>
-          )}
         </div>
       </section>
 
