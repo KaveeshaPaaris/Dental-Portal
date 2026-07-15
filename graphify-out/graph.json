@@ -1060,7 +1060,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "apps_admin_dashboard_package_dependencies_axios",
-      "community": 67,
+      "community": 37,
       "norm_label": "axios"
     },
     {
@@ -1070,7 +1070,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "apps_admin_dashboard_package_json_axios",
-      "community": 67,
+      "community": 37,
       "norm_label": "axios"
     },
     {
@@ -1080,7 +1080,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "apps_admin_dashboard_package_dependencies_browser_image_compression",
-      "community": 37,
+      "community": 67,
       "norm_label": "browser-image-compression"
     },
     {
@@ -1090,7 +1090,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "browser_image_compression",
-      "community": 37,
+      "community": 67,
       "norm_label": "browser-image-compression"
     },
     {
@@ -27135,5 +27135,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "4db11b37ede6983c2baa161010d6ba3bd394ba36"
+  "built_at_commit": "877dec0e7260263993a2cd84e30510be5b0dd7cb"
 }

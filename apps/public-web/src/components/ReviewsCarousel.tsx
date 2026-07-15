@@ -124,17 +124,16 @@ export default function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
             </button>
           )}
 
-          <motion.div className={styles.cardsGrid} layout>
+          <motion.div className={styles.cardsGrid}>
             <AnimatePresence mode="popLayout" initial={false}>
               {visibleReviews.map((review) => (
                 <motion.div
                   key={review.id}
-                  layout
+                  layout="position"
                   initial={{ opacity: 0, x: 50, scale: 0.95 }}
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: -50, scale: 0.95 }}
                   transition={{ duration: DURATIONS.fast, ease: EASE_OUT }}
-                  whileHover={{ y: -8, boxShadow: '0 12px 30px rgba(0,0,0,0.1)' }}
                   style={{ width: '100%' }} // Ensure it flexes correctly
                 >
                   <ReviewCard review={review} />

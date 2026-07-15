@@ -67,7 +67,7 @@
 - Table & Blogs
 - Table & Services
 - Config & Eslintconfig
-- Axios & Axios
+- Compression & Compression
 - Fns & Fns
 - Core & Core
 - Sortable & Sortable
@@ -276,7 +276,7 @@ Nodes (5): Step, PatientAuthContext, PatientAuthContextValue, PatientAuthProvide
 
 ### Community 37 - "React & Kit"
 Cohesion: 0.22
-Nodes (9): dependencies, browser-image-compression, @tiptap/extension-table-cell, @tiptap/react, @tiptap/starter-kit, browser-image-compression, @tiptap/extension-table-cell, @tiptap/react (+1 more)
+Nodes (9): dependencies, axios, @tiptap/extension-table-cell, @tiptap/react, @tiptap/starter-kit, axios, @tiptap/extension-table-cell, @tiptap/react (+1 more)
 
 ### Community 38 - "Routes & Schema"
 Cohesion: 0.31

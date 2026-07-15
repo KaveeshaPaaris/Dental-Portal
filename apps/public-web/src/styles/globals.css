@@ -578,3 +578,17 @@ h1, h2, h3, h4, h5, h6 {
   .fab { width: 48px; height: 48px; }
   .fab-container { bottom: 20px; right: 20px; }
 }
+
+/* ─── Float animation — replaces Framer Motion FloatAnimation ── */
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+.float-anim {
+  animation: float 6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .float-anim { animation: none; }
+}
