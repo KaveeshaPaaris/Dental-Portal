@@ -705,7 +705,7 @@
 
   /* ─── Why Choose Us — Pillars ───────────────────────── */
   .pillars {
-    padding: 40px 0;
+    display: none;
   }
 
   .pillarsInner {
