@@ -7,8 +7,6 @@ import BeforeAfterSlider from '@/components/BeforeAfterSlider';
 import styles from './page.module.css';
 import { Metadata } from 'next';
 
-// Edge Runtime (required for Cloudflare Pages)
-export const runtime = 'edge';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const p = await params;

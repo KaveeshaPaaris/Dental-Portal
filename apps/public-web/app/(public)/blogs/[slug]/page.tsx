@@ -6,8 +6,6 @@ import { ArrowLeft, Calendar, Clock } from 'lucide-react';
 import ShareCopyButton from './ShareCopyButton';
 import styles from './page.module.css';
 
-// ─── Edge Runtime (required for Cloudflare Pages) ────────────────────────────
-export const runtime = 'edge';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 const baseUrl = 'https://charmingdental.com';
