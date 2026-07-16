@@ -260,6 +260,7 @@
     max-width: 100%;
     border-radius: 0;
     background: transparent;
+    height: calc(72px + env(safe-area-inset-top));
   }
 
   .headerScrolled {
@@ -268,8 +269,11 @@
 
   /* Make the flex container the full-width top bar */
   .nav {
-    height: 72px;
-    padding: 0;
+    height: calc(72px + env(safe-area-inset-top));
+    padding-top: env(safe-area-inset-top);
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
     gap: 0;
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(24px) saturate(180%);
