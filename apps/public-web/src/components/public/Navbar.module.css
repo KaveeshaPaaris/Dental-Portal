@@ -320,6 +320,11 @@
   .themeBtn {
     display: none;
   }
+
+  /* Remove hover background on the hamburger menu to avoid sticky hover on touch */
+  .menuBtn:hover {
+    background: transparent !important;
+  }
 }
 
 @media (max-width: 480px) {
