@@ -271,9 +271,9 @@
     height: 72px;
     padding: 0;
     gap: 0;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
     border-radius: 0;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     border: none;
@@ -282,7 +282,7 @@
 
   /* Dark mode */
   :global([data-theme='dark']) .nav {
-    background: rgba(23, 32, 51, 0.85);
+    background: rgba(23, 32, 51, 0.55);
     border: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
@@ -293,6 +293,8 @@
     border: none !important;
     box-shadow: none !important;
     height: 72px;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
 
   .logoBox {
@@ -305,9 +307,9 @@
   }
 
   .logoBox img {
-    max-height: 52px !important;
+    max-height: 128px !important;
     width: auto !important;
-    height: 52px !important;
+    height: 120px !important;
   }
 
   /* Hide the theme toggle button from the pill on mobile */
@@ -317,6 +319,7 @@
 }
 
 @media (max-width: 480px) {
+
   /* Hide all action buttons except hamburger */
   .actions .btn:not(.menuBtn) {
     display: none;
@@ -332,15 +335,21 @@
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.45);
-  z-index: 98;
+  z-index: 1000;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   animation: overlayIn 0.2s ease-out;
+  pointer-events: auto;
 }
 
 @keyframes overlayIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 /* ─── Drawer Panel ────────────────────────────────────── */
@@ -351,12 +360,13 @@
   height: 100dvh;
   width: min(340px, 88vw);
   background: var(--color-surface);
-  z-index: 99;
+  z-index: 1001;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
   overscroll-behavior: contain;
   box-shadow: -8px 0 40px rgba(0, 0, 0, 0.18);
+  pointer-events: auto;
 
   /* Slide in from right */
   animation: drawerIn 0.28s cubic-bezier(0.16, 1, 0.3, 1);
@@ -368,8 +378,13 @@
 }
 
 @keyframes drawerIn {
-  from { transform: translateX(100%); }
-  to   { transform: translateX(0); }
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
 }
 
 /* Closing animation class (applied via JS before unmount) */
@@ -378,8 +393,13 @@
 }
 
 @keyframes drawerOut {
-  from { transform: translateX(0); }
-  to   { transform: translateX(100%); }
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
 }
 
 /* ─── Drawer Header ───────────────────────────────────── */
@@ -504,4 +524,4 @@
 .drawerThemeLabel {
   font-size: 0.875rem;
   color: var(--color-text-muted);
-}
+}
