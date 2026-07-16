@@ -246,7 +246,8 @@
 
   /* Hide 'Patient Login' and 'Book Appointment' buttons */
   .actions :global(.btn-secondary),
-  .actions :global(.btn-primary) {
+  .actions :global(.btn-primary),
+  .logoutBtn {
     display: none;
   }
 }
@@ -320,26 +321,9 @@
     height: 120px !important;
   }
 
-  /* Hide the theme toggle button from the pill on mobile */
-  .themeBtn {
-    display: none;
-  }
-
   /* Remove hover background on the hamburger menu to avoid sticky hover on touch */
-  .menuBtn:hover {
+  .menuBtn:hover, .themeBtn:hover {
     background: transparent !important;
-  }
-}
-
-@media (max-width: 480px) {
-
-  /* Hide all action buttons except hamburger */
-  .actions .btn:not(.menuBtn) {
-    display: none;
-  }
-
-  .menuBtn {
-    display: flex;
   }
 }
 

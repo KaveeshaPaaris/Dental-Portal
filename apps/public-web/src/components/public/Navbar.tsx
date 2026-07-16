@@ -135,7 +135,7 @@ export default function Navbar() {
                 </Link>
                 <button
                   onClick={signOut}
-                  className={`btn btn-ghost btn-sm ${styles.themeBtn}`}
+                  className={`btn btn-ghost btn-sm ${styles.logoutBtn}`}
                   aria-label="Log out"
                   title="Log out"
                 >
