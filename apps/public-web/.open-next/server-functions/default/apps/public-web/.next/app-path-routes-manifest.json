@@ -1,0 +1,20 @@
+{
+  "/(public)/about/page": "/about",
+  "/(public)/ask/page": "/ask",
+  "/(public)/blogs/[slug]/page": "/blogs/[slug]",
+  "/(public)/blogs/page": "/blogs",
+  "/(public)/book/page": "/book",
+  "/(public)/book/verify/page": "/book/verify",
+  "/(public)/contact/page": "/contact",
+  "/(public)/login/page": "/login",
+  "/(public)/page": "/",
+  "/(public)/review/[token]/page": "/review/[token]",
+  "/(public)/reviews/page": "/reviews",
+  "/(public)/services/[slug]/page": "/services/[slug]",
+  "/(public)/services/page": "/services",
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/favicon.ico/route": "/favicon.ico",
+  "/robots.txt/route": "/robots.txt",
+  "/sitemap.xml/route": "/sitemap.xml"
+}
