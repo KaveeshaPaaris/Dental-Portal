@@ -144,7 +144,7 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                <Link href="/login" className="btn btn-secondary btn-sm">
+                <Link href="/login" className="btn btn-secondary btn-sm" style={{ display: 'none' }}>
                   <User size={15} />
                   Patient Login
                 </Link>
@@ -162,7 +162,7 @@ export default function Navbar() {
               aria-expanded={menuOpen}
               aria-controls="mobile-drawer"
             >
-              <Menu size={20} />
+              <Menu size={32} />
             </button>
           </div>
         </SpotlightCard>
@@ -253,7 +253,7 @@ export default function Navbar() {
                   href="/login"
                   className="btn btn-secondary"
                   onClick={closeDrawer}
-                  style={{ width: '100%', justifyContent: 'center' }}
+                  style={{ display: 'none', width: '100%', justifyContent: 'center' }}
                 >
                   <User size={16} />
                   Patient Login
