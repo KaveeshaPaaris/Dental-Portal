@@ -1,0 +1,3 @@
+module.exports=[90134,a=>{"use strict";let b={fast:.35,default:.6,slow:.85},c=[.16,1,.3,1];b.default;let d={hidden:{opacity:0,y:36,scale:.95},visible:{opacity:1,y:0,scale:1,transition:{duration:b.default,ease:c}}},e={hidden:{opacity:0,y:44,scale:.96},visible:{opacity:1,y:0,scale:1,transition:{duration:b.default,ease:c}}};a.s(["DURATIONS",0,b,"EASE_OUT",0,c,"EASE_OUT_SOFT",0,[.22,1,.36,1],"VIEWPORT_CONFIG",0,{once:!0,margin:"0px 0px -10% 0px"},"featureCardVariant",0,d,"serviceCardVariant",0,e,"staggerContainer",0,{hidden:{},visible:{transition:{staggerChildren:.1,delayChildren:.05}}}])}];
+
+//# sourceMappingURL=apps_public-web_src_utils_animations_ts_0gfrbw0._.js.map
