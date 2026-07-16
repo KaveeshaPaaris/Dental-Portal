@@ -304,7 +304,10 @@
     font-size: 18px;
   }
 
-  /* Quick links: larger tap areas */
+  /* Quick links: larger tap areas (if not hidden) */
+  .quickLinksCol {
+    display: none;
+  }
   .navLink {
     padding: 10px 0;
     font-size: 0.9375rem;
