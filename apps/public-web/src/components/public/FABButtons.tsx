@@ -37,7 +37,7 @@ export default function FABButtons() {
 
   return (
     <div className="fab-container">
-      <button
+      {/* <button
         onClick={handleAIClick}
         className="fab-ai-pill group"
         aria-label="Open AI Dental Assistant"
@@ -48,7 +48,7 @@ export default function FABButtons() {
           <Image src="/logo_dark.png" alt="Dental Logo" width={32} height={32} className="show-in-dark" style={{ objectFit: 'contain' }} />
         </div>
         <span className="fab-ai-text">Ask AI</span>
-      </button>
+      </button> */}
 
       <motion.a
         animate={{ scale: [1, 1.1, 1, 1] }}

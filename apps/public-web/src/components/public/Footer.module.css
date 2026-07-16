@@ -262,35 +262,109 @@
   }
 }
 
-@media (max-width: 640px) {
+/* ══════════════════════════════════════════════════════
+   MOBILE — 768px and below
+   ══════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
   .footer {
-    padding-top: 36px;
+    padding-top: 56px;
   }
 
+  /* Single-column with dividers instead of gap */
   .grid {
     grid-template-columns: 1fr;
-    gap: 28px;
-    padding-bottom: 32px;
+    gap: 0;
+    padding-bottom: 0;
   }
 
-  /* Hours: revert to stacked column on very small screens */
+  /* Each column gets consistent padding + bottom divider */
+  .brand,
+  .col {
+    padding: 32px 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  /* Brand: scale logo down */
+  .logo img {
+    height: 80px !important;
+  }
+
+  .tagline {
+    max-width: 100%;
+  }
+
+  /* Social icons: larger touch targets */
+  .socials {
+    gap: 10px;
+  }
+
+  .socialIcon {
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
+
+  /* Quick links: larger tap areas */
+  .navLink {
+    padding: 10px 0;
+    font-size: 0.9375rem;
+    min-height: 44px;
+  }
+
+  /* Contact rows: vertically centered, min touch height */
+  .contactRow {
+    min-height: 44px;
+    align-items: center;
+    font-size: 0.9375rem;
+  }
+
+  /* Contact icon stays top-aligned for multi-line address */
+  .contactRow:has(span:not(:only-child)) {
+    align-items: flex-start;
+  }
+
+  /* Hours: slightly tighter */
   .hourItem {
-    grid-template-columns: 1fr;
+    grid-template-columns: 100px 1fr;
+    gap: 2px 0;
   }
 
   .hourDay {
-    grid-column: 1;
-    margin-bottom: 2px;
+    font-size: 0.875rem;
   }
 
   .hourTime {
-    grid-column: 1;
-    padding-left: 0;
+    font-size: 0.875rem;
+  }
+
+  /* Map button: full-width, pill-shaped */
+  .mapBtn {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 16px;
+    min-height: 56px;
+    font-size: 1rem;
+    border-radius: 9999px;
+  }
+
+  /* Bottom bar: stacked, centered */
+  .bottom {
+    padding: 20px 0;
   }
 
   .bottom .container {
     flex-direction: column;
     text-align: center;
     gap: 4px;
+    align-items: center;
   }
 }
+
+/* ── Very small phones: tighten up ── */
+@media (max-width: 360px) {
+  .socialIcon {
+    width: 40px;
+    height: 40px;
+  }
+}
+

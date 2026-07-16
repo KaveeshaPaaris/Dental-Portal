@@ -574,7 +574,58 @@ h1, h2, h3, h4, h5, h6 {
   .admin-sidebar { transform: translateX(-100%); }
   .admin-sidebar.open { transform: translateX(0); }
   .admin-main { margin-left: 0; }
-  .container { padding: 0 16px; }
+  .container { padding: 0 18px; }
   .fab { width: 48px; height: 48px; }
   .fab-container { bottom: 20px; right: 20px; }
+
+  /* ── Mobile button optimizations ── */
+  .btn-xl {
+    padding: 14px 24px;
+    font-size: 1rem;
+  }
+
+  /* Full-width CTA utility for mobile */
+  .btn-full-mobile {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ── Touch optimization — eliminates 300ms tap delay on iOS ── */
+button,
+a,
+[role="button"] {
+  touch-action: manipulation;
+}
+
+/* ── Mobile CTA shimmer animation ── */
+@keyframes mobileShimmer {
+  0%   { transform: translateX(-120%) skewX(-20deg); }
+  100% { transform: translateX(220%) skewX(-20deg); }
+}
+
+/* ─── Float animation — replaces Framer Motion FloatAnimation ── */
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+.float-anim {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* ─── Premium Fade-Up Animation ──────────────────────────── */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .float-anim { animation: none; }
 }

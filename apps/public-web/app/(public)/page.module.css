@@ -580,12 +580,440 @@
   }
 }
 
-/* ─── Motion preferences ─────────────────────────────────── */
-/* [FIX #22] Animations and hover transforms only run when the user hasn't
-   requested reduced motion in their OS accessibility settings */
+
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE — Mobile-first overrides
+   Desktop layout above is untouched.
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Tablet: services 2-col ── */
+@media (max-width: 960px) {
+  .servicesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ── Doctor grid: single column ≤992px ── */
+@media (max-width: 992px) {
+  .doctorGrid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+
+  .doctorImageWrapper {
+    height: 400px;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .doctorContentCol {
+    align-items: center;
+  }
+
+  .doctorBio {
+    margin: 0 auto;
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   MOBILE — 768px and below (phones + portrait tablets)
+   ══════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* ─── Hero ──────────────────────────────────────────── */
+  .hero {
+    min-height: 100svh;
+    align-items: flex-start;
+  }
+
+  .heroContent {
+    padding: 96px 0 52px;
+    max-width: 100%;
+  }
+
+  .heroTitle {
+    font-size: clamp(2.2rem, 9vw, 3rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+
+  .heroSubtext {
+    font-size: 1rem;
+    line-height: 1.75;
+    margin-bottom: 32px;
+    max-width: 100%;
+  }
+
+  /* Hero image: fade from bottom so text stays readable */
+  .heroImage {
+    object-position: center top;
+    -webkit-mask-image: linear-gradient(to top, transparent 0%, black 50%);
+    mask-image: linear-gradient(to top, transparent 0%, black 50%);
+    opacity: 0.45;
+  }
+
+  /* Stacked full-width CTA buttons */
+  .heroActions {
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .heroActions :global(.btn) {
+    width: 100%;
+    justify-content: center;
+    min-height: 56px;
+    border-radius: 9999px;
+  }
+
+  /* Stats: 3-column grid inside a premium glass card */
+  .heroStatsWrapper {
+    margin-top: 12px;
+    padding: 24px 20px;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: var(--shadow-sm);
+  }
+
+  :global([data-theme='dark']) .heroStatsWrapper {
+    background: rgba(23, 32, 51, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .heroStats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    border-top: none; /* Remove desktop border */
+    padding-top: 0;
+  }
+
+  .statValue {
+    font-size: 1.5rem;
+    margin-bottom: 2px;
+  }
+
+  .statLabel {
+    font-size: 0.75rem;
+  }
+
+  /* ─── Why Choose Us — Pillars ───────────────────────── */
+  .pillars {
+    padding: 40px 0;
+  }
+
+  .pillarsInner {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .pillar {
+    padding: 28px 20px 28px 24px;
+    border-right: none !important;
+    border-left: 3px solid var(--color-primary);
+    margin-left: 18px;
+    margin-right: 18px;
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    margin-bottom: 2px;
+  }
+
+  .pillar:not(:last-child) {
+    border-right: none;
+    border-bottom: none;
+    margin-bottom: 10px;
+  }
+
+  .pillarTitle {
+    font-size: 1rem;
+    font-weight: 800;
+  }
+
+  .pillarPoint {
+    font-size: 0.8125rem;
+  }
+
+  /* ─── Services — horizontal scroll snap ────────────── */
+  .services {
+    padding: 80px 0;
+  }
+
+  .sectionHeader {
+    margin-bottom: 36px;
+    padding: 0 8px; /* Slightly inset from edges */
+  }
+
+  .sectionHeader h2 {
+    font-size: clamp(1.8rem, 7.5vw, 2.2rem);
+    letter-spacing: -0.01em;
+  }
+
+  .sectionHeader p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  .servicesGrid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 20px;
+    padding: 12px 24px 40px;
+    margin: 0 -24px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    margin-bottom: 0;
+  }
+
+  .servicesGrid::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Each card snaps to the left edge */
+  .serviceCard {
+    flex: 0 0 82vw;
+    max-width: 320px;
+    scroll-snap-align: center;
+    border-radius: 24px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.02);
+  }
+
+  :global([data-theme='dark']) .serviceCard {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .serviceCardImgWrap {
+    height: 190px;
+    border-radius: 24px 24px 0 0;
+    overflow: hidden;
+  }
+
+  .serviceCardBody {
+    padding: 24px;
+  }
+
+  .serviceName {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .serviceDesc {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  /* Swipe indicator hint */
+  .servicesGrid::after {
+    content: '';
+    flex: 0 0 4px;
+  }
+
+  .servicesCTA {
+    margin-top: 24px;
+    padding: 0 18px;
+  }
+
+  /* ─── Doctor Section ────────────────────────────────── */
+  .doctorSection {
+    padding: 80px 0;
+  }
+
+  .doctorGrid {
+    gap: 32px;
+  }
+
+  .doctorImageWrapper {
+    height: 340px;
+    max-width: 100%;
+    border-radius: 24px;
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Reduce decorative frame offset on mobile */
+  .doctorImageWrapper::before {
+    inset: -8px -8px 8px 8px;
+    border-radius: 24px;
+  }
+
+  .doctorLabel {
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+  }
+
+  .doctorName {
+    font-size: clamp(1.8rem, 7vw, 2.2rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+
+  .doctorSpecialty {
+    font-size: 1rem;
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+
+  .doctorQualifications {
+    font-size: 0.9375rem;
+  }
+
+  .doctorRegBadge {
+    font-size: 0.875rem;
+    padding: 8px 16px;
+    border-radius: 9999px;
+  }
+
+  .doctorBio {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+    max-width: 100%;
+    margin-top: 8px;
+  }
+
+  .doctorContentCol {
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .doctorExpBadge {
+    padding: 12px 20px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .expNumber {
+    font-size: 28px;
+  }
+
+  /* ─── CTA Banner ────────────────────────────────────── */
+  .ctaBanner {
+    padding: 80px 0;
+  }
+
+  .ctaContent h2 {
+    font-size: clamp(1.5rem, 7vw, 2rem);
+    margin-bottom: 12px;
+  }
+
+  .ctaContent p {
+    font-size: 0.9375rem;
+    margin-bottom: 28px;
+  }
+
+  /* Full-width CTA with attention shimmer */
+  .ctaContent :global(.btn) {
+    width: 100%;
+    justify-content: center;
+    min-height: 56px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ctaContent :global(.btn)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.25),
+      transparent
+    );
+    animation: mobileShimmer 2.5s ease-in-out 1.5s infinite;
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   SMALL PHONES — 480px and below
+   ══════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .heroContent {
+    padding: 88px 0 44px;
+  }
+
+  .heroTitle {
+    font-size: clamp(1.85rem, 8vw, 2.4rem);
+  }
+
+  .serviceCard {
+    flex: 0 0 84vw;
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   TINY PHONES — 360px safety net
+   ══════════════════════════════════════════════════════ */
+@media (max-width: 360px) {
+  .heroTitle {
+    font-size: 1.75rem;
+  }
+
+  .heroStats {
+    gap: 8px;
+  }
+
+  .statValue {
+    font-size: 1.4rem;
+  }
+
+  .serviceCard {
+    flex: 0 0 90vw;
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   TOUCH DEVICES — disable hover transforms (no stuck states)
+   ══════════════════════════════════════════════════════ */
+@media (hover: none) {
+  .pillar:hover {
+    transform: none;
+    background-color: initial;
+    box-shadow: none;
+  }
+
+  .pillar:hover .pillarTitle {
+    color: var(--color-text-primary);
+    transform: none;
+  }
+
+  .pillar:hover .pillarList {
+    transform: none;
+  }
+
+  .pillar:hover .pillarPoint::before {
+    opacity: 0.65;
+  }
+
+  .serviceCard:hover {
+    transform: none;
+    box-shadow: var(--shadow-sm);
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   REDUCED MOTION — disable all animations
+   ══════════════════════════════════════════════════════ */
 @media (prefers-reduced-motion: no-preference) {
   .heroContent {
-    animation: fadeIn 0.6s ease-out;
+    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
   .serviceCard:hover {
@@ -597,114 +1025,39 @@
     animation: shimmer 1.4s infinite;
   }
 
-  /* ─── Pillar hover animation ── */
-  .pillar {
-    transition:
-      transform 0.38s cubic-bezier(0.16, 1, 0.3, 1),
-      background-color 0.3s ease,
-      box-shadow 0.38s cubic-bezier(0.16, 1, 0.3, 1);
-  }
+  /* ─── Pillar hover animation (desktop only via hover: hover) ── */
+  @media (hover: hover) {
+    .pillar {
+      transition:
+        transform 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+        background-color 0.3s ease,
+        box-shadow 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+    }
 
-  .pillar:hover {
-    transform: translateY(-6px);
-    background-color: var(--color-surface-hover);
-    box-shadow: var(--shadow-lg);
-    z-index: 2;
-  }
+    .pillar:hover {
+      transform: translateY(-6px);
+      background-color: var(--color-surface-hover);
+      box-shadow: var(--shadow-lg);
+      z-index: 2;
+    }
 
-  /* Title scales up — grows from left */
-  .pillar:hover .pillarTitle {
-    color: var(--color-primary);
-    transform: scale(1.07);
-  }
+    .pillar:hover .pillarTitle {
+      color: var(--color-primary);
+      transform: scale(1.07);
+    }
 
-  /* Bullet list scales up slightly — grows from left */
-  .pillar:hover .pillarList {
-    transform: scale(1.04);
-  }
+    .pillar:hover .pillarList {
+      transform: scale(1.04);
+    }
 
-  /* Bullet dots go full opacity */
-  .pillar:hover .pillarPoint::before {
-    opacity: 1;
-  }
-}
-
-/* ─── Responsive ────────────────────────────────── */
-@media (max-width: 960px) {
-  .servicesGrid {
-    grid-template-columns: repeat(2, 1fr);
+    .pillar:hover .pillarPoint::before {
+      opacity: 1;
+    }
   }
 }
 
-/* Tablet: stack pillars at 640px */
-@media (max-width: 640px) {
-  .pillarsInner {
-    grid-template-columns: 1fr;
+@media (prefers-reduced-motion: reduce) {
+  .ctaContent :global(.btn)::after {
+    animation: none;
   }
-
-  .pillar {
-    padding: 32px 24px;
-    border-right: none !important;
-  }
-
-  .pillar:not(:last-child) {
-    border-right: none;
-    border-bottom: 1px solid var(--color-border);
-  }
-}
-
-/* [FIX #11] Added mid-range breakpoint for hero title and stats gap */
-@media (max-width: 768px) {
-  .heroTitle {
-    font-size: 2rem;
-  }
-
-  .heroStats {
-    gap: 20px;
-  }
-
-  /* [FIX #12] On mobile, show image below text instead of beside it */
-  .heroImage {
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 30%);
-    mask-image: linear-gradient(to bottom, transparent 0%, black 30%);
-  }
-}
-
-@media (max-width: 600px) {
-
-  /* [FIX #10] Mobile hero sizing using svh unit */
-  .hero {
-    min-height: 100svh;
-  }
-
-  .heroContent {
-    padding: 120px 20px 40px;
-  }
-
-  /* Pillars stack vertically; remove right borders, add bottom divider */
-  .pillarsInner {
-    grid-template-columns: 1fr;
-  }
-
-  .pillar {
-    padding: 32px 24px;
-    border-right: none !important;
-  }
-
-  .pillar:not(:last-child) {
-    border-right: none;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .servicesGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .heroActions {
-    flex-direction: column;
-  }
-
-  .heroStats {
-    gap: 24px;
-  }
-}
+}
