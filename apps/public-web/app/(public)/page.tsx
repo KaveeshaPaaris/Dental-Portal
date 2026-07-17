@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -64,10 +65,108 @@ const PILLARS = [
   },
 ];
 
-export default async function HomePage() {
-  const FEATURED_SERVICES = await getFeaturedServices();
-  const reviews = await getFeaturedReviews();
+// ─── Skeleton fallbacks ────────────────────────────────────────────────────
 
+/** Skeleton shown while services data is loading */
+function ServicesSkeleton() {
+  return (
+    <section className={styles.services} aria-label="Our Services" aria-busy="true">
+      <div className="container">
+        <div className={styles.sectionHeader}>
+          <div style={{ height: '2rem', width: '12rem', background: 'var(--color-skeleton, #e5e7eb)', borderRadius: 8, marginBottom: '0.5rem' }} />
+          <div style={{ height: '1rem', width: '20rem', background: 'var(--color-skeleton, #e5e7eb)', borderRadius: 6 }} />
+        </div>
+        <div className={styles.servicesGrid}>
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div
+              key={i}
+              className={`card ${styles.serviceCard}`}
+              style={{ background: 'var(--color-skeleton, #e5e7eb)', minHeight: 260, borderRadius: 12 }}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** Skeleton shown while reviews data is loading */
+function ReviewsSkeleton() {
+  return (
+    <section aria-label="Patient Reviews" aria-busy="true" style={{ padding: '4rem 0' }}>
+      <div className="container">
+        <div style={{ height: '2rem', width: '14rem', background: 'var(--color-skeleton, #e5e7eb)', borderRadius: 8, margin: '0 auto 2rem' }} />
+        <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center' }}>
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div
+              key={i}
+              style={{ flex: '0 0 280px', height: 160, background: 'var(--color-skeleton, #e5e7eb)', borderRadius: 12 }}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Async child Server Components ────────────────────────────────────────
+
+/** Fetches + renders the featured services grid. Runs concurrently with ReviewsSection. */
+async function ServicesSection() {
+  const FEATURED_SERVICES = await getFeaturedServices();
+  return (
+    <section className={styles.services} aria-label="Our Services">
+      <div className="container">
+        <FadeUp>
+          <div className={styles.sectionHeader}>
+            <h2>Our Services</h2>
+            <p>Comprehensive dental care for your entire family</p>
+          </div>
+        </FadeUp>
+        <StaggerContainer className={styles.servicesGrid}>
+          {FEATURED_SERVICES.map((s) => (
+            <AnimatedServiceLink key={s.slug} href={`/services/${s.slug}`} className={`card ${styles.serviceCard}`}>
+              <div className={styles.serviceCardImgWrap}>
+                <Image
+                  src={s.image}
+                  alt={`${s.title} treatment at Charming Dental Clinic, Negombo`}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 960px) 50vw, 33vw"
+                  className={styles.serviceCardImg}
+                />
+              </div>
+              <div className={styles.serviceCardBody}>
+                <h3 className={styles.serviceName}>{s.title}</h3>
+                <p className={styles.serviceDesc}>{s.shortDesc}</p>
+                <span className={styles.learnMore} aria-hidden="true">
+                  Learn More <ArrowRight size={13} />
+                </span>
+              </div>
+            </AnimatedServiceLink>
+          ))}
+        </StaggerContainer>
+        <FadeUp delay={0.3}>
+          <div className={styles.servicesCTA}>
+            <Link href="/services" className="btn btn-secondary btn-lg">
+              View All Services <ArrowRight size={16} aria-hidden="true" />
+            </Link>
+          </div>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
+
+/** Fetches + renders the reviews carousel. Runs concurrently with ServicesSection. */
+async function ReviewsSection() {
+  const reviews = await getFeaturedReviews();
+  // [FIX #15] Passed reviews directly, removing client-side fetch and Suspense skeleton
+  return <ReviewsCarousel reviews={reviews} />;
+}
+
+// ─── Page ──────────────────────────────────────────────────────────────────
+
+export default function HomePage() {
   const clinicSchema = {
     '@context': 'https://schema.org',
     '@type': 'Dentist',
@@ -189,9 +288,9 @@ export default async function HomePage() {
                     aria-label={`${stat.value} ${stat.label}`}
                   >
                     <div className={styles.statValue}>
-                      <AnimatedCounter 
-                        value={parseFloat(stat.value.replace(/[^\d.]/g, ''))} 
-                        suffix={stat.value.replace(/[\d.]/g, '')} 
+                      <AnimatedCounter
+                        value={parseFloat(stat.value.replace(/[^\d.]/g, ''))}
+                        suffix={stat.value.replace(/[\d.]/g, '')}
                       />
                     </div>
                     <div className={styles.statLabel}>{stat.label}</div>
@@ -219,52 +318,16 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── Services ─────────────────────────────────────── */}
-      <section className={styles.services} aria-label="Our Services">
-        <div className="container">
-          <FadeUp>
-            <div className={styles.sectionHeader}>
-              <h2>Our Services</h2>
-              <p>Comprehensive dental care for your entire family</p>
-            </div>
-          </FadeUp>
-          <StaggerContainer className={styles.servicesGrid}>
-            {FEATURED_SERVICES.map((s) => (
-              <AnimatedServiceLink key={s.slug} href={`/services/${s.slug}`} className={`card ${styles.serviceCard}`}>
-                <div className={styles.serviceCardImgWrap}>
-                  <Image
-                    src={s.image}
-                    alt={`${s.title} treatment at Charming Dental Clinic, Negombo`}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 960px) 50vw, 33vw"
-                    className={styles.serviceCardImg}
-                  />
-                </div>
-                <div className={styles.serviceCardBody}>
-                  <h3 className={styles.serviceName}>{s.title}</h3>
-                  <p className={styles.serviceDesc}>{s.shortDesc}</p>
-                  <span className={styles.learnMore} aria-hidden="true">
-                    Learn More <ArrowRight size={13} />
-                  </span>
-                </div>
-              </AnimatedServiceLink>
-            ))}
-          </StaggerContainer>
-          <FadeUp delay={0.3}>
-            <div className={styles.servicesCTA}>
-              <Link href="/services" className="btn btn-secondary btn-lg">
-                View All Services <ArrowRight size={16} aria-hidden="true" />
-              </Link>
-            </div>
-          </FadeUp>
-        </div>
-      </section>
+      {/* ─── Services — streams in while hero is already visible ── */}
+      <Suspense fallback={<ServicesSkeleton />}>
+        <ServicesSection />
+      </Suspense>
 
       {/* ─── Meet the Doctor ──────────────────────────────── */}
       <section className={styles.doctorSection} aria-label="Meet the Doctor">
         <div className="container">
           <div className={styles.doctorGrid}>
-            
+
             {/* Left Column: Image */}
             <SlideIn direction="left" delay={0} className={styles.doctorImageCol}>
               <FloatAnimation className={styles.doctorImageWrapper}>
@@ -283,7 +346,7 @@ export default async function HomePage() {
               <FadeUp delay={0.1}>
                 <span className={styles.doctorLabel}>MEET THE DOCTOR</span>
               </FadeUp>
-              
+
               <FadeUp delay={0.2}>
                 <h2 className={styles.doctorName}>Dr. Chaaminda Paaris</h2>
                 <div className={styles.doctorSpecialty}>Chief Dentist</div>
@@ -315,14 +378,15 @@ export default async function HomePage() {
               </FadeUp>
 
             </div>
-            
+
           </div>
         </div>
       </section>
 
-      {/* ─── Reviews Carousel ──────────────────────────────── */}
-      {/* [FIX #15] Passed reviews directly, removing client-side fetch and Suspense skeleton */}
-      <ReviewsCarousel reviews={reviews} />
+      {/* ─── Reviews — streams in independently of Services ─── */}
+      <Suspense fallback={<ReviewsSkeleton />}>
+        <ReviewsSection />
+      </Suspense>
 
       {/* ─── CTA Banner ───────────────────────────────────── */}
       {/* [FIX #14] Added aria-label for landmark navigation */}

@@ -1,5 +1,7 @@
 'use client';
 
+// Edge Runtime is exported from the layout.tsx for this route
+
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { Star, CheckCircle, XCircle } from 'lucide-react';

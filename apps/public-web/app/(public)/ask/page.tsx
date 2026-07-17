@@ -168,37 +168,7 @@ export default function AskPage() {
                             </div>
                           </div>
 
-                          <p className={styles.paymentCardText}>
-                            If you have any questions about payments, insurance, or billing, our team will be happy to assist you.
-                          </p>
 
-                          <div className={styles.paymentContactSection}>
-                            <div className={styles.paymentContactItem}>
-                              <Phone size={16} className={styles.paymentContactIcon} />
-                              <span>+94 71 810 9283</span>
-                            </div>
-                            <div className={styles.paymentContactItem}>
-                              <Mail size={16} className={styles.paymentContactIcon} />
-                              <span>charmingdental@gmail.com</span>
-                            </div>
-                          </div>
-                          
-                          <div className={styles.actionButtons}>
-                            <a 
-                              href="https://wa.me/94718109283?text=Hello%20Charming%20Dental%20Clinic,%20I%20have%20a%20question%20about%20payments." 
-                              className={`btn ${styles.btnWhatsapp}`} 
-                              target="_blank" 
-                              rel="noreferrer"
-                            >
-                              💬 Chat on WhatsApp
-                            </a>
-                            <a 
-                              href="tel:+94718109283" 
-                              className="btn btn-outline"
-                            >
-                              📞 Call the Clinic
-                            </a>
-                          </div>
                         </div>
                       ) : (
                         <>
@@ -218,24 +188,7 @@ export default function AskPage() {
                             })()}
                           </ReactMarkdown>
                           
-                          {msg.text.includes('[SHOW_CONTACT_BUTTONS]') && (
-                            <div className={styles.actionButtons}>
-                              <a 
-                                href="https://wa.me/94718109283?text=Hello%20Charming%20Dental%20Clinic,%20I%20would%20like%20to%20book%20an%20appointment." 
-                                className={`btn ${styles.btnWhatsapp}`} 
-                                target="_blank" 
-                                rel="noreferrer"
-                              >
-                                💬 Chat on WhatsApp
-                              </a>
-                              <a 
-                                href="tel:+94718109283" 
-                                className="btn btn-outline"
-                              >
-                                📞 Call the Clinic
-                              </a>
-                            </div>
-                          )}
+
                         </>
                       )}
                     </div>

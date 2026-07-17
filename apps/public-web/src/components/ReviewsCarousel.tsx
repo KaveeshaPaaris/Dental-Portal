@@ -77,6 +77,7 @@ export default function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const touchStartXRef = useRef<number | null>(null);
 
   const totalSlides = reviews.length;
   const visibleCount = Math.min(3, totalSlides);
@@ -103,8 +104,22 @@ export default function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
   // Build the visible slice (wrapping)
   const visibleReviews = Array.from({ length: visibleCount }, (_, i) => reviews[(current + i) % totalSlides]);
 
+  // Touch swipe handlers
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartXRef.current = e.touches[0].clientX;
+  }, []);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    if (touchStartXRef.current === null) return;
+    const delta = touchStartXRef.current - e.changedTouches[0].clientX;
+    if (Math.abs(delta) > 50) {
+      delta > 0 ? next() : prev();
+    }
+    touchStartXRef.current = null;
+  }, [next, prev]);
+
   return (
-    <section className={styles.section}>
+    <section className={styles.section} role="region" aria-label="Patient reviews carousel">
       <div className="container">
         <FadeUp>
           <div className={styles.header}>
@@ -117,6 +132,8 @@ export default function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
           className={styles.carouselWrapper}
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
         >
           {totalSlides > 3 && (
             <button className={`${styles.navBtn} ${styles.navPrev}`} onClick={prev} aria-label="Previous reviews">
@@ -124,18 +141,17 @@ export default function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
             </button>
           )}
 
-          <motion.div className={styles.cardsGrid} layout>
+          <motion.div className={styles.cardsGrid}>
             <AnimatePresence mode="popLayout" initial={false}>
               {visibleReviews.map((review) => (
                 <motion.div
                   key={review.id}
-                  layout
+                  layout="position"
                   initial={{ opacity: 0, x: 50, scale: 0.95 }}
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: -50, scale: 0.95 }}
                   transition={{ duration: DURATIONS.fast, ease: EASE_OUT }}
-                  whileHover={{ y: -8, boxShadow: '0 12px 30px rgba(0,0,0,0.1)' }}
-                  style={{ width: '100%' }} // Ensure it flexes correctly
+                  className={styles.slideWrapper}
                 >
                   <ReviewCard review={review} />
                 </motion.div>
