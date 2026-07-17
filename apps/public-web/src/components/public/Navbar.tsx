@@ -85,7 +85,7 @@ export default function Navbar() {
           <div className={styles.actions}>
             <button
               onClick={toggleTheme}
-              className={`btn btn-ghost btn-sm ${styles.themeBtn}`}
+              className={`btn btn-ghost btn-sm ${styles.iconBtn}`}
               aria-label="Toggle theme"
             >
               {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
@@ -93,13 +93,13 @@ export default function Navbar() {
 
             {user ? (
               <>
-                <Link href="/book" className="btn btn-primary">
+                <Link href="/book" className={`btn btn-primary ${styles.desktopOnlyBtn}`}>
                   <Phone size={16} />
                   Book Appointment
                 </Link>
                 <button
                   onClick={signOut}
-                  className={`btn btn-ghost btn-sm ${styles.themeBtn}`}
+                  className={`btn btn-ghost btn-sm ${styles.iconBtn}`}
                   aria-label="Log out"
                   title="Log out"
                 >
@@ -108,19 +108,22 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                <Link href="/login" className="btn btn-secondary btn-sm">
+                <Link href="/login" className={`btn btn-secondary btn-sm ${styles.desktopOnlyBtn}`}>
                   <User size={15} />
                   Patient Login
                 </Link>
-                <Link href="/book" className="btn btn-primary">
+                <Link href="/book" className={`btn btn-primary ${styles.desktopOnlyBtn}`}>
                   <Phone size={16} />
                   Book Appointment
+                </Link>
+                <Link href="/login" className={`btn btn-ghost btn-sm ${styles.mobileOnlyIconBtn}`} aria-label="Patient Login">
+                  <User size={18} />
                 </Link>
               </>
             )}
 
             <button
-              className={`btn btn-ghost btn-sm ${styles.menuBtn}`}
+              className={`btn btn-ghost btn-sm ${styles.iconBtn} ${styles.menuBtn}`}
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label="Toggle menu"
             >

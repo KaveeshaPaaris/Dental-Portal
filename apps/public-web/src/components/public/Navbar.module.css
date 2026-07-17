@@ -175,16 +175,19 @@
   margin-left: auto;
 }
 
-.themeBtn {
+.iconBtn {
   color: var(--color-text-secondary);
   min-width: 48px;
   min-height: 48px;
+  border-radius: 50%;
+}
+
+.mobileOnlyIconBtn {
+  display: none;
 }
 
 .menuBtn {
   display: none;
-  min-width: 48px;
-  min-height: 48px;
 }
 
 .mobileMenu {
@@ -230,25 +233,96 @@
   font-weight: 600;
   border-left: 3px solid var(--color-primary);
   padding-left: 13px;
-  /* account for 3px border */
 }
 
 @media (max-width: 900px) {
   .desktopNav {
     display: none;
   }
-
   .menuBtn {
     display: flex;
   }
 }
 
-@media (max-width: 480px) {
-  .actions .btn:not(.menuBtn) {
-    display: none;
+@media (max-width: 768px) {
+  .header {
+    top: 12px;
+  }
+  .headerScrolled {
+    top: 6px;
   }
 
-  .menuBtn {
-    display: flex;
+  /* Single pill for mobile */
+  .nav {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(24px) saturate(200%);
+    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    border-radius: 100px;
+    padding: 6px 6px 6px 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    gap: 0;
+  }
+
+  [data-theme='dark'] .nav {
+    background: rgba(23, 32, 51, 0.7);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .headerScrolled .nav {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), inset 0 1px 2px rgba(255, 255, 255, 0.6);
+  }
+  
+  [data-theme='dark'] .headerScrolled .nav {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.05);
+  }
+
+  /* Remove individual box styling to merge them into the nav pill */
+  .glassBox {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    height: auto !important;
+  }
+  
+  .logoBox {
+    padding: 0;
+  }
+  
+  .logoBox img {
+    width: 120px !important;
+    height: auto !important;
+  }
+
+  .navBox {
+    padding: 0;
+    flex: none;
+  }
+
+  .actions {
+    gap: 2px;
+  }
+  
+  .iconBtn {
+    min-width: 40px;
+    min-height: 40px;
+    border-radius: 50%;
+  }
+
+  .desktopOnlyBtn {
+    display: none !important;
+  }
+  
+  .mobileOnlyIconBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    min-height: 40px;
+    border-radius: 50%;
+    color: var(--color-text-secondary);
   }
 }

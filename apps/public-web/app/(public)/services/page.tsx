@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import Image from 'next/image';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { getServices } from '@/data/services';
+import ExpandableServiceGrid from '@/components/public/ExpandableServiceGrid';
 import type { Metadata } from 'next';
 import styles from './page.module.css';
 
@@ -50,48 +50,15 @@ export default async function ServicesPage() {
 
 
 
-      {/* ── Grid ─────────────────────────────────── */}
       <section className={styles.gridSection} aria-label="Services list">
         <div className="container">
-            <div className={styles.grid}>
-              {SERVICES.map((s) => (
-                <Link
-                  key={s.slug}
-                  href={`/services/${s.slug}`}
-                  className={styles.card}
-                  aria-label={`Learn more about ${s.title}`}
-                >
-                  {/* Photo */}
-                  <div className={styles.cardImgWrap}>
-                    <Image
-                      src={s.image}
-                      alt={`${s.title} — dental service in Negombo, Sri Lanka`}
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className={styles.cardImg}
-                    />
-
-                  </div>
-
-                  {/* Body */}
-                  <div className={styles.cardBody}>
-                    <h2 className={styles.cardTitle}>{s.title}</h2>
-                    <p className={styles.cardDesc}>{s.listingDesc}</p>
-                    <ul className={styles.highlights} aria-label={`Key features of ${s.title}`}>
-                      {s.highlights.map((h) => (
-                        <li key={h} className={styles.highlight}>
-                          <CheckCircle2 size={14} aria-hidden="true" />
-                          <span>{h}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <span className={styles.cardCta} aria-hidden="true">
-                      Learn More <ArrowRight size={14} />
-                    </span>
-                  </div>
-                </Link>
-              ))}
-            </div>
+          <ExpandableServiceGrid services={SERVICES.map(s => ({
+            slug: s.slug,
+            title: s.title,
+            image: s.image,
+            listingDesc: s.listingDesc,
+            highlights: s.highlights
+          }))} />
         </div>
       </section>
 
