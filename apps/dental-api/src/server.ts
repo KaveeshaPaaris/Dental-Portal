@@ -3,7 +3,7 @@ import { env } from './config/env';
 
 const PORT = parseInt(env.PORT, 10);
 
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`
   ╔══════════════════════════════════════════╗
   ║       🦷 Dental API Server Running       ║
