@@ -2,17 +2,11 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronDown, CalendarCheck } from 'lucide-react';
-import { getServiceBySlug, getRelatedServices, getServices, REVIEWER_INFO } from '@/data/services';
+import { getServiceBySlug, getRelatedServices, REVIEWER_INFO } from '@/data/services';
 import BeforeAfterSlider from '@/components/BeforeAfterSlider';
 import styles from './page.module.css';
 import { Metadata } from 'next';
 
-export async function generateStaticParams() {
-  const services = await getServices();
-  return services.map((service) => ({
-    slug: service.slug,
-  }));
-}
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const p = await params;

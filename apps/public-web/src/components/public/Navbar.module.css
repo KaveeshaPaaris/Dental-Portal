@@ -233,22 +233,292 @@
   /* account for 3px border */
 }
 
+/* ─── 900px: hide desktop nav, show hamburger ─────────── */
 @media (max-width: 900px) {
   .desktopNav {
     display: none;
   }
 
+  /* Show hamburger whenever the desktop nav is hidden */
   .menuBtn {
     display: flex;
+  }
+
+  /* Hide 'Patient Login' and 'Book Appointment' buttons */
+  .actions :global(.btn-secondary),
+  .actions :global(.btn-primary),
+  .logoutBtn {
+    display: none;
   }
 }
 
-@media (max-width: 480px) {
-  .actions .btn:not(.menuBtn) {
-    display: none;
+/* ─── Mobile: Full-width Frosted Glass Bar ≤768px ──────── */
+@media (max-width: 768px) {
+  .header {
+    position: fixed;
+    top: 0 !important;
+    left: 0;
+    right: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+    border-radius: 0;
+    background: transparent;
+    height: auto;
+    min-height: calc(72px + env(safe-area-inset-top));
   }
 
-  .menuBtn {
-    display: flex;
+  .headerScrolled {
+    top: 0 !important;
   }
+
+  /* Make the flex container wrap the tall logo fully */
+  .nav {
+    height: auto;
+    min-height: calc(72px + env(safe-area-inset-top));
+    padding: env(safe-area-inset-top) 0 8px 0;
+    margin: 0;
+    gap: 0;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border-radius: 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  }
+
+  /* Dark mode */
+  :global([data-theme='dark']) .nav {
+    background: rgba(23, 32, 51, 0.55);
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Remove individual SpotlightCard styles inside */
+  .glassBox {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    height: 72px;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .logoBox {
+    flex: 0 0 auto;
+    padding: 0 0 0 20px;
+  }
+
+  .navBox {
+    padding: 0 16px 0 0;
+  }
+
+  .logoBox img {
+    max-height: 128px !important;
+    width: auto !important;
+    height: 120px !important;
+  }
+
+  /* Remove hover background on the hamburger menu to avoid sticky hover on touch */
+  .menuBtn:hover, .themeBtn:hover {
+    background: transparent !important;
+  }
+}
+
+/* ─── Full-screen Drawer Overlay ──────────────────────── */
+.drawerOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: overlayIn 0.2s ease-out;
+  pointer-events: auto;
+}
+
+@keyframes overlayIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* ─── Drawer Panel ────────────────────────────────────── */
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100dvh;
+  width: min(340px, 88vw);
+  background: var(--color-surface);
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  box-shadow: -8px 0 40px rgba(0, 0, 0, 0.18);
+  pointer-events: auto;
+
+  /* Slide in from right */
+  animation: drawerIn 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme='dark'] .drawer {
+  background: var(--color-surface);
+  box-shadow: -8px 0 40px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes drawerIn {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Closing animation class (applied via JS before unmount) */
+.drawerClosing {
+  animation: drawerOut 0.22s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+@keyframes drawerOut {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* ─── Drawer Header ───────────────────────────────────── */
+.drawerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--color-border);
+  min-height: 64px;
+  flex-shrink: 0;
+}
+
+.drawerCloseBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--color-surface-2);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  transition: background var(--transition-fast), color var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.drawerCloseBtn:hover {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+/* ─── Drawer Nav Links ────────────────────────────────── */
+.drawerNav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 16px;
+  gap: 2px;
+  overflow-y: auto;
+}
+
+.drawerLink {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  min-height: 52px;
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+.drawerLink:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-primary);
+}
+
+.drawerLinkActive {
+  color: var(--color-primary);
+  background: rgba(15, 76, 129, 0.06);
+  font-weight: 600;
+}
+
+.drawerLinkActive::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  background: var(--color-primary);
+  border-radius: 0 2px 2px 0;
+}
+
+/* ─── Drawer Footer / CTA ─────────────────────────────── */
+.drawerFooter {
+  padding: 16px 20px 32px;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.drawerBookBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: white;
+  border-radius: var(--radius-lg);
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 16px rgba(15, 76, 129, 0.35);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  min-height: 56px;
+}
+
+.drawerBookBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(15, 76, 129, 0.45);
+}
+
+.drawerThemeRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 4px;
+}
+
+.drawerThemeLabel {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
 }
