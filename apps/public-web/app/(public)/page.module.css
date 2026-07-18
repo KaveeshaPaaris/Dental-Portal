@@ -49,6 +49,10 @@
   mask-image: linear-gradient(to right, transparent 0%, black 60%);
 }
 
+.heroImageMobile {
+  display: none !important;
+}
+
 .heroBg::after {
   content: '';
   position: absolute;
@@ -653,6 +657,14 @@
     -webkit-mask-image: linear-gradient(to top, transparent 0%, black 50%);
     mask-image: linear-gradient(to top, transparent 0%, black 50%);
     opacity: 0.45;
+  }
+
+  .heroImageDesktop {
+    display: none !important;
+  }
+
+  .heroImageMobile {
+    display: block !important;
   }
 
   /* Stacked full-width CTA buttons */

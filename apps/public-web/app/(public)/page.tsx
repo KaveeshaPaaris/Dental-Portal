@@ -240,7 +240,14 @@ export default function HomePage() {
             alt="Dental clinic background"
             fill
             priority
-            className={styles.heroImage}
+            className={`${styles.heroImage} ${styles.heroImageDesktop}`}
+          />
+          <Image
+            src="/dental_clinic_interior_portrait.webp"
+            alt="Dental clinic interior portrait"
+            fill
+            priority
+            className={`${styles.heroImage} ${styles.heroImageMobile}`}
           />
         </ParallaxHeroBg>
         <div className="container">
