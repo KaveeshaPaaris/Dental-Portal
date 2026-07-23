@@ -11,6 +11,34 @@ import { AnimatedServiceLink } from '@/components/animations/AnimatedCards';
 import AnimatedCounter from '@/components/AnimatedCounter';
 import type { Review } from '@/components/ReviewsCarousel';
 
+function HeroStats({ className }: { className?: string }) {
+  return (
+    <div className={`${styles.heroStatsWrapper} ${className || ''}`}>
+      <div className={styles.heroStats}>
+        {[
+          { value: '25+', label: 'Years Experience' },
+          { value: '5K+', label: 'Happy Patients' },
+          { value: '4.9', label: 'Star Rating' },
+        ].map((stat) => (
+          <div
+            key={stat.label}
+            className={styles.stat}
+            aria-label={`${stat.value} ${stat.label}`}
+          >
+            <div className={styles.statValue}>
+              <AnimatedCounter
+                value={parseFloat(stat.value.replace(/[^\d.]/g, ''))}
+                suffix={stat.value.replace(/[\d.]/g, '')}
+              />
+            </div>
+            <div className={styles.statLabel}>{stat.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api/v1';
 
 async function getFeaturedReviews(): Promise<Review[]> {
@@ -240,25 +268,46 @@ export default function HomePage() {
             alt="Dental clinic background"
             fill
             priority
-            className={styles.heroImage}
+            className={`${styles.heroImage} ${styles.heroImageDesktop}`}
+          />
+          <Image
+            src="/dental_clinic_interior_portrait.webp"
+            alt="Dental clinic interior portrait"
+            fill
+            priority
+            className={`${styles.heroImage} ${styles.heroImageMobile}`}
           />
         </ParallaxHeroBg>
         <div className="container">
           {/* [FIX #1] heroContent sits cleanly over the hero image */}
           <div className={styles.heroContent}>
-            <FadeUp delay={0}>
-              <h1 className={styles.heroTitle}>
-                World-Class Dental Care,{' '}
-                <span className={styles.heroHighlight}>Close to Home</span>
-              </h1>
-            </FadeUp>
+            <div className={styles.desktopOnly}>
+              <FadeUp delay={0}>
+                <h1 className={styles.heroTitle}>
+                  Where Excellence Meets{' '}
+                  <span className={styles.heroHighlight}>Every Smile</span>
+                </h1>
+              </FadeUp>
+              <FadeUp delay={0.15}>
+                <p className={styles.heroSubtext}>
+                  Trusted by 5,000+ patients. Board-certified specialists, same-week appointments available.
+                </p>
+              </FadeUp>
+            </div>
 
-            {/* [FIX #19] Added heroSubtext tagline so .heroSubtext CSS is no longer dead */}
-            <FadeUp delay={0.15}>
-              <p className={styles.heroSubtext}>
-                Trusted by 5,000+ patients. Board-certified specialists, same-week appointments available.
-              </p>
-            </FadeUp>
+            <div className={styles.mobileOnly}>
+              <FadeUp delay={0}>
+                <h1 className={styles.heroTitle}>
+                  Where <span className={styles.heroHighlight}>Excellence</span> Meets{' '}
+                  <span className={styles.heroHighlight}>Every Smile.</span>
+                </h1>
+              </FadeUp>
+              <FadeUp delay={0.15}>
+                <p className={styles.heroSubtext}>
+                  Your path to a brighter, healthier smile starts here.
+                </p>
+              </FadeUp>
+            </div>
 
             <div className={styles.heroActions}>
               <FadeUp delay={0.3}>
@@ -266,7 +315,7 @@ export default function HomePage() {
                   Book Appointment <ArrowRight size={18} aria-hidden="true" />
                 </Link>
               </FadeUp>
-              <FadeUp delay={0.42}>
+              <FadeUp delay={0.42} className={styles.hideOnMobile}>
                 <Link href="/services" className="btn btn-secondary btn-xl">
                   Our Services
                 </Link>
@@ -274,33 +323,15 @@ export default function HomePage() {
             </div>
 
             {/* [FIX #3] Stats section with a subtle separator/backdrop for contrast */}
-            <div className={styles.heroStatsWrapper}>
-              <div className={styles.heroStats}>
-                {[
-                  { value: '25+', label: 'Years Experience' },
-                  { value: '5K+', label: 'Happy Patients' },
-                  { value: '4.9', label: 'Star Rating' },
-                ].map((stat) => (
-                  // [FIX #13] Added aria-label for screen readers
-                  <div
-                    key={stat.label}
-                    className={styles.stat}
-                    aria-label={`${stat.value} ${stat.label}`}
-                  >
-                    <div className={styles.statValue}>
-                      <AnimatedCounter
-                        value={parseFloat(stat.value.replace(/[^\d.]/g, ''))}
-                        suffix={stat.value.replace(/[\d.]/g, '')}
-                      />
-                    </div>
-                    <div className={styles.statLabel}>{stat.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <HeroStats className={styles.desktopOnlyStats} />
           </div>
         </div>
       </section>
+
+      {/* Mobile Stats placed between Hero and Services */}
+      <div className={`container ${styles.mobileOnlyStatsContainer}`}>
+        <HeroStats className={styles.mobileOnlyStats} />
+      </div>
 
       {/* ─── Why Choose Us (3-Pillar Strip) ─────────────────── */}
       <section className={styles.pillars} aria-label="Why Choose Us">

@@ -88,7 +88,7 @@ export default function Footer() {
         </div>
 
         {/* ── Col 2: Quick Links ───────────────── */}
-        <div className={styles.col}>
+        <div className={`${styles.col} ${styles.quickLinksCol}`}>
           <h4 className={styles.colTitle}>Quick Links</h4>
           <nav aria-label="Footer navigation">
             {QUICK_LINKS.map(({ label, href }) => (

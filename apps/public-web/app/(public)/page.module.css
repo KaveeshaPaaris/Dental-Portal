@@ -49,6 +49,10 @@
   mask-image: linear-gradient(to right, transparent 0%, black 60%);
 }
 
+.heroImageMobile {
+  display: none !important;
+}
+
 .heroBg::after {
   content: '';
   position: absolute;
@@ -70,7 +74,7 @@
 /* [FIX #7] Removed unused `.heroBadge` CSS rule */
 
 .heroTitle {
-  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-size: clamp(3rem, 7vw, 5rem);
   font-weight: 800;
   line-height: 1.1;
   margin-bottom: 20px;
@@ -127,6 +131,18 @@
   font-size: 0.8125rem;
   color: var(--color-text-secondary);
   margin-top: 4px;
+}
+
+.mobileOnlyStatsContainer {
+  display: none;
+}
+
+.desktopOnly {
+  display: block;
+}
+
+.mobileOnly {
+  display: none !important;
 }
 
 /* ─── Why Choose Us (3-Pillar Strip) ───────────────── */
@@ -631,10 +647,13 @@
   .heroContent {
     padding: 96px 0 52px;
     max-width: 100%;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
   }
 
   .heroTitle {
-    font-size: clamp(2.2rem, 9vw, 3rem);
+    font-size: clamp(2.8rem, 10vw, 3.8rem);
     line-height: 1.05;
     letter-spacing: -0.02em;
     margin-bottom: 16px;
@@ -650,9 +669,17 @@
   /* Hero image: fade from bottom so text stays readable */
   .heroImage {
     object-position: center top;
-    -webkit-mask-image: linear-gradient(to top, transparent 0%, black 50%);
-    mask-image: linear-gradient(to top, transparent 0%, black 50%);
-    opacity: 0.45;
+    -webkit-mask-image: linear-gradient(to top, transparent 0%, transparent 0%, black 65%);
+    mask-image: linear-gradient(to top, transparent 20%, transparent 0%, black 65%);
+    opacity: 1;
+  }
+
+  .heroImageDesktop {
+    display: none !important;
+  }
+
+  .heroImageMobile {
+    display: block !important;
   }
 
   /* Stacked full-width CTA buttons */
@@ -669,11 +696,53 @@
     border-radius: 9999px;
   }
 
+  .hideOnMobile {
+    display: none !important;
+  }
+
   /* Stats: 3-column grid inside a premium glass card */
+  .desktopOnlyStats {
+    display: none !important;
+  }
+
+  .mobileOnlyStatsContainer {
+    display: block;
+    margin-top: 24px;
+    margin-bottom: -32px;
+    /* Reduce space before services */
+    position: relative;
+    z-index: 10;
+  }
+
+  .desktopOnly {
+    display: none !important;
+  }
+
+  .mobileOnly {
+    display: block !important;
+    margin-top: auto;
+  }
+
+  /* Text color overrides for mobile visibility */
+  .mobileOnly .heroTitle {
+    color: #1E2A45;
+  }
+
+  .mobileOnly .heroHighlight {
+    background: none;
+    -webkit-text-fill-color: initial;
+    color: #1E2A45;
+  }
+
+  .mobileOnly .heroSubtext {
+    color: #5A5A60;
+    font-weight: 500;
+  }
+
   .heroStatsWrapper {
-    margin-top: 12px;
+    margin-top: 0;
     padding: 24px 20px;
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(201, 225, 245, 0.7);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-radius: 24px;
@@ -690,7 +759,8 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
-    border-top: none; /* Remove desktop border */
+    border-top: none;
+    /* Remove desktop border */
     padding-top: 0;
   }
 
@@ -705,7 +775,7 @@
 
   /* ─── Why Choose Us — Pillars ───────────────────────── */
   .pillars {
-    padding: 40px 0;
+    display: none;
   }
 
   .pillarsInner {
@@ -746,7 +816,8 @@
 
   .sectionHeader {
     margin-bottom: 36px;
-    padding: 0 8px; /* Slightly inset from edges */
+    padding: 0 8px;
+    /* Slightly inset from edges */
   }
 
   .sectionHeader h2 {
@@ -931,12 +1002,10 @@
     left: 0;
     width: 40%;
     height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.25),
-      transparent
-    );
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.25),
+        transparent);
     animation: mobileShimmer 2.5s ease-in-out 1.5s infinite;
   }
 }
@@ -1060,4 +1129,4 @@
   .ctaContent :global(.btn)::after {
     animation: none;
   }
-}
+}

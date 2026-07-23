@@ -4,7 +4,8 @@
   --mouse-x: 50%;
   --mouse-y: 50%;
   --spotlight-color: rgba(255, 255, 255, 0.05);
-  border-radius: inherit; /* Inherit border-radius from the container */
+  border-radius: inherit;
+  /* Inherit border-radius from the container */
 }
 
 .cardSpotlight::before {
@@ -23,4 +24,12 @@
 
 .cardSpotlight:hover::before {
   opacity: 1;
+}
+
+/* Disable spotlight hover effect on mobile/touch devices where it creates sticky artifacts */
+@media (hover: none),
+(max-width: 768px) {
+  .cardSpotlight:hover::before {
+    opacity: 0 !important;
+  }
 }
