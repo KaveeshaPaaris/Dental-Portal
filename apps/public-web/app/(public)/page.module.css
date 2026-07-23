@@ -137,6 +137,14 @@
   display: none;
 }
 
+.desktopOnly {
+  display: block;
+}
+
+.mobileOnly {
+  display: none !important;
+}
+
 /* ─── Why Choose Us (3-Pillar Strip) ───────────────── */
 .pillars {
   padding: 52px 0;
@@ -645,7 +653,6 @@
   }
 
   .heroTitle {
-    display: none !important; /* Temporarily hidden */
     font-size: clamp(2.8rem, 10vw, 3.8rem);
     line-height: 1.05;
     letter-spacing: -0.02em;
@@ -662,9 +669,9 @@
   /* Hero image: fade from bottom so text stays readable */
   .heroImage {
     object-position: center top;
-    -webkit-mask-image: linear-gradient(to top, transparent 0%, black 50%);
-    mask-image: linear-gradient(to top, transparent 0%, black 50%);
-    opacity: 0.45;
+    -webkit-mask-image: linear-gradient(to top, transparent 0%, transparent 0%, black 65%);
+    mask-image: linear-gradient(to top, transparent 20%, transparent 0%, black 65%);
+    opacity: 1;
   }
 
   .heroImageDesktop {
@@ -680,7 +687,6 @@
     flex-direction: column;
     gap: 12px;
     margin-bottom: 32px;
-    margin-top: auto;
   }
 
   .heroActions :global(.btn) {
@@ -689,7 +695,7 @@
     min-height: 56px;
     border-radius: 9999px;
   }
-  
+
   .hideOnMobile {
     display: none !important;
   }
@@ -698,19 +704,45 @@
   .desktopOnlyStats {
     display: none !important;
   }
-  
+
   .mobileOnlyStatsContainer {
     display: block;
     margin-top: 24px;
-    margin-bottom: -32px; /* Reduce space before services */
+    margin-bottom: -32px;
+    /* Reduce space before services */
     position: relative;
     z-index: 10;
+  }
+
+  .desktopOnly {
+    display: none !important;
+  }
+
+  .mobileOnly {
+    display: block !important;
+    margin-top: auto;
+  }
+
+  /* Text color overrides for mobile visibility */
+  .mobileOnly .heroTitle {
+    color: #1E2A45;
+  }
+
+  .mobileOnly .heroHighlight {
+    background: none;
+    -webkit-text-fill-color: initial;
+    color: #1E2A45;
+  }
+
+  .mobileOnly .heroSubtext {
+    color: #5A5A60;
+    font-weight: 500;
   }
 
   .heroStatsWrapper {
     margin-top: 0;
     padding: 24px 20px;
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(201, 225, 245, 0.7);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-radius: 24px;
@@ -727,7 +759,8 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
-    border-top: none; /* Remove desktop border */
+    border-top: none;
+    /* Remove desktop border */
     padding-top: 0;
   }
 
@@ -783,7 +816,8 @@
 
   .sectionHeader {
     margin-bottom: 36px;
-    padding: 0 8px; /* Slightly inset from edges */
+    padding: 0 8px;
+    /* Slightly inset from edges */
   }
 
   .sectionHeader h2 {
@@ -968,12 +1002,10 @@
     left: 0;
     width: 40%;
     height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.25),
-      transparent
-    );
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.25),
+        transparent);
     animation: mobileShimmer 2.5s ease-in-out 1.5s infinite;
   }
 }
@@ -1097,4 +1129,4 @@
   .ctaContent :global(.btn)::after {
     animation: none;
   }
-}
+}

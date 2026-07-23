@@ -281,19 +281,33 @@ export default function HomePage() {
         <div className="container">
           {/* [FIX #1] heroContent sits cleanly over the hero image */}
           <div className={styles.heroContent}>
-            <FadeUp delay={0}>
-              <h1 className={styles.heroTitle}>
-                Where Excellence Meets{' '}
-                <span className={styles.heroHighlight}>Every Smile</span>
-              </h1>
-            </FadeUp>
+            <div className={styles.desktopOnly}>
+              <FadeUp delay={0}>
+                <h1 className={styles.heroTitle}>
+                  Where Excellence Meets{' '}
+                  <span className={styles.heroHighlight}>Every Smile</span>
+                </h1>
+              </FadeUp>
+              <FadeUp delay={0.15}>
+                <p className={styles.heroSubtext}>
+                  Trusted by 5,000+ patients. Board-certified specialists, same-week appointments available.
+                </p>
+              </FadeUp>
+            </div>
 
-            {/* [FIX #19] Added heroSubtext tagline so .heroSubtext CSS is no longer dead */}
-            <FadeUp delay={0.15} className={styles.hideOnMobile}>
-              <p className={styles.heroSubtext}>
-                Trusted by 5,000+ patients. Board-certified specialists, same-week appointments available.
-              </p>
-            </FadeUp>
+            <div className={styles.mobileOnly}>
+              <FadeUp delay={0}>
+                <h1 className={styles.heroTitle}>
+                  Where <span className={styles.heroHighlight}>Excellence</span> Meets{' '}
+                  <span className={styles.heroHighlight}>Every Smile.</span>
+                </h1>
+              </FadeUp>
+              <FadeUp delay={0.15}>
+                <p className={styles.heroSubtext}>
+                  Your path to a brighter, healthier smile starts here.
+                </p>
+              </FadeUp>
+            </div>
 
             <div className={styles.heroActions}>
               <FadeUp delay={0.3}>
