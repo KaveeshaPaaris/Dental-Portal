@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { motion, useSpring, useTransform, useInView } from 'framer-motion';
+import { motion, useMotionValue, useTransform, animate, useInView } from 'framer-motion';
 
 export default function AnimatedCounter({ 
   value, 
@@ -13,20 +13,21 @@ export default function AnimatedCounter({
   duration?: number;
 }) {
   const ref = React.useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: '0px 0px -20% 0px' });
-  const springValue = useSpring(0, {
-    bounce: 0,
-    duration: duration * 1000,
-  });
+  const inView = useInView(ref, { once: true, margin: '0px' });
+  const count = useMotionValue(0);
 
   useEffect(() => {
     if (inView) {
-      springValue.set(value);
+      const controls = animate(count, value, {
+        duration: duration,
+        ease: "easeOut",
+      });
+      return controls.stop;
     }
-  }, [inView, springValue, value]);
+  }, [inView, count, value, duration]);
 
   // If it's a float, format with 1 decimal, else whole number
-  const displayValue = useTransform(springValue, (current) => {
+  const displayValue = useTransform(count, (current) => {
     if (value % 1 !== 0) {
       return current.toFixed(1) + suffix;
     }
