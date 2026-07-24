@@ -24,6 +24,7 @@
     "typescript": "^5.5.3",
     "uuid": "^11.0.0",
     "ws": "^8.21.0",
+    "typescript": "^5.5.3",
     "zod": "^3.23.8"
   },
   "devDependencies": {
