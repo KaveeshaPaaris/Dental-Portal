@@ -22,7 +22,7 @@ export default function AnimatedCounter({
         duration: duration,
         ease: "easeOut",
       });
-      return controls.stop;
+      return () => controls.stop();
     }
   }, [inView, count, value, duration]);
 
