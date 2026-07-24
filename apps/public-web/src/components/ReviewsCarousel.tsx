@@ -151,7 +151,7 @@ export default function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: -50, scale: 0.95 }}
                   transition={{ duration: DURATIONS.fast, ease: EASE_OUT }}
-                  style={{ width: '100%' }} // Ensure it flexes correctly
+                  className={styles.slideWrapper}
                 >
                   <ReviewCard review={review} />
                 </motion.div>

@@ -246,7 +246,8 @@
 
   /* Hide 'Patient Login' and 'Book Appointment' buttons */
   .actions :global(.btn-secondary),
-  .actions :global(.btn-primary) {
+  .actions :global(.btn-primary),
+  .logoutBtn {
     display: none;
   }
 }
@@ -254,26 +255,30 @@
 /* ─── Mobile: Full-width Frosted Glass Bar ≤768px ──────── */
 @media (max-width: 768px) {
   .header {
-    top: 0;
+    position: fixed;
+    top: 0 !important;
     left: 0;
     right: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
     max-width: 100%;
     border-radius: 0;
     background: transparent;
-    height: calc(72px + env(safe-area-inset-top));
+    height: auto;
+    min-height: calc(72px + env(safe-area-inset-top));
   }
 
   .headerScrolled {
-    top: 0;
+    top: 0 !important;
   }
 
-  /* Make the flex container the full-width top bar */
+  /* Make the flex container wrap the tall logo fully */
   .nav {
-    height: calc(72px + env(safe-area-inset-top));
-    padding-top: env(safe-area-inset-top);
-    padding-left: 0;
-    padding-right: 0;
-    padding-bottom: 0;
+    height: auto;
+    min-height: calc(72px + env(safe-area-inset-top));
+    padding: env(safe-area-inset-top) 0 8px 0;
+    margin: 0;
     gap: 0;
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(24px) saturate(180%);
@@ -316,26 +321,9 @@
     height: 120px !important;
   }
 
-  /* Hide the theme toggle button from the pill on mobile */
-  .themeBtn {
-    display: none;
-  }
-
   /* Remove hover background on the hamburger menu to avoid sticky hover on touch */
-  .menuBtn:hover {
+  .menuBtn:hover, .themeBtn:hover {
     background: transparent !important;
-  }
-}
-
-@media (max-width: 480px) {
-
-  /* Hide all action buttons except hamburger */
-  .actions .btn:not(.menuBtn) {
-    display: none;
-  }
-
-  .menuBtn {
-    display: flex;
   }
 }
 

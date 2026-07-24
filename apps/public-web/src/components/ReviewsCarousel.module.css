@@ -52,6 +52,10 @@
   min-width: 0;
 }
 
+.slideWrapper {
+  width: 100%;
+}
+
 /* ─── Individual card ───────────────────────────────────────── */
 .card {
   padding: 32px;
@@ -285,11 +289,15 @@
     display: none;
   }
 
-  /* Each card snaps to center edge */
-  .card {
-    flex: 0 0 82vw;
-    max-width: 320px;
+  .slideWrapper {
+    flex: 0 0 100%;
     scroll-snap-align: center;
+    padding: 0 12px;
+  }
+
+  /* Each card takes full width of the wrapper */
+  .card {
+    width: 100%;
     min-height: auto;
     padding: 32px 24px;
   }
@@ -349,7 +357,6 @@
 /* ── Small phones ── */
 @media (max-width: 480px) {
   .card {
-    flex: 0 0 88vw;
     padding: 28px 20px;
   }
 }

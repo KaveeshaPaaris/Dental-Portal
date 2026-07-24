@@ -7,7 +7,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import toast from 'react-hot-toast';
 import { supabase } from '@/lib/supabaseClient';
-import { Eye, EyeOff, Lock, Mail, Shield } from 'lucide-react';
+import { Eye, EyeOff, Lock, Mail } from 'lucide-react';
+import Image from 'next/image';
 import styles from './page.module.css';
 
 const schema = z.object({
@@ -49,8 +50,15 @@ export default function AdminLoginPage() {
       <div className={styles.bg} />
       <div className={styles.card}>
         <div className={styles.header}>
-          <div className={styles.iconWrap}>
-            <Shield size={28} />
+          <div className={styles.logoWrap}>
+            <Image
+              src="/logo_dark.png"
+              alt="Charming Dental Clinic Logo"
+              width={300}
+              height={90}
+              style={{ objectFit: 'contain' }}
+              priority
+            />
           </div>
           <h1 className={styles.title}>Admin Portal</h1>
           <p className={styles.subtitle}>Charming Dental Clinic — Staff Access Only</p>
