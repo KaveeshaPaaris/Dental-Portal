@@ -4,10 +4,6 @@ const nextConfig: NextConfig = {
   // Strict mode for better DX
   reactStrictMode: true,
 
-  // Standalone output: bundles only required node_modules for deployment
-  // Required for Hostinger Node.js hosting (no node_modules at runtime)
-  output: 'standalone',
-
   // Allow images from common external sources
   images: {
     remotePatterns: [
