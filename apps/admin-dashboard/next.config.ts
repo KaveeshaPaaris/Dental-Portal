@@ -4,6 +4,8 @@ const nextConfig: NextConfig = {
   // Strict mode for better DX
   reactStrictMode: true,
 
+  output: 'standalone',
+
   // Allow images from common external sources
   images: {
     remotePatterns: [

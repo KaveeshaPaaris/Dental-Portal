@@ -262,40 +262,40 @@
   }
 }
 
-@media (max-width: 640px) {
+/* ══════════════════════════════════════════════════════
+   MOBILE — 768px and below
+   ══════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
   .footer {
-    padding-top: 40px;
+    padding-top: 56px;
   }
 
+  /* Single-column with dividers instead of gap */
   .grid {
     grid-template-columns: 1fr;
-    gap: 32px;
-    padding-bottom: 32px;
+    gap: 0;
+    padding-bottom: 0;
   }
 
-  .brand {
-    margin-bottom: 8px;
+  /* Each column gets consistent padding + bottom divider */
+  .brand,
+  .col {
+    padding: 32px 0;
+    border-bottom: 1px solid var(--color-border);
   }
 
-  .logo {
-    transform: scale(0.9);
-    transform-origin: left;
-    margin-bottom: 12px;
+  /* Brand: scale logo down */
+  .logo img {
+    height: 80px !important;
   }
-  
+
   .tagline {
-    font-size: 0.9rem;
-    line-height: 1.6;
-    margin-bottom: 16px;
+    max-width: 100%;
   }
 
-  .trustBadge {
-    font-size: 0.85rem;
-    margin-bottom: 24px;
-  }
-
+  /* Social icons: larger touch targets */
   .socials {
-    gap: 12px;
+    gap: 10px;
   }
 
   .socialIcon {
@@ -304,86 +304,70 @@
     font-size: 18px;
   }
 
-  /* Columns stacking naturally */
-  .col {
-    padding-bottom: 24px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  /* Quick links: larger tap areas (if not hidden) */
+  .quickLinksCol {
+    display: none;
   }
-  
-  [data-theme='dark'] .col {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  }
-
-  .col:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
+  .navLink {
+    padding: 10px 0;
+    font-size: 0.9375rem;
+    min-height: 44px;
   }
 
-  .colTitle {
-    font-size: 0.75rem;
-    margin-bottom: 16px;
-    border-bottom: none;
-    padding-bottom: 0;
+  /* Contact rows: vertically centered, min touch height */
+  .contactRow {
+    min-height: 44px;
+    align-items: center;
+    font-size: 0.9375rem;
   }
 
-  .navLink, .contactRow {
-    font-size: 0.95rem;
-    padding: 8px 0;
+  /* Contact icon stays top-aligned for multi-line address */
+  .contactRow:has(span:not(:only-child)) {
+    align-items: flex-start;
   }
 
-  .contactList {
-    gap: 8px;
-  }
-
-  .contactRow svg {
-    width: 18px;
-    height: 18px;
-    margin-top: 2px;
-  }
-
-  .hoursList {
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-
+  /* Hours: slightly tighter */
   .hourItem {
-    grid-template-columns: 1fr;
-    gap: 2px;
+    grid-template-columns: 100px 1fr;
+    gap: 2px 0;
   }
 
   .hourDay {
-    font-size: 0.95rem;
+    font-size: 0.875rem;
   }
 
   .hourTime {
-    font-size: 0.9rem;
-    padding-left: 0;
+    font-size: 0.875rem;
   }
 
-  .poyaNote {
-    font-size: 0.85rem;
-    margin-bottom: 20px;
-  }
-
+  /* Map button: full-width, pill-shaped */
   .mapBtn {
-    padding: 14px 20px;
-    font-size: 0.95rem;
     width: 100%;
     justify-content: center;
-    border-radius: 12px;
+    padding: 12px 16px;
+    min-height: 56px;
+    font-size: 1rem;
+    border-radius: 9999px;
   }
 
+  /* Bottom bar: stacked, centered */
   .bottom {
-    padding: 24px 0;
+    padding: 20px 0;
   }
 
   .bottom .container {
     flex-direction: column;
     text-align: center;
-    gap: 8px;
-  }
-
-  .bottom p {
-    font-size: 0.85rem;
+    gap: 4px;
+    align-items: center;
   }
 }
+
+/* ── Very small phones: tighten up ── */
+@media (max-width: 360px) {
+  .socialIcon {
+    width: 40px;
+    height: 40px;
+  }
+}
+

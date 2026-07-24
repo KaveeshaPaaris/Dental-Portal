@@ -28,11 +28,10 @@ export function FadeUp({
       whileInView="visible"
       viewport={VIEWPORT_CONFIG}
       variants={{
-        hidden:  { opacity: 0, y: 40, filter: 'blur(4px)' },
+        hidden:  { opacity: 0, y: 40 },
         visible: {
           opacity: 1,
           y: 0,
-          filter: 'blur(0px)',
           transition: { duration: DURATIONS.default, ease: EASE_OUT, delay },
         },
       }}
@@ -123,20 +122,8 @@ export function FloatAnimation({
   children: React.ReactNode;
   className?: string;
 }) {
-  return (
-    <motion.div
-      animate={{ y: [0, -6, 0] }}
-      transition={{
-        duration: 6,
-        repeat: Infinity,
-        ease: 'easeInOut',
-        repeatType: 'mirror',
-      }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
+  const combined = className ? `float-anim ${className}` : 'float-anim';
+  return <div className={combined}>{children}</div>;
 }
 
 // ─── RevealOnScroll ───────────────────────────────────────────────────────────

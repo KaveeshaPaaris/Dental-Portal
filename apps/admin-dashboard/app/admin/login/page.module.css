@@ -32,17 +32,10 @@
 
 .header { text-align: center; margin-bottom: 32px; }
 
-.iconWrap {
-  width: 64px;
-  height: 64px;
-  border-radius: var(--radius-lg);
-  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-  color: white;
+.logoWrap {
   display: flex;
-  align-items: center;
   justify-content: center;
-  margin: 0 auto 16px;
-  box-shadow: var(--shadow-md), var(--shadow-glow);
+  margin: 0 auto 24px;
 }
 
 .title {
