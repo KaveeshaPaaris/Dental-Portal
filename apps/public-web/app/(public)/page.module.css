@@ -640,29 +640,29 @@
 
   /* ─── Hero ──────────────────────────────────────────── */
   .hero {
-    min-height: 100svh;
+    min-height: 80svh;
     align-items: flex-start;
   }
 
   .heroContent {
-    padding: 96px 0 52px;
+    padding: 64px 0 32px;
     max-width: 100%;
-    min-height: 100svh;
+    min-height: 80svh;
     display: flex;
     flex-direction: column;
   }
 
   .heroTitle {
-    font-size: clamp(2.8rem, 10vw, 3.8rem);
-    line-height: 1.05;
+    font-size: clamp(2.4rem, 8vw, 3rem);
+    line-height: 1.1;
     letter-spacing: -0.02em;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
 
   .heroSubtext {
     font-size: 1rem;
-    line-height: 1.75;
-    margin-bottom: 32px;
+    line-height: 1.6;
+    margin-bottom: 20px;
     max-width: 100%;
   }
 
@@ -685,14 +685,14 @@
   /* Stacked full-width CTA buttons */
   .heroActions {
     flex-direction: column;
-    gap: 12px;
-    margin-bottom: 32px;
+    gap: 16px;
+    margin-bottom: 20px;
   }
 
   .heroActions :global(.btn) {
     width: 100%;
     justify-content: center;
-    min-height: 56px;
+    min-height: 48px;
     border-radius: 9999px;
   }
 
@@ -707,9 +707,8 @@
 
   .mobileOnlyStatsContainer {
     display: block;
-    margin-top: 24px;
-    margin-bottom: -32px;
-    /* Reduce space before services */
+    margin-top: 16px;
+    margin-bottom: -24px;
     position: relative;
     z-index: 10;
   }
@@ -741,11 +740,11 @@
 
   .heroStatsWrapper {
     margin-top: 0;
-    padding: 24px 20px;
+    padding: 16px 20px;
     background: rgba(201, 225, 245, 0.7);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border-radius: 24px;
+    border-radius: 20px;
     border: 1px solid rgba(255, 255, 255, 0.5);
     box-shadow: var(--shadow-sm);
   }
@@ -760,17 +759,18 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
     border-top: none;
-    /* Remove desktop border */
     padding-top: 0;
   }
 
   .statValue {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     margin-bottom: 2px;
+    text-align: center;
   }
 
   .statLabel {
     font-size: 0.75rem;
+    text-align: center;
   }
 
   /* ─── Why Choose Us — Pillars ───────────────────────── */
@@ -784,11 +784,11 @@
   }
 
   .pillar {
-    padding: 28px 20px 28px 24px;
+    padding: 24px 20px 24px 24px;
     border-right: none !important;
     border-left: 3px solid var(--color-primary);
-    margin-left: 18px;
-    margin-right: 18px;
+    margin-left: 16px;
+    margin-right: 16px;
     border-radius: var(--radius-md);
     background: var(--color-surface);
     margin-bottom: 2px;
@@ -797,7 +797,7 @@
   .pillar:not(:last-child) {
     border-right: none;
     border-bottom: none;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
 
   .pillarTitle {
@@ -811,18 +811,18 @@
 
   /* ─── Services — horizontal scroll snap ────────────── */
   .services {
-    padding: 80px 0;
+    padding: 48px 0;
   }
 
   .sectionHeader {
-    margin-bottom: 36px;
+    margin-bottom: 24px;
     padding: 0 8px;
-    /* Slightly inset from edges */
   }
 
   .sectionHeader h2 {
     font-size: clamp(1.8rem, 7.5vw, 2.2rem);
     letter-spacing: -0.01em;
+    margin-bottom: 12px;
   }
 
   .sectionHeader p {
@@ -836,9 +836,9 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    gap: 20px;
-    padding: 12px 24px 40px;
-    margin: 0 -24px;
+    gap: 16px;
+    padding: 12px 16px 24px;
+    margin: 0 -16px;
     scrollbar-width: none;
     -ms-overflow-style: none;
     margin-bottom: 0;
@@ -850,27 +850,27 @@
 
   /* Each card snaps to the left edge */
   .serviceCard {
-    flex: 0 0 82vw;
+    flex: 0 0 85vw;
     max-width: 320px;
     scroll-snap-align: center;
-    border-radius: 24px;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.03);
     border: 1px solid rgba(0, 0, 0, 0.02);
   }
 
   :global([data-theme='dark']) .serviceCard {
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   .serviceCardImgWrap {
-    height: 190px;
-    border-radius: 24px 24px 0 0;
+    height: 160px;
+    border-radius: 20px 20px 0 0;
     overflow: hidden;
   }
 
   .serviceCardBody {
-    padding: 24px;
+    padding: 20px;
   }
 
   .serviceName {
@@ -892,30 +892,34 @@
   }
 
   .servicesCTA {
-    margin-top: 24px;
-    padding: 0 18px;
+    margin-top: 16px;
+    padding: 0 16px;
+  }
+
+  .servicesCTA :global(.btn) {
+    min-height: 48px;
   }
 
   /* ─── Doctor Section ────────────────────────────────── */
   .doctorSection {
-    padding: 80px 0;
+    padding: 48px 0;
   }
 
   .doctorGrid {
-    gap: 32px;
+    gap: 24px;
   }
 
   .doctorImageWrapper {
-    height: 340px;
-    max-width: 100%;
-    border-radius: 24px;
+    height: 320px;
+    max-width: 320px;
+    border-radius: 20px;
     box-shadow: var(--shadow-lg);
   }
 
   /* Reduce decorative frame offset on mobile */
   .doctorImageWrapper::before {
     inset: -8px -8px 8px 8px;
-    border-radius: 24px;
+    border-radius: 20px;
   }
 
   .doctorLabel {
@@ -924,7 +928,7 @@
   }
 
   .doctorName {
-    font-size: clamp(1.8rem, 7vw, 2.2rem);
+    font-size: clamp(1.6rem, 6.5vw, 2rem);
     letter-spacing: -0.02em;
     margin-bottom: 4px;
   }
@@ -947,20 +951,20 @@
 
   .doctorBio {
     font-size: 1rem;
-    line-height: 1.8;
+    line-height: 1.6;
     color: var(--color-text-secondary);
     max-width: 100%;
-    margin-top: 8px;
+    margin-top: 4px;
   }
 
   .doctorContentCol {
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     text-align: center;
   }
 
   .doctorExpBadge {
-    padding: 12px 20px;
+    padding: 10px 16px;
     border-radius: 16px;
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(12px);
@@ -968,12 +972,22 @@
   }
 
   .expNumber {
-    font-size: 28px;
+    font-size: 24px;
+  }
+
+  .doctorActions {
+    margin-top: 12px;
+  }
+
+  .btnPremium {
+    padding: 12px 24px;
+    font-size: 15px;
+    min-height: 48px;
   }
 
   /* ─── CTA Banner ────────────────────────────────────── */
   .ctaBanner {
-    padding: 80px 0;
+    padding: 48px 0;
   }
 
   .ctaContent h2 {
@@ -983,14 +997,14 @@
 
   .ctaContent p {
     font-size: 0.9375rem;
-    margin-bottom: 28px;
+    margin-bottom: 20px;
   }
 
   /* Full-width CTA with attention shimmer */
   .ctaContent :global(.btn) {
     width: 100%;
     justify-content: center;
-    min-height: 56px;
+    min-height: 48px;
     position: relative;
     overflow: hidden;
   }
@@ -1015,15 +1029,15 @@
    ══════════════════════════════════════════════════════ */
 @media (max-width: 480px) {
   .heroContent {
-    padding: 88px 0 44px;
+    padding: 56px 0 24px;
   }
 
   .heroTitle {
-    font-size: clamp(1.85rem, 8vw, 2.4rem);
+    font-size: clamp(2rem, 8vw, 2.4rem);
   }
 
   .serviceCard {
-    flex: 0 0 84vw;
+    flex: 0 0 88vw;
   }
 }
 
@@ -1040,11 +1054,16 @@
   }
 
   .statValue {
-    font-size: 1.4rem;
+    font-size: 1.15rem;
   }
 
   .serviceCard {
-    flex: 0 0 90vw;
+    flex: 0 0 92vw;
+  }
+  
+  .doctorImageWrapper {
+    height: 280px;
+    max-width: 280px;
   }
 }
 

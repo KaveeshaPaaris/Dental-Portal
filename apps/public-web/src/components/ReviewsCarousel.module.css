@@ -245,11 +245,11 @@
    ══════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
   .section {
-    padding: 80px 0;
+    padding: 48px 0;
   }
 
   .header {
-    margin-bottom: 32px;
+    margin-bottom: 24px;
     padding: 0 16px;
   }
 
@@ -278,8 +278,8 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    gap: 14px;
-    padding: 4px 18px 20px;
+    gap: 12px;
+    padding: 4px 18px 16px;
     margin: 0 -18px;
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -299,7 +299,8 @@
   .card {
     width: 100%;
     min-height: auto;
-    padding: 32px 24px;
+    padding: 24px 20px;
+    gap: 12px;
   }
 
   /* Hide arrow nav — replaced by swipe */
@@ -310,7 +311,7 @@
   /* Skeleton grid on mobile */
   .skeletonGrid {
     display: flex;
-    gap: 14px;
+    gap: 12px;
     overflow: hidden;
   }
 
@@ -321,8 +322,8 @@
 
   /* Dots — larger touch target */
   .dots {
-    margin-top: 20px;
-    gap: 10px;
+    margin-top: 16px;
+    gap: 8px;
   }
 
   .dot {
@@ -341,7 +342,7 @@
 
   /* CTA */
   .cta {
-    margin-top: 40px;
+    margin-top: 24px;
     padding: 0 16px;
   }
 
@@ -349,7 +350,7 @@
   .cta :global(.btn) {
     width: 100%;
     justify-content: center;
-    min-height: 56px;
+    min-height: 48px;
     border-radius: 9999px;
   }
 }
@@ -357,7 +358,7 @@
 /* ── Small phones ── */
 @media (max-width: 480px) {
   .card {
-    padding: 28px 20px;
+    padding: 20px 16px;
   }
 }
 
