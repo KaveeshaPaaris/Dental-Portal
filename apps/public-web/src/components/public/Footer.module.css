@@ -267,7 +267,7 @@
    ══════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
   .footer {
-    padding-top: 56px;
+    padding-top: 40px;
   }
 
   /* Single-column with dividers instead of gap */
@@ -280,28 +280,30 @@
   /* Each column gets consistent padding + bottom divider */
   .brand,
   .col {
-    padding: 32px 0;
+    padding: 24px 0;
     border-bottom: 1px solid var(--color-border);
   }
 
   /* Brand: scale logo down */
   .logo img {
-    height: 80px !important;
+    height: 60px !important;
   }
 
   .tagline {
     max-width: 100%;
+    font-size: 0.8125rem;
+    margin-bottom: 12px;
   }
 
-  /* Social icons: larger touch targets */
+  /* Social icons: standard touch targets */
   .socials {
-    gap: 10px;
+    gap: 12px;
   }
 
   .socialIcon {
-    width: 44px;
-    height: 44px;
-    font-size: 18px;
+    width: 38px;
+    height: 38px;
+    font-size: 16px;
   }
 
   /* Quick links: larger tap areas (if not hidden) */
@@ -309,14 +311,14 @@
     display: none;
   }
   .navLink {
-    padding: 10px 0;
+    padding: 8px 0;
     font-size: 0.9375rem;
-    min-height: 44px;
+    min-height: 40px;
   }
 
   /* Contact rows: vertically centered, min touch height */
   .contactRow {
-    min-height: 44px;
+    min-height: 40px;
     align-items: center;
     font-size: 0.9375rem;
   }
@@ -345,14 +347,14 @@
     width: 100%;
     justify-content: center;
     padding: 12px 16px;
-    min-height: 56px;
-    font-size: 1rem;
+    min-height: 48px;
+    font-size: 0.9375rem;
     border-radius: 9999px;
   }
 
   /* Bottom bar: stacked, centered */
   .bottom {
-    padding: 20px 0;
+    padding: 16px 0;
   }
 
   .bottom .container {
@@ -366,8 +368,12 @@
 /* ── Very small phones: tighten up ── */
 @media (max-width: 360px) {
   .socialIcon {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
+  }
+  
+  .hourItem {
+    grid-template-columns: 85px 1fr;
   }
 }
 

@@ -265,16 +265,130 @@
 @media (max-width: 992px) {
   .missionSection {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 32px;
   }
 }
 
 @media (max-width: 768px) {
+  .page {
+    padding: 100px 0 60px;
+  }
+
+  .header {
+    margin-bottom: 40px;
+  }
+
   .title {
-    font-size: 2rem;
+    font-size: 1.8rem;
+    margin-bottom: 16px;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .clinicImageContainer {
+    height: 300px;
+    margin-bottom: 48px;
+    border-radius: 16px;
+  }
+
+  .missionSection {
+    margin-bottom: 56px;
+  }
+
+  .missionContent h2 {
+    font-size: 1.75rem;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .missionContent p {
+    font-size: 1rem;
+    line-height: 1.6;
+    text-align: center;
   }
 
   .statsGrid {
     grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .statItem {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .statValue {
+    font-size: 1.75rem;
+  }
+
+  .statLabel {
+    font-size: 0.75rem;
+  }
+
+  .teamSection {
+    margin-top: 48px;
+    padding: 48px 0;
+  }
+
+  .doctorGrid {
+    gap: 24px;
+  }
+
+  .doctorImageWrapper {
+    height: 320px;
+    max-width: 320px;
+  }
+
+  .doctorName {
+    font-size: 28px;
+  }
+
+  .doctorSpecialty {
+    font-size: 1rem;
+  }
+
+  .doctorQualifications {
+    font-size: 15px;
+  }
+
+  .doctorBio {
+    font-size: 15px;
+    max-width: 100%;
+  }
+
+  .doctorRegBadge {
+    font-size: 14px;
+    padding: 8px 14px;
+  }
+
+  .doctorExpBadge {
+    padding: 10px 16px;
+  }
+
+  .expNumber {
+    font-size: 28px;
+  }
+
+  .expText {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 430px) {
+  .doctorImageWrapper {
+    height: 280px;
+    max-width: 280px;
+  }
+  
+  .title {
+    font-size: 1.6rem;
+  }
+  
+  .clinicImageContainer {
+    height: 240px;
   }
 }
