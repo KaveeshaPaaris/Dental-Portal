@@ -5,7 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc",
+    "build": "npx tsc",
     "start": "node dist/server.js",
     "lint": "eslint src --ext .ts"
   },
@@ -21,7 +21,8 @@
     "morgan": "^1.10.0",
     "resend": "^3.5.0",
     "twilio": "^5.2.0",
-    "uuid": "^10.0.0",
+    "typescript": "^5.5.3",
+    "uuid": "^11.0.0",
     "ws": "^8.21.0",
     "zod": "^3.23.8"
   },
@@ -33,7 +34,6 @@
     "@types/node": "^20.14.10",
     "@types/uuid": "^10.0.0",
     "@types/ws": "^8.18.1",
-    "tsx": "^4.16.2",
-    "typescript": "^5.5.3"
+    "tsx": "^4.16.2"
   }
 }
