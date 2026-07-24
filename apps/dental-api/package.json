@@ -5,7 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "npx tsc",
+    "build": "npx esbuild src/server.ts --bundle --platform=node --target=node22 --outfile=dist/server.js",
     "start": "node dist/server.js",
     "lint": "eslint src --ext .ts"
   },
@@ -21,6 +21,7 @@
     "@types/ws": "^8.18.1",
     "cors": "^2.8.5",
     "dotenv": "^17.4.2",
+    "esbuild": "^0.21.5",
     "express": "^4.19.2",
     "express-rate-limit": "^7.3.1",
     "helmet": "^7.1.0",
@@ -32,7 +33,6 @@
     "typescript": "^5.5.3",
     "uuid": "^11.0.0",
     "ws": "^8.21.0",
-    "typescript": "^5.5.3",
     "zod": "^3.23.8"
   },
   "devDependencies": {}
