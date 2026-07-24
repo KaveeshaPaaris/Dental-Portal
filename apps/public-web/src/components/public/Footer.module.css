@@ -263,165 +263,111 @@
 }
 
 /* ══════════════════════════════════════════════════════
-   FOOTER MOBILE — 768px and below
-   Full mobile redesign. 1024px + desktop rules untouched.
+   MOBILE — 768px and below
    ══════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
-  /* ─── Shell ─────────────────────────────────────── */
   .footer {
-    padding-top: 32px;        /* ~40% reduction from 52px desktop */
+    padding-top: 56px;
   }
 
-  /* Single-column, section dividers instead of gap */
+  /* Single-column with dividers instead of gap */
   .grid {
     grid-template-columns: 1fr;
     gap: 0;
     padding-bottom: 0;
   }
 
-  /* Each section: compact padding + divider line */
+  /* Each column gets consistent padding + bottom divider */
   .brand,
   .col {
-    padding: 18px 0;          /* was 32px — much tighter */
+    padding: 32px 0;
     border-bottom: 1px solid var(--color-border);
   }
 
-  /* ─── Brand column ───────────────────────────────── */
+  /* Brand: scale logo down */
   .logo img {
-    height: 64px !important;  /* proportional for mobile */
+    height: 80px !important;
   }
 
   .tagline {
-    font-size: 0.8125rem;
-    line-height: 1.6;
     max-width: 100%;
-    margin-bottom: 6px;
   }
 
-  .trustBadge {
-    font-size: 0.75rem;
-    margin-bottom: 10px;
-  }
-
-  /* Social icons: correct touch target, not oversized */
+  /* Social icons: larger touch targets */
   .socials {
-    gap: 8px;
+    gap: 10px;
   }
 
   .socialIcon {
-    width: 40px;
-    height: 40px;
-    font-size: 17px;
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
   }
 
-  /* ─── Column headings ────────────────────────────── */
-  .colTitle {
-    font-size: 0.625rem;
-    margin-bottom: 10px;
-    padding-bottom: 7px;
-  }
-
-  /* Quick links: hidden on mobile (too many items) */
+  /* Quick links: larger tap areas (if not hidden) */
   .quickLinksCol {
     display: none;
   }
-
-  /* ─── Contact column ─────────────────────────────── */
-  .contactList {
-    gap: 7px;                 /* tighter than default 11px */
+  .navLink {
+    padding: 10px 0;
+    font-size: 0.9375rem;
+    min-height: 44px;
   }
 
+  /* Contact rows: vertically centered, min touch height */
   .contactRow {
-    font-size: 0.875rem;      /* 14px — readable */
-    min-height: 36px;         /* touch-friendly without wasted space */
+    min-height: 44px;
     align-items: center;
-    gap: 8px;
+    font-size: 0.9375rem;
   }
 
-  /* Multi-line address: icon stays top-aligned */
+  /* Contact icon stays top-aligned for multi-line address */
   .contactRow:has(span:not(:only-child)) {
     align-items: flex-start;
   }
 
-  /* ─── Hours column ───────────────────────────────── */
-  .hoursList {
-    gap: 6px;
-    margin-bottom: 10px;
-  }
-
+  /* Hours: slightly tighter */
   .hourItem {
-    grid-template-columns: 88px 1fr;
+    grid-template-columns: 100px 1fr;
     gap: 2px 0;
   }
 
   .hourDay {
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
   }
 
   .hourTime {
-    font-size: 0.8125rem;
-    line-height: 1.5;
+    font-size: 0.875rem;
   }
 
-  .poyaNote {
-    font-size: 0.6875rem;
-    margin-bottom: 10px;
-  }
-
-  /* Map button: full-width, compact */
+  /* Map button: full-width, pill-shaped */
   .mapBtn {
     width: 100%;
     justify-content: center;
-    padding: 10px 16px;
-    min-height: 44px;         /* was 56px — proportional */
-    font-size: 0.9375rem;
+    padding: 12px 16px;
+    min-height: 56px;
+    font-size: 1rem;
     border-radius: 9999px;
   }
 
-  /* ─── Bottom bar ─────────────────────────────────── */
+  /* Bottom bar: stacked, centered */
   .bottom {
-    padding: 12px 0;          /* was 20px */
+    padding: 20px 0;
   }
 
   .bottom .container {
     flex-direction: column;
     text-align: center;
-    gap: 3px;
+    gap: 4px;
     align-items: center;
   }
-
-  .bottom p {
-    font-size: 0.75rem;
-  }
 }
 
-/* ─── Very small phones (≤ 380px) ─────────────────── */
-@media (max-width: 380px) {
-  .footer {
-    padding-top: 24px;
-  }
-
-  .brand,
-  .col {
-    padding: 14px 0;
-  }
-
-  .logo img {
-    height: 56px !important;
-  }
-
+/* ── Very small phones: tighten up ── */
+@media (max-width: 360px) {
   .socialIcon {
-    width: 36px;
-    height: 36px;
-    font-size: 15px;
-  }
-
-  .mapBtn {
-    min-height: 40px;
-    font-size: 0.875rem;
-  }
-
-  .bottom {
-    padding: 10px 0;
+    width: 40px;
+    height: 40px;
   }
 }
+
