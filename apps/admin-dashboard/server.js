@@ -1,15 +1,9 @@
 /**
- * Hostinger Node.js entry point for Next.js standalone deployment.
+ * Hostinger Node.js entry point for Next.js standalone deployment in a MONOREPO.
  *
- * WHY THIS EXISTS:
- * - This is a monorepo: npm hoists `next` to the repo root node_modules/
- * - Hostinger only deploys apps/admin-dashboard/ to /nodejs/, so root node_modules are gone
- * - Hostinger's default server.js template does require('next') which fails
- *
- * THE FIX:
- * - `next build` with output:'standalone' creates .next/standalone/ with its own
- *   embedded node_modules (including next) — completely self-contained
- * - We just delegate to that standalone server here
+ * Next.js standalone mode recreates the monorepo structure inside .next/standalone/
+ * So the actual server is at .next/standalone/apps/admin-dashboard/server.js
+ * and the bundled node_modules are at .next/standalone/node_modules/
  */
 'use strict';
-require('./.next/standalone/server.js');
+require('./.next/standalone/apps/admin-dashboard/server.js');

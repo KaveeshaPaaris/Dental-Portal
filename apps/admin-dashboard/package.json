@@ -4,11 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 3001",
-    "build": "next build && cp -rL ../../node_modules ./node_modules",
-    "start": "next start",
+    "build": "next build && mkdir -p .next/standalone/apps/admin-dashboard/.next && cp -r public .next/standalone/apps/admin-dashboard/public && cp -r .next/static .next/standalone/apps/admin-dashboard/.next/static",
+    "start": "node server.js",
     "lint": "eslint"
   },
-  "dependencies": {
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
