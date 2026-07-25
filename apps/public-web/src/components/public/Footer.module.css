@@ -277,6 +277,11 @@
     padding-bottom: 0;
   }
 
+  /* Move Clinic Hours to the top on mobile */
+  .grid > :nth-child(4) {
+    order: -1;
+  }
+
   /* Each column gets consistent padding + bottom divider */
   .brand,
   .col {
@@ -354,14 +359,9 @@
     margin-bottom: 8px;
   }
 
-  /* Map button: full-width, pill-shaped */
+  /* Map button: hidden on mobile per user request */
   .mapBtn {
-    width: 100%;
-    justify-content: center;
-    padding: 10px 16px;
-    min-height: 44px;
-    font-size: 0.9375rem;
-    border-radius: 9999px;
+    display: none;
   }
 
   /* Bottom bar: stacked, centered */
