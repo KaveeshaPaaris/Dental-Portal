@@ -300,6 +300,13 @@
     background: var(--color-surface);
   }
 
+  /* Override internal MapSection heights to fit the 200px container */
+  .mobileMap > div,
+  .mobileMap iframe {
+    height: 100% !important;
+    min-height: unset !important;
+  }
+
   :global([data-theme="dark"]) .mobileMap {
     border-color: var(--color-border);
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);

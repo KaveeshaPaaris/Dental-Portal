@@ -13,6 +13,7 @@ const IconInstagram = (props: any) => (
 const IconWhatsapp = (props: any) => (
   <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 448 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" {...props}><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zM223.9 413.6c-33.3 0-66-8.9-94.6-25.8l-6.8-4-70.1 18.4 18.7-68.3-4.4-7C47.7 298.5 38.3 261.6 38.3 224c0-102.5 83.5-185.9 185.9-185.9 49.6 0 96.2 19.3 131.3 54.4 35.1 35.1 54.4 81.7 54.4 131.3 0 102.5-83.5 186-185.9 186zm101.8-139c-5.6-2.8-33-16.3-38.1-18.2-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18.2-17.6 21.8-3.2 3.7-6.5 4.2-12.1 1.4-5.6-2.8-23.5-8.7-44.8-27.7-16.5-14.8-27.6-33.1-30.9-38.6-3.2-5.6-.3-8.6 2.5-11.4 2.5-2.5 5.6-6.5 8.4-9.8 2.8-3.2 3.7-5.6 5.6-9.3 1.9-3.7.9-7-5-12.1-2.8-5.6-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.5-.2-10.2-.2-3.7 0-9.8 1.4-14.9 6.9-5.1 5.6-19.5 19-19.5 46.4s20 53.8 22.8 57.5c2.8 3.7 39.1 59.7 94.7 83.8 13.2 5.7 23.5 9.1 31.5 11.6 13.2 4.2 25.2 3.6 34.8 2.2 10.7-1.5 33-13.4 37.6-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path></svg>
 );
+import MapSection from './MapSection';
 import styles from './Footer.module.css';
 
 const QUICK_LINKS = [
@@ -158,16 +159,7 @@ export default function Footer() {
 
         {/* ── Col 5: Mobile Map ────────────────── */}
         <div className={styles.mobileMap}>
-          <iframe
-            title="Dental Clinic Location"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63333.71501809776!2d79.77092724863276!3d7.200025499999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2ef7ab25a6c1b%3A0xc69391f9fb930206!2sDental%20Clinic%20-%20Dr%20Chaminda%20Paris!5e0!3m2!1sen!2slk!4v1781681815874!5m2!1sen!2slk"
-            width="100%"
-            height="100%"
-            style={{ border: 0 }}
-            allowFullScreen={false}
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
+          <MapSection />
         </div>
 
       </div>
