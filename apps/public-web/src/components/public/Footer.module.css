@@ -254,6 +254,11 @@
   color: var(--color-error);
 }
 
+/* ─── Mobile Map ─────────────────────────────────────────── */
+.mobileMap {
+  display: none;
+}
+
 /* ─── Responsive ─────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .grid {
@@ -277,9 +282,27 @@
     padding-bottom: 0;
   }
 
-  /* Move Clinic Hours to the top on mobile */
+  /* Move Clinic Hours and Map to the top on mobile */
   .grid > :nth-child(4) {
+    order: -2;
+  }
+
+  .mobileMap {
+    display: block;
     order: -1;
+    width: 100%;
+    height: 200px;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 28px 0 12px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid #e5e7eb;
+    background: var(--color-surface);
+  }
+
+  :global([data-theme="dark"]) .mobileMap {
+    border-color: var(--color-border);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   }
 
   /* Each column gets consistent padding + bottom divider */

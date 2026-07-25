@@ -156,6 +156,20 @@ export default function Footer() {
           </a>
         </div>
 
+        {/* ── Col 5: Mobile Map ────────────────── */}
+        <div className={styles.mobileMap}>
+          <iframe
+            title="Dental Clinic Location"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63333.71501809776!2d79.77092724863276!3d7.200025499999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2ef7ab25a6c1b%3A0xc69391f9fb930206!2sDental%20Clinic%20-%20Dr%20Chaminda%20Paris!5e0!3m2!1sen!2slk!4v1781681815874!5m2!1sen!2slk"
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            allowFullScreen={false}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </div>
+
       </div>
 
       {/* ── Bottom bar ───────────────────────── */}
