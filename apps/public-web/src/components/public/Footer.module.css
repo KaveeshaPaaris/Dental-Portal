@@ -291,25 +291,47 @@
     display: block;
     order: -1;
     width: 100%;
-    height: 200px;
-    border-radius: 20px;
-    overflow: hidden;
-    margin: 28px 0 12px;
-    box-shadow: var(--shadow-sm);
-    border: 1px solid #e5e7eb;
-    background: var(--color-surface);
+    margin: 24px 0 16px;
+    /* MapSection (.mapWrapper) natively handles border, background, and shadow for Light/Dark modes */
   }
 
-  /* Override internal MapSection heights to fit the 200px container */
-  .mobileMap > div,
+  /* Form factor the MapSection into a compact card */
+  .mobileMap > div {
+    height: 160px !important;
+    min-height: unset !important;
+    max-height: 170px !important;
+    border-radius: 20px !important;
+    overflow: hidden !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
   .mobileMap iframe {
     height: 100% !important;
     min-height: unset !important;
+    max-height: 100% !important;
+    width: 100% !important;
+    border: none !important;
   }
 
-  :global([data-theme="dark"]) .mobileMap {
-    border-color: var(--color-border);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  /* Compact the 'Open in Maps' button so it doesn't cover the location pin */
+  .mobileMap > div > a {
+    top: 10px !important;
+    left: 10px !important;
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+    border-radius: 4px !important;
+    gap: 4px !important;
+  }
+
+  .mobileMap > div > a svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  /* Hide satellite toggle on mobile footer to prevent clutter & reveal Google Maps native logo/controls */
+  .mobileMap > div > button {
+    display: none !important;
   }
 
   /* Each column gets consistent padding + bottom divider */
