@@ -298,4 +298,8 @@
   .mapWrapper iframe {
     height: 100% !important;
   }
+
+  .mobileHiddenMap {
+    display: none !important;
+  }
 }
