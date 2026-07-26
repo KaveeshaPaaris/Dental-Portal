@@ -8,7 +8,7 @@ import { useAuth } from '@/context/AuthContext';
 import AdminBookingModal from '@/components/admin/AdminBookingModal';
 import {
   LayoutDashboard, Calendar, Star, Package,
-  FileText, Users, Settings, LogOut, Newspaper, BookOpen, Plus,
+  FileText, Users, Settings, LogOut, Newspaper, BookOpen, Plus, CalendarClock
 } from 'lucide-react';
 import styles from './Sidebar.module.css';
 
@@ -24,6 +24,7 @@ const NAV_ITEMS = [
 
 const SUPER_ADMIN_ITEMS = [
   { label: 'Manage Admins', href: '/admin/manage-admins', icon: Users },
+  { label: 'Schedule Management', href: '/admin/schedule', icon: CalendarClock },
 ];
 
 export default function AdminSidebar() {
