@@ -61,10 +61,11 @@ export default function BlogFilterClient({ allBlogs }: { allBlogs: Blog[] }) {
     });
   }, [allBlogs, category]);
 
-  // In the default (no-filter) view the first blog is the featured hero
+  // In the default (no-filter) view, use featured layout only if there are 4 or more blogs total
   const isDefaultView = category === 'All';
+  const useFeaturedLayout = allBlogs.length >= 4;
   const featuredBlog =
-    isDefaultView && filteredBlogs.length > 0 ? filteredBlogs[0] : null;
+    isDefaultView && useFeaturedLayout && filteredBlogs.length > 0 ? filteredBlogs[0] : null;
 
   // The remaining blogs go into the paginated grid
   const gridBlogs = featuredBlog ? filteredBlogs.slice(1) : filteredBlogs;
@@ -218,7 +219,7 @@ export default function BlogFilterClient({ allBlogs }: { allBlogs: Blog[] }) {
           )}
 
           {/* ── Blog Grid ── */}
-          <div className={styles.grid}>
+          <div className={`${styles.grid} ${!useFeaturedLayout ? styles.gridTwoCol : ''}`}>
             {paginatedBlogs.map((blog) => (
               <Link
                 href={`/blogs/${blog.slug}`}
