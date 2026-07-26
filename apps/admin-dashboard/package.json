@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 3001",
-    "build": "next build",
-    "start": "next start",
+    "build": "next build && mkdir -p .next/standalone/apps/admin-dashboard/.next && cp -r public .next/standalone/apps/admin-dashboard/public && cp -r .next/static .next/standalone/apps/admin-dashboard/.next/static",
+    "start": "node server.js",
     "lint": "eslint"
   },
   "dependencies": {
@@ -14,6 +14,7 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@hookform/resolvers": "^5.4.0",
     "@supabase/supabase-js": "^2.107.0",
+    "@tailwindcss/postcss": "^4",
     "@tanstack/react-query": "^5.101.0",
     "@tiptap/extension-character-count": "^3.27.1",
     "@tiptap/extension-image": "^3.27.1",
@@ -26,9 +27,14 @@
     "@tiptap/pm": "^3.27.1",
     "@tiptap/react": "^3.27.1",
     "@tiptap/starter-kit": "^3.27.1",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
     "axios": "^1.17.0",
     "browser-image-compression": "^2.0.2",
     "date-fns": "^4.4.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.7",
     "lucide-react": "^1.17.0",
     "next": "16.2.7",
     "react": "19.2.4",
@@ -36,16 +42,9 @@
     "react-dom": "19.2.4",
     "react-hook-form": "^7.77.0",
     "react-hot-toast": "^2.6.0",
+    "tailwindcss": "^4",
+    "typescript": "^5",
     "zod": "^4.4.3"
   },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.2.7",
-    "tailwindcss": "^4",
-    "typescript": "^5"
-  }
+  "devDependencies": {}
 }
