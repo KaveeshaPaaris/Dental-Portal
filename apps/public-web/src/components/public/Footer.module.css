@@ -282,17 +282,27 @@
     padding-bottom: 0;
   }
 
-  /* Move Clinic Hours and Map to the top on mobile */
-  .grid > :nth-child(4) {
-    order: -2;
-  }
-
+  /* Reorder mobile footer layout */
   .mobileMap {
     display: block;
-    order: -1;
+    order: 1;
     width: 100%;
-    margin: 24px 0 16px;
-    /* MapSection (.mapWrapper) natively handles border, background, and shadow for Light/Dark modes */
+    margin: 0;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .grid > :nth-child(4) {
+    order: 2; /* Clinic Hours */
+  }
+
+  .grid > :nth-child(3) {
+    order: 3; /* Contact */
+  }
+
+  .brand {
+    order: 4; /* Footer Branding */
+    border-bottom: none !important;
   }
 
   /* Form factor the MapSection into a compact card */
@@ -337,7 +347,7 @@
   /* Each column gets consistent padding + bottom divider */
   .brand,
   .col {
-    padding: 16px 0;
+    padding: 20px 0;
     border-bottom: 1px solid var(--color-border);
   }
 
