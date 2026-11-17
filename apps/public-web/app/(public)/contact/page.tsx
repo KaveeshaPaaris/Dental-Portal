@@ -182,7 +182,7 @@ export default function ContactPage() {
         </div>
 
         {/* Google Map */}
-        <div className={styles.mapWrapper}>
+        <div className={`${styles.mapWrapper} ${styles.mobileHiddenMap}`}>
           <iframe
             title="Charming Dental Clinic location"
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4257.295622215056!2d79.84714485929838!3d7.200025464247186!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2ef7ab25a6c1b%3A0xc69391f9fb930206!2sDental%20Clinic%20-%20Dr%20Chaminda%20Paris!5e1!3m2!1sen!2slk!4v1782633897788!5m2!1sen!2slk"

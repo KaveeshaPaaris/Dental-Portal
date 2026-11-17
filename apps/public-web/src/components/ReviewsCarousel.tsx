@@ -16,7 +16,7 @@ export interface Review {
   created_at: string;
 }
 
-const SLIDE_INTERVAL = 5000;
+const SLIDE_INTERVAL = 3000;
 
 const MotionStar = motion.create(Star);
 
@@ -132,8 +132,8 @@ export default function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
           className={styles.carouselWrapper}
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
+          onTouchStart={(e) => { setPaused(true); handleTouchStart(e); }}
+          onTouchEnd={(e) => { setPaused(false); handleTouchEnd(e); }}
         >
           {totalSlides > 3 && (
             <button className={`${styles.navBtn} ${styles.navPrev}`} onClick={prev} aria-label="Previous reviews">
@@ -150,7 +150,7 @@ export default function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
                   initial={{ opacity: 0, x: 50, scale: 0.95 }}
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: -50, scale: 0.95 }}
-                  transition={{ duration: DURATIONS.fast, ease: EASE_OUT }}
+                  transition={{ duration: 0.45, ease: 'easeInOut' }}
                   className={styles.slideWrapper}
                 >
                   <ReviewCard review={review} />

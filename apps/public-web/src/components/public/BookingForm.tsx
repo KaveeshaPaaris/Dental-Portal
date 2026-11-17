@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -31,17 +31,69 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
+interface ScheduleOverride {
+  morning_enabled: boolean;
+  evening_enabled: boolean;
+  custom_session_enabled: boolean;
+  custom_session_label: string | null;
+  custom_session_start: string | null;
+  custom_session_end: string | null;
+}
+
 export default function BookingForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [override, setOverride] = useState<ScheduleOverride | null>(null);
+  const [isCheckingDate, setIsCheckingDate] = useState(false);
 
   const {
     register, handleSubmit, control,
     formState: { errors },
     watch,
+    setValue,
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   const selectedSession = watch('preferred_session');
+  const selectedDate = watch('preferred_date');
+
+  useEffect(() => {
+    if (!selectedDate) {
+      setOverride(null);
+      return;
+    }
+    
+    let isMounted = true;
+    const fetchOverride = async () => {
+      setIsCheckingDate(true);
+      try {
+        const res = await api.get(`/schedule/overrides/${selectedDate}`);
+        if (isMounted) {
+          if (res.data && 'morning_enabled' in res.data) {
+            setOverride(res.data);
+            if (res.data.custom_session_enabled) {
+              setValue('preferred_session', 'MORNING');
+            } else if (!res.data.morning_enabled && res.data.evening_enabled) {
+              setValue('preferred_session', 'EVENING');
+            } else if (res.data.morning_enabled && !res.data.evening_enabled) {
+              setValue('preferred_session', 'MORNING');
+            }
+          } else {
+            setOverride(null);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch schedule override', err);
+      } finally {
+        if (isMounted) setIsCheckingDate(false);
+      }
+    };
+    
+    const timer = setTimeout(fetchOverride, 300);
+    return () => {
+      isMounted = false;
+      clearTimeout(timer);
+    };
+  }, [selectedDate, setValue]);
 
   const onSubmit = async (data: FormData) => {
     setLoading(true);
@@ -148,57 +200,88 @@ export default function BookingForm() {
 
         {/* Session */}
         <div className="form-group" role="radiogroup" aria-labelledby="session-label">
-          <label id="session-label" className="form-label">Preferred Session *</label>
-          <div className={styles.sessionPicker}>
-            <label
-              className={`${styles.sessionOption} ${selectedSession === 'MORNING' ? styles.sessionSelected : ''}`}
-            >
-              <input type="radio" value="MORNING" className={styles.hiddenRadio} {...register('preferred_session')} />
-              <span className={styles.sessionIcon}>
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <circle cx="14" cy="14" r="5.5" fill="#F5A25D" stroke="#E8884A" strokeWidth="1"/>
-                  <line x1="14" y1="1.5" x2="14" y2="4.5" stroke="#E8884A" strokeWidth="2" strokeLinecap="round"/>
-                  <line x1="14" y1="23.5" x2="14" y2="26.5" stroke="#E8884A" strokeWidth="2" strokeLinecap="round"/>
-                  <line x1="1.5" y1="14" x2="4.5" y2="14" stroke="#E8884A" strokeWidth="2" strokeLinecap="round"/>
-                  <line x1="23.5" y1="14" x2="26.5" y2="14" stroke="#E8884A" strokeWidth="2" strokeLinecap="round"/>
-                  <line x1="5.05" y1="5.05" x2="7.17" y2="7.17" stroke="#E8884A" strokeWidth="2" strokeLinecap="round"/>
-                  <line x1="20.83" y1="20.83" x2="22.95" y2="22.95" stroke="#E8884A" strokeWidth="2" strokeLinecap="round"/>
-                  <line x1="22.95" y1="5.05" x2="20.83" y2="7.17" stroke="#E8884A" strokeWidth="2" strokeLinecap="round"/>
-                  <line x1="7.17" y1="20.83" x2="5.05" y2="22.95" stroke="#E8884A" strokeWidth="2" strokeLinecap="round"/>
-                </svg>
-              </span>
-              <div>
-                <div className={styles.sessionOptionName}>Morning</div>
-                <div className={styles.sessionOptionTime}>9 AM – 1 PM</div>
-              </div>
-            </label>
-            <label
-              className={`${styles.sessionOption} ${selectedSession === 'EVENING' ? styles.sessionSelected : ''}`}
-            >
-              <input type="radio" value="EVENING" className={styles.hiddenRadio} {...register('preferred_session')} />
-              <span className={styles.sessionIcon}>
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path d="M15 3C9.477 3 5 7.477 5 13C5 18.523 9.477 23 15 23C18.4 23 21.38 21.27 23.13 18.63C22.12 18.87 21.07 19 20 19C13.925 19 9 14.075 9 8C9 6.4 9.35 4.88 9.98 3.52C8.4 3.18 7 3 15 3Z" fill="#E8D89A"/>
-                  <path d="M24 6 L24.6 8.4 L27 9 L24.6 9.6 L24 12 L23.4 9.6 L21 9 L23.4 8.4 Z" fill="#E8D89A"/>
-                  <path d="M27 16 L27.4 17.6 L29 18 L27.4 18.4 L27 20 L26.6 18.4 L25 18 L26.6 17.6 Z" fill="#E8D89A"/>
-                  <circle cx="22" cy="14" r="1.3" fill="#E8D89A"/>
-                  <circle cx="25" cy="11" r="0.8" fill="#E8D89A"/>
-                </svg>
-              </span>
-              <div>
-                <div className={styles.sessionOptionName}>Evening</div>
-                <div className={styles.sessionOptionTime}>5 PM – 9 PM</div>
-              </div>
-            </label>
-          </div>
+          <label id="session-label" className="form-label">
+            Preferred Session * 
+            {isCheckingDate && <span style={{ fontSize: '0.8rem', marginLeft: '0.5rem', color: 'var(--color-text-secondary)', fontWeight: 'normal' }}>(Checking availability...)</span>}
+          </label>
+          
+          {override && !override.morning_enabled && !override.evening_enabled && !override.custom_session_enabled ? (
+            <div style={{ padding: '1rem', background: '#fee2e2', color: '#991b1b', borderRadius: '8px', border: '1px solid #fecaca', fontSize: '0.875rem' }}>
+              The clinic is closed on this date. Please select another date.
+            </div>
+          ) : (
+            <div className={styles.sessionPicker}>
+              {override?.custom_session_enabled ? (
+                <label className={`${styles.sessionOption} ${styles.sessionSelected}`}>
+                  <input type="radio" value="MORNING" className={styles.hiddenRadio} {...register('preferred_session')} />
+                  <span className={styles.sessionIcon}>
+                    <Calendar size={24} color="#1e40af" />
+                  </span>
+                  <div>
+                    <div className={styles.sessionOptionName}>{override.custom_session_label || 'Special Hours'}</div>
+                    <div className={styles.sessionOptionTime}>{override.custom_session_start} – {override.custom_session_end}</div>
+                  </div>
+                </label>
+              ) : (
+                <>
+                  <label
+                    className={`${styles.sessionOption} ${selectedSession === 'MORNING' ? styles.sessionSelected : ''}`}
+                    style={{ opacity: override && !override.morning_enabled ? 0.5 : 1, cursor: override && !override.morning_enabled ? 'not-allowed' : 'pointer' }}
+                  >
+                    <input type="radio" value="MORNING" className={styles.hiddenRadio} disabled={override ? !override.morning_enabled : false} {...register('preferred_session')} />
+                    <span className={styles.sessionIcon}>
+                      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <circle cx="14" cy="14" r="5.5" fill="#F5A25D" stroke="#E8884A" strokeWidth="1"/>
+                        <line x1="14" y1="1.5" x2="14" y2="4.5" stroke="#E8884A" strokeWidth="2" strokeLinecap="round"/>
+                        <line x1="14" y1="23.5" x2="14" y2="26.5" stroke="#E8884A" strokeWidth="2" strokeLinecap="round"/>
+                        <line x1="1.5" y1="14" x2="4.5" y2="14" stroke="#E8884A" strokeWidth="2" strokeLinecap="round"/>
+                        <line x1="23.5" y1="14" x2="26.5" y2="14" stroke="#E8884A" strokeWidth="2" strokeLinecap="round"/>
+                        <line x1="5.05" y1="5.05" x2="7.17" y2="7.17" stroke="#E8884A" strokeWidth="2" strokeLinecap="round"/>
+                        <line x1="20.83" y1="20.83" x2="22.95" y2="22.95" stroke="#E8884A" strokeWidth="2" strokeLinecap="round"/>
+                        <line x1="22.95" y1="5.05" x2="20.83" y2="7.17" stroke="#E8884A" strokeWidth="2" strokeLinecap="round"/>
+                        <line x1="7.17" y1="20.83" x2="5.05" y2="22.95" stroke="#E8884A" strokeWidth="2" strokeLinecap="round"/>
+                      </svg>
+                    </span>
+                    <div>
+                      <div className={styles.sessionOptionName}>Morning</div>
+                      <div className={styles.sessionOptionTime}>
+                        {override && !override.morning_enabled ? 'Unavailable' : '9 AM – 1 PM'}
+                      </div>
+                    </div>
+                  </label>
+                  <label
+                    className={`${styles.sessionOption} ${selectedSession === 'EVENING' ? styles.sessionSelected : ''}`}
+                    style={{ opacity: override && !override.evening_enabled ? 0.5 : 1, cursor: override && !override.evening_enabled ? 'not-allowed' : 'pointer' }}
+                  >
+                    <input type="radio" value="EVENING" className={styles.hiddenRadio} disabled={override ? !override.evening_enabled : false} {...register('preferred_session')} />
+                    <span className={styles.sessionIcon}>
+                      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M15 3C9.477 3 5 7.477 5 13C5 18.523 9.477 23 15 23C18.4 23 21.38 21.27 23.13 18.63C22.12 18.87 21.07 19 20 19C13.925 19 9 14.075 9 8C9 6.4 9.35 4.88 9.98 3.52C8.4 3.18 7 3 15 3Z" fill="#E8D89A"/>
+                        <path d="M24 6 L24.6 8.4 L27 9 L24.6 9.6 L24 12 L23.4 9.6 L21 9 L23.4 8.4 Z" fill="#E8D89A"/>
+                        <path d="M27 16 L27.4 17.6 L29 18 L27.4 18.4 L27 20 L26.6 18.4 L25 18 L26.6 17.6 Z" fill="#E8D89A"/>
+                        <circle cx="22" cy="14" r="1.3" fill="#E8D89A"/>
+                        <circle cx="25" cy="11" r="0.8" fill="#E8D89A"/>
+                      </svg>
+                    </span>
+                    <div>
+                      <div className={styles.sessionOptionName}>Evening</div>
+                      <div className={styles.sessionOptionTime}>
+                        {override && !override.evening_enabled ? 'Unavailable' : '5 PM – 9 PM'}
+                      </div>
+                    </div>
+                  </label>
+                </>
+              )}
+            </div>
+          )}
           {errors.preferred_session && <span id="session-error" className="form-error" role="alert">{errors.preferred_session.message}</span>}
         </div>
 
         <button
           type="submit"
           className={`btn btn-primary ${styles.submitBtn} ${loading ? 'btn-loading' : ''}`}
-          disabled={loading}
-          aria-disabled={loading}
+          disabled={loading || (override !== null && !override.morning_enabled && !override.evening_enabled && !override.custom_session_enabled)}
+          aria-disabled={loading || (override !== null && !override.morning_enabled && !override.evening_enabled && !override.custom_session_enabled)}
         >
           <span aria-live="polite" className="sr-only">
             {loading ? 'Submitting your appointment details, please wait...' : ''}
