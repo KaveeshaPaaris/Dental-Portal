@@ -23,8 +23,8 @@
   max-width: 700px;
   margin: auto;
   width: 100%;
-  background: #FFFFFF;
-  border: 1px solid rgba(15, 76, 129, 0.08);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 24px;
   box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
   display: flex;
@@ -40,7 +40,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  background: #FFFFFF;
+  background: var(--color-surface);
 }
 
 .message {
@@ -377,4 +377,18 @@
 
 .paymentContactIcon {
   color: var(--color-text-muted);
+}
+
+/* ─── Dark mode overrides ─── */
+:global([data-theme='dark']) .welcomeTitle { color: #4EA8FF; }
+:global([data-theme='dark']) .welcomeSubtitle,
+:global([data-theme='dark']) .faqTitle { color: var(--color-text-secondary, #94A3B8); }
+:global([data-theme='dark']) .faqChip {
+  background: transparent;
+  border-color: #4EA8FF;
+  color: #4EA8FF;
+}
+:global([data-theme='dark']) .faqChip:hover {
+  background: #4EA8FF;
+  color: #0B1120;
 }
