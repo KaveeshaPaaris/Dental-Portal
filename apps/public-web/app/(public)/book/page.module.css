@@ -1,75 +1,18 @@
 .page {
-  padding: 140px 0 80px;
+  padding: 110px 0 56px;
+  overflow-x: clip;
 }
 
-.layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
-  align-items: center;
-}
-
-/* ─── Left Photo Card ─────────────────────────────────────── */
-.photoCard {
-  position: relative;
-  border-radius: 20px;
-  overflow: hidden;
-  aspect-ratio: 4 / 5;
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
-}
-
-.clinicImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.photoOverlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 28px 28px 32px;
-  background: rgba(26, 108, 191, 0.6);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(14px);
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.photoTitle {
-  font-size: clamp(1.75rem, 3.5vw, 2.4rem);
-  font-weight: 800;
-  line-height: 1.15;
-  margin-bottom: 10px;
-  color: #ffffff;
-  letter-spacing: -0.5px;
-}
-
-.photoSubtitle {
-  font-size: 0.9375rem;
-  color: rgba(255, 255, 255, 0.9);
-  line-height: 1.65;
-  margin: 0;
-}
-
-/* Dark mode */
-[data-theme='dark'] .photoOverlay {
-  background: rgba(15, 76, 129, 0.9);
-  border-top-color: rgba(255, 255, 255, 0.1);
-}
-
-[data-theme='dark'] .photoTitle {
-  color: #ffffff;
-}
-
-[data-theme='dark'] .photoSubtitle {
-  color: rgba(255, 255, 255, 0.8);
+.formWrap {
+  max-width: 640px;
+  margin: 0 auto;
+  min-width: 0;
 }
 
 /* ─── Form Card ──────────────────────────────────────────── */
 .formCard {
   padding: 32px;
+  overflow: visible;
   background-color: #f4f7fa;
   /* Cool off-white background */
   border: 1px solid #e1e8f0;
@@ -113,6 +56,8 @@
 
 .inputWithIcon {
   padding-left: 38px;
+  min-height: 48px;
+  line-height: 1.4;
 }
 
 .hint {
@@ -199,17 +144,8 @@
   line-height: 1.5;
 }
 
-@media (max-width: 900px) {
-  .layout {
-    grid-template-columns: 1fr;
-  }
-
-  .photoCard {
-    aspect-ratio: 16 / 9;
-    order: 1;
-  }
-
+@media (max-width: 480px) {
   .formCard {
-    order: 2;
+    padding: 24px 20px;
   }
 }
