@@ -11,7 +11,7 @@ function OTPVerifyContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const bookingId = searchParams.get('id');
-  const phone = searchParams.get('phone');
+  const maskedEmail = searchParams.get('email') ?? '';
 
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [loading, setLoading] = useState(false);
@@ -53,48 +53,50 @@ function OTPVerifyContent() {
   const handleVerify = async () => {
     const code = otp.join('');
     if (code.length !== 6) { toast.error('Please enter the full 6-digit code.'); return; }
-    if (!bookingId || !phone) { toast.error('Invalid session. Please start over.'); return; }
+    if (!bookingId) { toast.error('Invalid session. Please start over.'); return; }
 
     setLoading(true);
     try {
-      await api.post('/bookings/verify-otp', { booking_id: bookingId, phone, code });
+      await api.post('/bookings/verify-otp', { booking_id: bookingId, code });
       toast.success('Booking confirmed! We will contact you shortly.');
       router.push('/?booked=true');
     } catch (err: unknown) {
-      const msg = (err as { response?: { data?: { error?: string } } })?.response?.data?.error ?? 'Invalid OTP.';
+      const msg = (err as { response?: { data?: { error?: string } } })?.response?.data?.error ?? 'Could not verify the code. Please try again.';
       toast.error(msg);
+      setOtp(['', '', '', '', '', '']);
+      inputRefs.current[0]?.focus();
     } finally {
       setLoading(false);
     }
   };
 
   const handleResend = async () => {
-    if (!bookingId || !phone || countdown > 0) return;
+    if (!bookingId || countdown > 0) return;
     setResending(true);
     try {
-      await api.post('/bookings/resend-otp', { booking_id: bookingId, phone });
-      toast.success('New OTP sent!');
+      await api.post('/bookings/resend-otp', { booking_id: bookingId });
+      toast.success('A new code has been sent to your email.');
       setCountdown(60);
       setOtp(['', '', '', '', '', '']);
       inputRefs.current[0]?.focus();
-    } catch {
-      toast.error('Failed to resend OTP.');
+    } catch (err: unknown) {
+      const msg = (err as { response?: { data?: { error?: string } } })?.response?.data?.error ?? 'Failed to resend the code.';
+      toast.error(msg);
     } finally {
       setResending(false);
     }
   };
-
-  const maskedPhone = phone ? `${phone.slice(0, -4).replace(/\d/g, '•')}${phone.slice(-4)}` : '';
 
   return (
     <div className={styles.page}>
       <div className="container">
         <div className={styles.card}>
           <div className={styles.icon}><ShieldCheck size={32} /></div>
-          <h1 className={styles.title}>Verify Your Phone</h1>
+          <h1 className={styles.title}>Check Your Email</h1>
           <p className={styles.subtitle}>
-            We sent a 6-digit code to <strong>{maskedPhone}</strong>.
+            We sent a 6-digit code to <strong>{maskedEmail || 'your email'}</strong>.
             <br />Enter it below to confirm your booking.
+            <br /><small>Can&apos;t find it? Check your spam or junk folder. The code expires in 10 minutes.</small>
           </p>
 
           <div className={styles.otpRow} onPaste={handlePaste}>
@@ -134,7 +136,7 @@ function OTPVerifyContent() {
                 className={`btn btn-ghost btn-sm ${styles.resendBtn}`}
               >
                 <RefreshCw size={14} className={resending ? styles.spinning : ''} />
-                Resend OTP
+                Resend code
               </button>
             )}
           </div>
