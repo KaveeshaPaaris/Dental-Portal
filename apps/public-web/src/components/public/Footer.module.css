@@ -160,7 +160,7 @@
   display: grid;
   grid-template-columns: 84px 1fr; /* day left, times right — aligned */
   gap: 4px 0;
-  align-items: baseline;
+  align-items: start;
 }
 
 /* When Mon–Wed has 2 time rows, let them stack naturally */
@@ -192,6 +192,7 @@
   font-size: 0.75rem;
   color: var(--color-text-muted);
   font-style: italic;
+  margin-top: 12px;
   margin-bottom: 14px;
   line-height: 1.5;
 }
