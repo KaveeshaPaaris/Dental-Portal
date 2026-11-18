@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 3001",
-    "build": "next build && mkdir -p .next/standalone/apps/admin-dashboard/.next && cp -r public .next/standalone/apps/admin-dashboard/public && cp -r .next/static .next/standalone/apps/admin-dashboard/.next/static",
+    "build": "next build --webpack && mkdir -p .next/standalone/apps/admin-dashboard/.next && cp -r public .next/standalone/apps/admin-dashboard/public && cp -r .next/static .next/standalone/apps/admin-dashboard/.next/static",
     "start": "node server.js",
     "lint": "eslint"
   },
