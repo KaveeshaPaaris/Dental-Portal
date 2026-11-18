@@ -21,3 +21,15 @@ export const otpLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
 });
+
+/**
+ * Booking creation limiter - 5 new booking requests per hour per IP.
+ * Protects the clinic inbox and the Resend email quota from spam.
+ */
+export const bookingCreateLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 5,
+  message: { error: 'Too many booking requests from this network. Please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});

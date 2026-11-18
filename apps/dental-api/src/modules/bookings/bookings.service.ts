@@ -1,6 +1,6 @@
+import { randomUUID } from 'crypto';
 import { supabase } from '../../config/supabase';
-import { sendOTP, verifyOTP, sendSMS } from '../../services/sms.service';
-import { sendWhatsApp } from '../../services/whatsapp.service';
+import { issueOtp, resendOtp, verifyOtp, maskEmail } from '../../services/otp.service';
 import { sendEmail, bookingConfirmationEmail, reviewRequestEmail } from '../../services/email.service';
 import { getNextAppointmentNumber, getNextSlotOrder } from '../../utils/appointment.util';
 import { generateReviewToken } from '../../utils/token.util';
@@ -14,13 +14,32 @@ import type {
 
 // ─── PUBLIC ──────────────────────────────────────────────────
 
+const MAX_UNVERIFIED_PER_EMAIL_PER_DAY = 3;
+
 export async function createBooking(input: CreateBookingInput) {
+  // Honeypot: pretend success so bots learn nothing, but save and send nothing.
+  if (input.website) {
+    return { booking_id: randomUUID(), message: 'Verification code sent.', email: maskEmail(input.patient_email) };
+  }
+
+  // Cap unverified bookings per email per day (stops one address being spammed).
+  const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  const { count } = await supabase
+    .from('bookings')
+    .select('id', { count: 'exact', head: true })
+    .eq('patient_email', input.patient_email)
+    .eq('status', 'PENDING_OTP')
+    .gte('created_at', since);
+  if ((count ?? 0) >= MAX_UNVERIFIED_PER_EMAIL_PER_DAY) {
+    throw createError('Too many unverified requests for this email. Please verify the code we already sent, or try again tomorrow.', 429);
+  }
+
   // Create booking in PENDING_OTP state
   const { data: booking, error } = await supabase
     .from('bookings')
     .insert({
       patient_name: input.patient_name,
-      patient_email: input.patient_email || null,
+      patient_email: input.patient_email,
       patient_phone: input.patient_phone,
       preferred_date: input.preferred_date,
       preferred_session: input.preferred_session,
@@ -32,49 +51,26 @@ export async function createBooking(input: CreateBookingInput) {
 
   if (error || !booking) throw createError('Failed to create booking', 500);
 
-  // Trigger OTP via custom WhatsApp delivery
-  await sendOTP(input.patient_phone, booking.id);
+  // Email the code. If it cannot be delivered, remove the booking so no ghost rows pile up.
+  try {
+    await issueOtp({ id: booking.id, patient_name: booking.patient_name, patient_email: input.patient_email });
+  } catch (err) {
+    await supabase.from('bookings').delete().eq('id', booking.id);
+    console.error('[createBooking] OTP email failed:', err);
+    throw createError('We could not send the verification email. Please check your email address and try again.', 502);
+  }
 
-  return { booking_id: booking.id, message: 'OTP sent to your WhatsApp.' };
+  return { booking_id: booking.id, message: 'Verification code sent.', email: maskEmail(input.patient_email) };
 }
 
-export async function verifyBookingOTP(bookingId: string, phone: string, code: string) {
-  const { data: booking, error } = await supabase
-    .from('bookings')
-    .select('id, status, patient_phone')
-    .eq('id', bookingId)
-    .single();
-
-  if (error || !booking) throw createError('Booking not found', 404);
-  if (booking.status !== 'PENDING_OTP') throw createError('OTP already verified or booking in invalid state', 400);
-  if (booking.patient_phone !== phone) throw createError('Phone number mismatch', 400);
-
-  const approved = await verifyOTP(bookingId, code);
-  if (!approved) throw createError('Invalid or expired OTP code', 400);
-
-  const { error: updateError } = await supabase
-    .from('bookings')
-    .update({ status: 'PENDING_REVIEW', otp_verified: true })
-    .eq('id', bookingId);
-
-  if (updateError) throw createError('Failed to update booking status', 500);
-
-  return { message: 'OTP verified. Your booking request has been sent to the clinic.' };
+export async function verifyBookingOTP(bookingId: string, code: string) {
+  await verifyOtp(bookingId, code);
+  return { message: 'Verified. Your booking request has been sent to the clinic.' };
 }
 
-export async function resendBookingOTP(bookingId: string, phone: string) {
-  const { data: booking, error } = await supabase
-    .from('bookings')
-    .select('id, status, patient_phone')
-    .eq('id', bookingId)
-    .single();
-
-  if (error || !booking) throw createError('Booking not found', 404);
-  if (booking.status !== 'PENDING_OTP') throw createError('OTP not required for this booking', 400);
-  if (booking.patient_phone !== phone) throw createError('Phone number mismatch', 400);
-
-  await sendOTP(phone, bookingId);
-  return { message: 'OTP resent successfully.' };
+export async function resendBookingOTP(bookingId: string) {
+  const { email } = await resendOtp(bookingId);
+  return { message: 'A new code has been sent.', email };
 }
 
 // ─── ADMIN ───────────────────────────────────────────────────
@@ -282,17 +278,8 @@ export async function completeBooking(id: string, adminId: string) {
 
   const reviewLink = `${env.FRONTEND_URL}/review/${reviewToken}`;
 
-  // Fire all three notification channels in parallel
-  const notificationPromises = [
-    sendSMS(
-      booking.patient_phone,
-      `Hi ${booking.patient_name}! Thank you for visiting Charming Dental Clinic. Please share your feedback: ${reviewLink}`
-    ),
-    sendWhatsApp(
-      booking.patient_phone,
-      `Hi ${booking.patient_name}! 🦷 Thank you for visiting us. We'd love your feedback: ${reviewLink}`
-    ),
-  ];
+  // Review request goes by email only (if the patient gave one)
+  const notificationPromises: Promise<void>[] = [];
 
   if (booking.patient_email) {
     notificationPromises.push(
@@ -330,12 +317,7 @@ export async function sendBookingConfirmation(id: string) {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
   });
 
-  const message = `Hi ${booking.patient_name}! Your appointment #${booking.appointment_number} is confirmed for ${dateStr} (${booking.assigned_session} session). See you soon! — Charming Dental Clinic`;
-
-  const promises = [
-    sendSMS(booking.patient_phone, message),
-    sendWhatsApp(booking.patient_phone, message),
-  ];
+  const promises: Promise<void>[] = [];
 
   if (booking.patient_email) {
     promises.push(
