@@ -5,8 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useTheme } from '@/context/ThemeContext';
-import { usePatientAuth } from '@/context/PatientAuthContext';
-import { Sun, Moon, Menu, X, Phone, User, LogOut, ChevronRight } from 'lucide-react';
+import { Sun, Moon, Menu, X, Phone, ChevronRight } from 'lucide-react';
 import SpotlightCard from './SpotlightCard';
 import styles from './Navbar.module.css';
 
@@ -22,7 +21,6 @@ const NAV_LINKS = [
 export default function Navbar() {
   const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
-  const { user, signOut } = usePatientAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [closing, setClosing] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -127,33 +125,10 @@ export default function Navbar() {
               {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
             </button>
 
-            {user ? (
-              <>
-                <Link href="/book" className="btn btn-primary">
-                  <Phone size={16} />
-                  Book Appointment
-                </Link>
-                <button
-                  onClick={signOut}
-                  className={`btn btn-ghost btn-sm ${styles.logoutBtn}`}
-                  aria-label="Log out"
-                  title="Log out"
-                >
-                  <LogOut size={18} />
-                </button>
-              </>
-            ) : (
-              <>
-                <Link href="/login" className="btn btn-secondary btn-sm" style={{ display: 'none' }}>
-                  <User size={15} />
-                  Patient Login
-                </Link>
-                <Link href="/book" className="btn btn-primary">
-                  <Phone size={16} />
-                  Book Appointment
-                </Link>
-              </>
-            )}
+            <Link href="/book" className="btn btn-primary">
+              <Phone size={16} />
+              Book Appointment
+            </Link>
 
             <button
               className={`btn btn-ghost btn-sm ${styles.menuBtn}`}
@@ -239,26 +214,6 @@ export default function Navbar() {
                 Book Appointment
               </Link>
 
-              {user ? (
-                <button
-                  onClick={() => { signOut(); closeDrawer(); }}
-                  className="btn btn-secondary"
-                  style={{ width: '100%', justifyContent: 'center' }}
-                >
-                  <LogOut size={16} />
-                  Log Out
-                </button>
-              ) : (
-                <Link
-                  href="/login"
-                  className="btn btn-secondary"
-                  onClick={closeDrawer}
-                  style={{ display: 'none', width: '100%', justifyContent: 'center' }}
-                >
-                  <User size={16} />
-                  Patient Login
-                </Link>
-              )}
 
               <div className={styles.drawerThemeRow}>
                 <span className={styles.drawerThemeLabel}>

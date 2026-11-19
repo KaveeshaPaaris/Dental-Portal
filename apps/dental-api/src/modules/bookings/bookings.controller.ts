@@ -14,7 +14,6 @@ export async function verifyOTP(req: Request, res: Response, next: NextFunction)
   try {
     const result = await bookingsService.verifyBookingOTP(
       req.body.booking_id,
-      req.body.phone,
       req.body.code
     );
     res.json(result);
@@ -23,7 +22,7 @@ export async function verifyOTP(req: Request, res: Response, next: NextFunction)
 
 export async function resendOTP(req: Request, res: Response, next: NextFunction) {
   try {
-    const result = await bookingsService.resendBookingOTP(req.body.booking_id, req.body.phone);
+    const result = await bookingsService.resendBookingOTP(req.body.booking_id);
     res.json(result);
   } catch (err) { next(err); }
 }

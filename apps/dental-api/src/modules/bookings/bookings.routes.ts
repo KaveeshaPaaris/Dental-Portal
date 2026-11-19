@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { verifyToken } from '../../middleware/auth.middleware';
 import { requireRole } from '../../middleware/role.middleware';
 import { validate } from '../../middleware/validate.middleware';
-import { otpLimiter } from '../../middleware/rateLimiter.middleware';
+import { otpLimiter, bookingCreateLimiter } from '../../middleware/rateLimiter.middleware';
 import * as controller from './bookings.controller';
 import {
   createBookingSchema,
@@ -17,7 +17,7 @@ import {
 const router = Router();
 
 // ─── PUBLIC ──────────────────────────────────────────────────
-router.post('/', validate(createBookingSchema), controller.createBooking);
+router.post('/', bookingCreateLimiter, validate(createBookingSchema), controller.createBooking);
 router.post('/verify-otp', otpLimiter, validate(verifyOTPSchema), controller.verifyOTP);
 router.post('/resend-otp', otpLimiter, validate(resendOTPSchema), controller.resendOTP);
 

@@ -21,12 +21,14 @@ const PhoneInput = dynamic(() => import('@/components/PhoneInput'), {
 
 const schema = z.object({
   patient_name: z.string().min(2, 'Name must be at least 2 characters'),
-  patient_email: z.string().email('Invalid email').optional().or(z.literal('')),
+  patient_email: z.string().trim().min(1, 'Email is required').email('Please enter a valid email address'),
   patient_phone: z.string()
     .min(1, 'Phone number is required')
     .refine((val) => val && isValidPhoneNumber(val), 'Invalid phone number for the selected country'),
   preferred_date: z.string().min(1, 'Please select a date'),
   preferred_session: z.enum(['MORNING', 'EVENING']).refine((v) => v !== undefined, { message: 'Please select a session' }),
+  // Honeypot - hidden from people, bots tend to fill it in
+  website: z.string().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -98,10 +100,10 @@ export default function BookingForm() {
   const onSubmit = async (data: FormData) => {
     setLoading(true);
     try {
-      const res = await api.post<{ booking_id: string }>('/bookings', data);
-      toast.success('OTP sent! Please verify your phone number.');
+      const res = await api.post<{ booking_id: string; email: string }>('/bookings', data);
+      toast.success('Verification code sent to your email.');
       router.push(
-        `/book/verify?id=${res.data.booking_id}&phone=${encodeURIComponent(data.patient_phone)}`
+        `/book/verify?id=${res.data.booking_id}&email=${encodeURIComponent(res.data.email ?? '')}`
       );
     } catch (err: unknown) {
       const msg =
@@ -142,7 +144,7 @@ export default function BookingForm() {
 
         {/* Email */}
         <div className="form-group">
-          <label className="form-label" htmlFor="patient_email">Email Address (optional)</label>
+          <label className="form-label" htmlFor="patient_email">Email Address *</label>
           <div className={styles.inputWrap}>
             <Mail size={16} className={styles.inputIcon} />
             <input
@@ -156,7 +158,17 @@ export default function BookingForm() {
               {...register('patient_email')}
             />
           </div>
-          {errors.patient_email && <span id="email-error" className="form-error" role="alert">{errors.patient_email.message}</span>}
+          {errors.patient_email ? (
+            <span id="email-error" className="form-error" role="alert">{errors.patient_email.message}</span>
+          ) : (
+            <span style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)" }}>We will email you a code to confirm your booking.</span>
+          )}
+        </div>
+
+        {/* Honeypot - invisible to people, tempting to bots */}
+        <div aria-hidden="true" style={{ position: 'absolute', left: '-10000px', width: 1, height: 1, overflow: 'hidden' }}>
+          <label htmlFor="website">Leave this field empty</label>
+          <input id="website" type="text" tabIndex={-1} autoComplete="off" {...register('website')} />
         </div>
 
         {/* Phone */}

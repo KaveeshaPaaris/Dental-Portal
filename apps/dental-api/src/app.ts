@@ -16,12 +16,14 @@ import adminsRouter from './modules/admins/admins.routes';
 
 import contentRouter from './modules/content/content.routes';
 import blogsRouter from './modules/blogs/blogs.routes';
-import authRouter from './modules/auth/auth.routes';
 import aiChatRouter from './modules/ai-chat/ai-chat.routes';
 import knowledgeBaseRouter from './modules/knowledge-base/knowledge-base.routes';
 import servicesRouter from './modules/services/services.routes';
 import scheduleRouter from './modules/schedule/schedule.routes';
 const app = express();
+
+// Behind Hostinger's proxy: trust one hop so rate limits see the real visitor IP.
+app.set('trust proxy', 1);
 
 // ─── Security ────────────────────────────────────────────────
 app.use(helmet());
@@ -57,7 +59,6 @@ app.get('/health', (req, res) => {
 const BASE = '/api/v1';
 
 // Public — apply general rate limiter
-app.use(`${BASE}/auth`, authRouter);
 app.use(`${BASE}/bookings`, publicLimiter, bookingsRouter);
 app.use(`${BASE}/reviews`, publicLimiter, reviewsRouter);
 
