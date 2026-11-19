@@ -6,7 +6,8 @@ import { useAuth } from '@/context/AuthContext';
 import { useQuery } from '@tanstack/react-query';
 import api from '@/lib/api';
 import { Calendar, Star, Package, Bell, Clock, CheckCircle, AlertTriangle } from 'lucide-react';
-import type { Booking, Review, InventoryItem, Notification } from '@/types';
+import { useNotifications } from '@/hooks/useNotifications';
+import type { Booking, Review, InventoryItem } from '@/types';
 import styles from './page.module.css';
 
 export default function AdminDashboard() {
@@ -30,13 +31,7 @@ export default function AdminDashboard() {
       ),
   });
 
-  const { data: notifications } = useQuery({
-    queryKey: ['notifications'],
-    queryFn: () => api.get<Notification[]>('/admin/notifications').then((r) => r.data),
-    refetchInterval: 30000,
-  });
-
-  const unread = notifications?.filter((n) => !n.is_read) ?? [];
+  const { unreadCount } = useNotifications();
 
   const stats = [
     {
@@ -65,7 +60,7 @@ export default function AdminDashboard() {
     },
     {
       label: 'Unread Alerts',
-      value: unread.length,
+      value: unreadCount,
       icon: Bell,
       color: 'var(--color-primary)',
       bg: 'rgba(78,168,255,0.1)',

@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import * as adminsService from './admins.service';
+import { createAdminSchema } from './admins.schema';
+import { createError } from '../../middleware/error.middleware';
 
 export async function getMe(req: Request, res: Response, next: NextFunction) {
   try { res.json(await adminsService.getCurrentAdmin(req.user!.id)); } catch (err) { next(err); }
@@ -10,7 +12,13 @@ export async function getAllAdmins(req: Request, res: Response, next: NextFuncti
 }
 
 export async function createAdmin(req: Request, res: Response, next: NextFunction) {
-  try { res.status(201).json(await adminsService.createAdmin(req.body, req.user!.id)); } catch (err) { next(err); }
+  try {
+    const parsed = createAdminSchema.safeParse(req.body);
+    if (!parsed.success) {
+      throw createError(parsed.error.issues[0]?.message || 'Invalid input', 400);
+    }
+    res.status(201).json(await adminsService.createAdmin(parsed.data, req.user!.id));
+  } catch (err) { next(err); }
 }
 
 export async function deactivateAdmin(req: Request, res: Response, next: NextFunction) {

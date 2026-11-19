@@ -7,6 +7,7 @@ import { AdminProfile } from '@/types';
 import toast from 'react-hot-toast';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
+import PasswordField from '@/components/admin/PasswordField';
 
 export default function ManageAdminsPage() {
   const { user } = useAuth();
@@ -42,6 +43,10 @@ export default function ManageAdminsPage() {
 
   const handleCreateAdmin = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (newAdmin.role === 'SUPER_ADMIN' &&
+        !window.confirm(`Give ${newAdmin.email} FULL Super Admin access? They will be able to create and deactivate other admins.`)) {
+      return;
+    }
     setCreating(true);
     try {
       await api.post('/admin/admins', newAdmin);
@@ -102,10 +107,8 @@ export default function ManageAdminsPage() {
                 <label className="form-label">Email Address</label>
                 <input type="email" required className="form-input" value={newAdmin.email} onChange={e => setNewAdmin({...newAdmin, email: e.target.value})} />
               </div>
-              <div className="form-group">
-                <label className="form-label">Temporary Password</label>
-                <input type="password" required className="form-input" minLength={6} value={newAdmin.password} onChange={e => setNewAdmin({...newAdmin, password: e.target.value})} />
-              </div>
+              <PasswordField label="Password" value={newAdmin.password}
+                onChange={v => setNewAdmin({...newAdmin, password: v})} />
               <div className="form-group">
                 <label className="form-label">Role</label>
                 <select className="form-input" value={newAdmin.role} onChange={e => setNewAdmin({...newAdmin, role: e.target.value})}>

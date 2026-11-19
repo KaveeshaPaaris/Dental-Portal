@@ -1,5 +1,6 @@
 import { supabase } from '../../config/supabase';
 import { createError } from '../../middleware/error.middleware';
+import type { CreateAdminInput } from './admins.schema';
 
 export async function getAllAdmins() {
   const { data, error } = await supabase
@@ -10,12 +11,7 @@ export async function getAllAdmins() {
   return data;
 }
 
-export async function createAdmin(input: {
-  full_name: string;
-  email: string;
-  password: string;
-  role: 'ADMIN' | 'SUPER_ADMIN';
-}, createdBy: string) {
+export async function createAdmin(input: CreateAdminInput, createdBy: string) {
   // Create auth user via Supabase Admin API
   const { data: authUser, error: authError } = await supabase.auth.admin.createUser({
     email: input.email,
