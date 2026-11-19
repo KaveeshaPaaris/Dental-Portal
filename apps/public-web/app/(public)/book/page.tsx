@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
+import Image from 'next/image';
 import BookingForm from '@/components/public/BookingForm';
-import BookingHeader from '@/components/public/BookingHeader';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
@@ -60,9 +60,30 @@ export default function BookAppointmentPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="container">
-        <BookingHeader currentStep={1} />
-        <div className={styles.formWrap}>
-          <BookingForm />
+        <div className={styles.layout}>
+          {/* Left: Photo Card */}
+          <div className={styles.photoCard}>
+            <Image
+              src="/clinic-interior .webp"
+              alt="Interior of Charming Dental Clinic, Negombo — Book a dental appointment"
+              className={styles.clinicImage}
+              fill
+              sizes="(max-width: 900px) 100vw, 50vw"
+              priority={true}
+              style={{ objectFit: 'cover' }}
+            />
+            <div className={styles.photoOverlay}>
+              <h1 className={styles.photoTitle}>Book Your<br />Appointment</h1>
+              <p className={styles.photoSubtitle}>
+                Fill in the form and we&apos;ll send a verification code to your phone to confirm your booking.
+              </p>
+            </div>
+          </div>
+
+          {/* Right: Form Component */}
+          <div className={styles.formWrap}>
+            <BookingForm />
+          </div>
         </div>
       </div>
     </div>
