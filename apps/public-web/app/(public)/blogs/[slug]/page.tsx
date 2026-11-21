@@ -4,22 +4,21 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, Calendar, Clock } from 'lucide-react';
 import ShareCopyButton from './ShareCopyButton';
+import { apiFetch } from '@/lib/apiFetch';
 import styles from './page.module.css';
 
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 const baseUrl = 'https://charmingdental.com';
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api/v1';
 
 // ─── Static Pre-rendering (optional, improves performance) ───────────────────
 // Pre-renders known blog slugs at build time. New slugs are ISR on-demand.
+// If the API is down at build time this just pre-builds nothing; the pages are then
+// generated on first visit instead, so it is safe to swallow the error here.
 export async function generateStaticParams() {
   try {
-    const res = await fetch(`${API_URL}/blogs?limit=100`);
-    if (!res.ok) return [];
-    const data = await res.json();
-    const blogs: { slug: string }[] = data.data || [];
-    return blogs.map((blog) => ({ slug: blog.slug }));
+    const data = await apiFetch<{ data?: { slug: string }[] }>('/blogs?limit=100', 300);
+    return (data?.data || []).map((blog) => ({ slug: blog.slug }));
   } catch {
     return [];
   }
@@ -49,30 +48,15 @@ interface BlogDetail {
 //   1. Deduplicate identical requests between generateMetadata & BlogDetailPage
 //   2. Apply ISR revalidation (next: { revalidate: 300 })
 
+// null only when the API says 404; any other failure throws so the last good page is kept.
 async function getBlogBySlug(slug: string): Promise<BlogDetail | null> {
-  try {
-    const res = await fetch(`${API_URL}/blogs/${slug}`, {
-      next: { revalidate: 300 },
-    });
-    if (!res.ok) return null;
-    return res.json();
-  } catch {
-    return null;
-  }
+  return apiFetch<BlogDetail>(`/blogs/${encodeURIComponent(slug)}`, 300);
 }
 
 async function getRelatedBlogs(currentId: string): Promise<BlogDetail[]> {
-  try {
-    const res = await fetch(`${API_URL}/blogs?limit=4`, {
-      next: { revalidate: 300 },
-    });
-    if (!res.ok) return [];
-    const data = await res.json();
-    const all: BlogDetail[] = data.data || [];
-    return all.filter((b) => b.id !== currentId).slice(0, 3);
-  } catch {
-    return [];
-  }
+  const data = await apiFetch<{ data?: BlogDetail[] }>('/blogs?limit=4', 300);
+  const all: BlogDetail[] = data?.data || [];
+  return all.filter((b) => b.id !== currentId).slice(0, 3);
 }
 
 // ─── Helper ───────────────────────────────────────────────────────────────────

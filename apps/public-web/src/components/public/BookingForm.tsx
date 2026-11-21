@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useSyncExternalStore } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -40,6 +40,21 @@ interface ScheduleOverride {
   custom_session_label: string | null;
   custom_session_start: string | null;
   custom_session_end: string | null;
+}
+
+const subscribeNever = () => () => {};
+
+/**
+ * "Tomorrow" as YYYY-MM-DD in Sri Lanka time. toISOString() uses UTC, which is still
+ * "yesterday" there between 00:00 and 05:30, so format the date in the clinic's timezone.
+ */
+function getTomorrowInClinicTz(): string {
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Colombo',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(new Date(Date.now() + 24 * 60 * 60 * 1000));
 }
 
 export default function BookingForm() {
@@ -115,9 +130,9 @@ export default function BookingForm() {
     }
   };
 
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const minDate = tomorrow.toISOString().split('T')[0];
+  // Empty on the server (the page is pre-built, so a date computed there would go stale);
+  // the real value is filled in by the browser right after load.
+  const minDate = useSyncExternalStore(subscribeNever, getTomorrowInClinicTz, () => '');
 
   return (
     <div className={`card ${styles.formCard}`}>

@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import { Star, Quote } from 'lucide-react';
 import Link from 'next/link';
+import { apiFetch } from '@/lib/apiFetch';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
-  title: 'Patient Reviews — Charming Dental Clinic',
+  title: 'Patient Reviews',
   description: 'Read genuine reviews from our patients and see why hundreds of families trust Charming Dental Clinic for their smiles.',
   alternates: {
     canonical: 'https://charmingdental.com/reviews',
@@ -19,18 +20,9 @@ interface Review {
   created_at: string;
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api/v1';
-
 async function getAllReviews(): Promise<Review[]> {
-  try {
-    const res = await fetch(`${API_URL}/reviews/public`, {
-      next: { revalidate: 60 }, // ISR — revalidate every 60 seconds
-    });
-    if (!res.ok) return [];
-    return res.json();
-  } catch {
-    return [];
-  }
+  // ISR — revalidate every 60 seconds; throws on API failure so the last good page is kept
+  return (await apiFetch<Review[]>('/reviews/public', 60)) ?? [];
 }
 
 function StarRating({ rating }: { rating?: number }) {

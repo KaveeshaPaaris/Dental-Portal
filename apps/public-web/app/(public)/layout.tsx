@@ -11,8 +11,9 @@ export const metadata: Metadata = {
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
+      <a href="#main-content" className="skip-link">Skip to main content</a>
       <Navbar />
-      <main style={{ minHeight: '100vh' }}>
+      <main id="main-content" style={{ minHeight: '100vh' }}>
         {children}
       </main>
       <Footer />

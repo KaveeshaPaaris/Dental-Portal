@@ -4,6 +4,7 @@ import '@/styles/globals.css';
 import { ThemeProvider } from '@/context/ThemeContext';
 import { Toaster } from 'react-hot-toast';
 import ReactQueryProvider from '@/components/providers/ReactQueryProvider';
+import { SITE_URL } from '@/lib/site';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -19,7 +20,12 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   display: 'swap',
 });
 
+// Runs before first paint: picks the saved theme (or the device's preference) so there is no flash.
+const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem('dental-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.setAttribute('data-theme',t)}catch(e){}})();`;
+
 export const metadata: Metadata = {
+  // Lets relative URLs (e.g. the social preview image) resolve to absolute ones.
+  metadataBase: new URL(SITE_URL),
   title: 'Charming Dental Clinic',
   description: 'World-class dental care, close to home. Book your appointment today.',
   keywords: 'dental clinic, dentist, teeth, orthodontics, dental care',
@@ -46,6 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${plusJakartaSans.variable}`}>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>

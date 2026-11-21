@@ -58,7 +58,7 @@ function OTPVerifyContent() {
     setLoading(true);
     try {
       await api.post('/bookings/verify-otp', { booking_id: bookingId, code });
-      toast.success('Booking confirmed! We will contact you shortly.');
+      toast.success('Thank you! Our staff will contact you shortly to confirm your appointment.');
       router.push('/?booked=true');
     } catch (err: unknown) {
       const msg = (err as { response?: { data?: { error?: string } } })?.response?.data?.error ?? 'Could not verify the code. Please try again.';
@@ -95,7 +95,7 @@ function OTPVerifyContent() {
           <h1 className={styles.title}>Check Your Email</h1>
           <p className={styles.subtitle}>
             We sent a 6-digit code to <strong>{maskedEmail || 'your email'}</strong>.
-            <br />Enter it below to confirm your booking.
+            <br />Enter it below to submit your booking request.
             <br /><small>Can&apos;t find it? Check your spam or junk folder. The code expires in 10 minutes.</small>
           </p>
 
@@ -122,7 +122,7 @@ function OTPVerifyContent() {
             className={`btn btn-primary ${styles.verifyBtn} ${loading ? 'btn-loading' : ''}`}
             disabled={loading || otp.join('').length !== 6}
           >
-            {loading ? '' : 'Confirm Booking'}
+            {loading ? '' : 'Submit Booking Request'}
           </button>
 
           <div className={styles.resendRow}>

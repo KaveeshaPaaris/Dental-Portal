@@ -1,31 +1,5 @@
 /* [FIX #6] Removed empty `.page {}` rule */
 
-/* ─── Skip Navigation ────────────────────────────────── */
-/* [FIX #17] Visually hidden skip link, appears on focus for keyboard users */
-.skipLink {
-  position: absolute;
-  left: -9999px;
-  top: auto;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-}
-
-.skipLink:focus {
-  position: fixed;
-  top: 12px;
-  left: 12px;
-  width: auto;
-  height: auto;
-  padding: 8px 16px;
-  background: var(--color-primary);
-  color: white;
-  border-radius: var(--radius-sm, 6px);
-  z-index: 9999;
-  font-weight: 600;
-  text-decoration: none;
-}
-
 /* ─── Hero ──────────────────────────────────────────────── */
 .hero {
   position: relative;
@@ -47,10 +21,6 @@
   object-position: right center;
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 60%);
   mask-image: linear-gradient(to right, transparent 0%, black 60%);
-}
-
-.heroImageMobile {
-  display: none !important;
 }
 
 .heroBg::after {
@@ -672,14 +642,6 @@
     -webkit-mask-image: linear-gradient(to top, transparent 0%, transparent 0%, black 65%);
     mask-image: linear-gradient(to top, transparent 20%, transparent 0%, black 65%);
     opacity: 1;
-  }
-
-  .heroImageDesktop {
-    display: none !important;
-  }
-
-  .heroImageMobile {
-    display: block !important;
   }
 
   /* Stacked full-width CTA buttons */

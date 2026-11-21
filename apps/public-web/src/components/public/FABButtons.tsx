@@ -6,8 +6,8 @@ import { Phone, MessageCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 
-const WHATSAPP_NUMBER = '94776429760';
-const PHONE_NUMBER = '+94776429760';
+const WHATSAPP_NUMBER = '94718109283';
+const PHONE_NUMBER = '+94718109283';
 
 export default function FABButtons() {
   const router = useRouter();

@@ -4,6 +4,7 @@ import {
   Activity, Baby,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { apiFetch } from '@/lib/apiFetch';
 
 export type ServiceCategory = 'Preventive' | 'Cosmetic' | 'Restorative' | 'Orthodontics';
 
@@ -58,8 +59,6 @@ export const REVIEWER_INFO = {
   dateUpdated: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 };
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api/v1';
-
 // Helper to map string icon names back to Lucide components if needed
 // Or we can just use the icon name in the UI components
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -96,16 +95,11 @@ function mapService(dbService: any): Service {
   };
 }
 
+// Both fetchers throw if the API is unreachable/erroring (see apiFetch) so a temporary
+// outage never overwrites a good cached page with an empty one.
 export async function getServices(): Promise<Service[]> {
-  try {
-    const res = await fetch(`${API_URL}/services`, { next: { revalidate: 60 } });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return data.map(mapService);
-  } catch (error) {
-    console.error('Failed to fetch services:', error);
-    return [];
-  }
+  const data = await apiFetch<any[]>('/services', 60);
+  return (data ?? []).map(mapService);
 }
 
 export async function getFeaturedServices(): Promise<Service[]> {
@@ -114,15 +108,9 @@ export async function getFeaturedServices(): Promise<Service[]> {
 }
 
 export async function getServiceBySlug(slug: string): Promise<Service | null> {
-  try {
-    const res = await fetch(`${API_URL}/services/${slug}`, { next: { revalidate: 60 } });
-    if (!res.ok) return null;
-    const data = await res.json();
-    return mapService(data);
-  } catch (error) {
-    console.error(`Failed to fetch service ${slug}:`, error);
-    return null;
-  }
+  // null only when the API says 404 (service really doesn't exist)
+  const data = await apiFetch<any>(`/services/${encodeURIComponent(slug)}`, 60);
+  return data ? mapService(data) : null;
 }
 
 export async function getRelatedServices(slugs: string[]): Promise<Service[]> {

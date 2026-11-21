@@ -224,6 +224,25 @@ export default function AskPage() {
             </button>
           </form>
         </div>
+
+        <p
+          style={{
+            maxWidth: 720,
+            margin: '16px auto 0',
+            textAlign: 'center',
+            fontSize: '0.8125rem',
+            lineHeight: 1.5,
+            color: 'var(--color-text-secondary)',
+          }}
+        >
+          This AI assistant gives general information only. It is not medical advice and cannot
+          diagnose or treat any condition. For severe pain, swelling, bleeding or any dental
+          emergency, please call us on{' '}
+          <a href="tel:+94718109283" style={{ fontWeight: 600, textDecoration: 'underline' }}>
+            +94 71 810 9283
+          </a>{' '}
+          or visit a doctor or hospital straight away.
+        </p>
       </div>
     </div>
   );

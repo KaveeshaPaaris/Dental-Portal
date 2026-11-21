@@ -2,13 +2,14 @@ import type { Metadata } from 'next';
 import styles from './page.module.css';
 import BlogFilterClient from './BlogFilterClient';
 import type { Blog } from './BlogFilterClient';
+import { apiFetch } from '@/lib/apiFetch';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
-const title = 'Dental Health Blog — Charming Dental Clinic';
+const title = 'Dental Health Blog';
+const socialTitle = 'Dental Health Blog — Charming Dental Clinic';
 const description =
   'Expert insights, tips, and news to help you maintain a healthy, beautiful smile. Read our latest articles on oral hygiene, treatments, and more.';
 const url = 'https://charmingdental.com/blogs';
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api/v1';
 
 // ─── Metadata ─────────────────────────────────────────────────────────────────
 export const metadata: Metadata = {
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
     canonical: url,
   },
   openGraph: {
-    title,
+    title: socialTitle,
     description,
     url,
     siteName: 'Charming Dental Clinic',
@@ -27,23 +28,16 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title,
+    title: socialTitle,
     description,
   },
 };
 
 // ─── Server-side Data Fetcher ─────────────────────────────────────────────────
 async function getAllBlogs(): Promise<Blog[]> {
-  try {
-    const res = await fetch(`${API_URL}/blogs?limit=100`, {
-      next: { revalidate: 300 }, // ISR — revalidate every 5 minutes
-    });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return data.data || [];
-  } catch {
-    return [];
-  }
+  // ISR — revalidate every 5 minutes; throws on API failure so the last good page is kept
+  const data = await apiFetch<{ data?: Blog[] }>('/blogs?limit=100', 300);
+  return data?.data || [];
 }
 
 // ─── Page (async Server Component) ───────────────────────────────────────────

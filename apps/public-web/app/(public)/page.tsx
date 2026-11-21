@@ -1,15 +1,41 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Image from 'next/image';
+import Image, { getImageProps } from 'next/image';
 import { ArrowRight, Shield } from 'lucide-react';
 import styles from './page.module.css';
 import ReviewsCarousel from '@/components/ReviewsCarousel';
 import { getFeaturedServices } from '@/data/services';
+import { apiFetch } from '@/lib/apiFetch';
 import { FadeUp, StaggerContainer, ParallaxHeroBg, SlideIn, FloatAnimation, RevealOnScroll } from '@/components/animations';
 import { AnimatedServiceLink } from '@/components/animations/AnimatedCards';
 import AnimatedCounter from '@/components/AnimatedCounter';
 import type { Review } from '@/components/ReviewsCarousel';
+
+/**
+ * Hero background with a different photo for phones and desktops.
+ * A <picture> lets the browser download ONLY the one that matches the screen
+ * (two separate <Image priority> tags made every phone download both).
+ * Keep the 768px breakpoint in sync with page.module.css.
+ */
+function HeroBackgroundImage() {
+  const common = { alt: '', fill: true, priority: true, sizes: '100vw' } as const;
+  const {
+    props: { srcSet: desktopSrcSet, ...imgProps },
+  } = getImageProps({ ...common, src: '/hero-bg.webp' });
+  const {
+    props: { srcSet: mobileSrcSet },
+  } = getImageProps({ ...common, src: '/dental_clinic_interior_portrait.webp' });
+
+  return (
+    <picture>
+      <source media="(max-width: 768px)" srcSet={mobileSrcSet} />
+      <source media="(min-width: 769px)" srcSet={desktopSrcSet} />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img {...imgProps} srcSet={desktopSrcSet} alt="" className={styles.heroImage} />
+    </picture>
+  );
+}
 
 function HeroStats({ className }: { className?: string }) {
   return (
@@ -39,19 +65,9 @@ function HeroStats({ className }: { className?: string }) {
   );
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api/v1';
-
 async function getFeaturedReviews(): Promise<Review[]> {
-  try {
-    const res = await fetch(`${API_URL}/reviews/featured`, {
-      next: { revalidate: 3600 },
-    });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return Array.isArray(data) ? data : [];
-  } catch {
-    return [];
-  }
+  const data = await apiFetch<unknown>('/reviews/featured', 3600);
+  return Array.isArray(data) ? (data as Review[]) : [];
 }
 
 export const metadata: Metadata = {
@@ -249,34 +265,18 @@ export default function HomePage() {
   };
 
   return (
-    // [FIX #16] Wrapped content in <main> for correct landmark semantics
-    <main id="main-content">
+    // The <main> landmark and the "skip to content" link live in the shared layout.
+    <div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(clinicSchema) }}
       />
 
-      {/* [FIX #17] Skip navigation link for keyboard / screen-reader users */}
-      <a href="#main-content" className={styles.skipLink}>Skip to main content</a>
-
       {/* ─── Hero ─────────────────────────────────────────── */}
       {/* [FIX #14] Added aria-label for landmark navigation */}
       <section className={styles.hero} aria-label="Hero - Welcome">
         <ParallaxHeroBg className={styles.heroBg} aria-hidden="true">
-          <Image
-            src="/hero-bg.webp"
-            alt="Dental clinic background"
-            fill
-            priority
-            className={`${styles.heroImage} ${styles.heroImageDesktop}`}
-          />
-          <Image
-            src="/dental_clinic_interior_portrait.webp"
-            alt="Dental clinic interior portrait"
-            fill
-            priority
-            className={`${styles.heroImage} ${styles.heroImageMobile}`}
-          />
+          <HeroBackgroundImage />
         </ParallaxHeroBg>
         <div className="container">
           {/* [FIX #1] heroContent sits cleanly over the hero image */}
@@ -433,6 +433,6 @@ export default function HomePage() {
           </RevealOnScroll>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

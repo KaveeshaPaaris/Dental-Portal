@@ -6,6 +6,7 @@ import { getServiceBySlug, getRelatedServices, REVIEWER_INFO } from '@/data/serv
 import BeforeAfterSlider from '@/components/BeforeAfterSlider';
 import styles from './page.module.css';
 import { Metadata } from 'next';
+import { SITE_URL } from '@/lib/site';
 
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -14,10 +15,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!service) return { title: 'Service Not Found' };
 
   return {
-    title: `${service.title} | Charming Dental Clinic - Sri Lanka`,
+    // The layout template appends "| Charming Dental Clinic"
+    title: `${service.title} in Negombo, Sri Lanka`,
     description: service.shortDesc,
     alternates: {
-      canonical: `https://charmingdental.com/services/${p.slug}`,
+      canonical: `${SITE_URL}/services/${p.slug}`,
     },
   };
 }
@@ -37,7 +39,7 @@ export default async function ServiceDetailPage({
   const relatedServices = (await getRelatedServices(service.relatedSlugs)).slice(0, 3);
 
   // Schema.org JSON-LD Generation
-  const baseUrl = 'https://charmingdentalclinic.com'; // Adjust to actual production URL
+  const baseUrl = SITE_URL;
   const currentUrl = `${baseUrl}/services/${service.slug}`;
 
   const breadcrumbSchema = {
@@ -90,7 +92,7 @@ export default async function ServiceDetailPage({
   } : null;
 
   return (
-    <div className={styles.page} style={{ color: '#333' }}>
+    <div className={styles.page} style={{ color: 'var(--color-text-primary)' }}>
       {/* ── JSON-LD Schemas ───────────────────────────────────── */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
@@ -99,7 +101,7 @@ export default async function ServiceDetailPage({
 
 
       {/* ── MAIN EDITORIAL CONTENT ───────────────────────────────────── */}
-      <main className="container" style={{ margin: '0 auto', padding: '60px 20px' }}>
+      <div className="container" style={{ margin: '0 auto', padding: '60px 20px' }}>
         
         {/* 1. H1 & Byline */}
         <h1 style={{ fontSize: '2.5rem', marginBottom: '16px', color: 'var(--color-primary)' }}>{service.title}</h1>
@@ -265,7 +267,7 @@ export default async function ServiceDetailPage({
           </section>
         )}
 
-      </main>
+      </div>
 
       {/* 12. CTA Banner */}
       <section style={{ background: 'var(--color-primary)', color: '#fff', padding: '60px 20px', textAlign: 'center' }}>

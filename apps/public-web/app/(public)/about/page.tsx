@@ -5,7 +5,7 @@ import { FadeUp, SlideIn, FloatAnimation, RevealOnScroll } from '@/components/an
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
-  title: 'About Us — Charming Dental Clinic',
+  title: 'About Us',
   description: 'Learn about our mission, our history, and meet the expert team of dentists dedicated to your oral health.',
   alternates: {
     canonical: 'https://charmingdental.com/about',
