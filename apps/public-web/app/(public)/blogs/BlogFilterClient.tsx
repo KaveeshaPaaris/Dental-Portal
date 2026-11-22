@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import Image from 'next/image';
+import { canOptimizeImage } from '@/lib/imageHosts';
 import Link from 'next/link';
 import {
   ArrowRight,
@@ -169,6 +170,7 @@ export default function BlogFilterClient({ allBlogs }: { allBlogs: Blog[] }) {
                       className={styles.image}
                       sizes="(max-width: 992px) 100vw, 50vw"
                       priority
+                      unoptimized={!canOptimizeImage(featuredBlog.cover_image)}
                     />
                   ) : (
                     <div
@@ -236,6 +238,7 @@ export default function BlogFilterClient({ allBlogs }: { allBlogs: Blog[] }) {
                         fill
                         className={styles.image}
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        unoptimized={!canOptimizeImage(blog.cover_image)}
                       />
                     ) : (
                       <div

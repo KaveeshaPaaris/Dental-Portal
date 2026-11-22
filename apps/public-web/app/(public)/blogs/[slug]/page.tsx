@@ -5,6 +5,8 @@ import { notFound } from 'next/navigation';
 import { ArrowLeft, Calendar, Clock } from 'lucide-react';
 import ShareCopyButton from './ShareCopyButton';
 import { apiFetch } from '@/lib/apiFetch';
+import { sanitizeBlogHtml } from '@/lib/sanitizeBlogHtml';
+import { canOptimizeImage } from '@/lib/imageHosts';
 import styles from './page.module.css';
 
 
@@ -218,6 +220,7 @@ export default async function BlogDetailPage({
                 className={styles.image}
                 priority
                 sizes="(max-width: 1200px) 100vw, 1000px"
+                unoptimized={!canOptimizeImage(blog.cover_image)}
               />
             </div>
           )}
@@ -227,7 +230,7 @@ export default async function BlogDetailPage({
             {/* Article Body — server-rendered HTML (the critical SEO win) */}
             <article
               className={styles.content}
-              dangerouslySetInnerHTML={{ __html: blog.content }}
+              dangerouslySetInnerHTML={{ __html: sanitizeBlogHtml(blog.content) }}
             />
 
             {/* Sidebar */}
@@ -318,6 +321,7 @@ export default async function BlogDetailPage({
                           alt={rel.title}
                           fill
                           sizes="(max-width: 768px) 100vw, 33vw"
+                          unoptimized={!canOptimizeImage(rel.cover_image)}
                         />
                       ) : (
                         <div

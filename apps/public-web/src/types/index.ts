@@ -4,15 +4,6 @@
 // ─── Auth & Users ────────────────────────────────────────────
 export type Role = 'ADMIN' | 'SUPER_ADMIN';
 
-export interface AdminProfile {
-  id: string;
-  full_name: string;
-  email: string;
-  role: Role;
-  is_active: boolean;
-  created_at: string;
-}
-
 // ─── Bookings ────────────────────────────────────────────────
 export type BookingSource = 'ONLINE' | 'PHONE' | 'WHATSAPP';
 export type BookingStatus =
