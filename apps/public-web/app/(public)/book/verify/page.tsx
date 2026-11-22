@@ -4,7 +4,8 @@ import { useState, useRef, useEffect, useSyncExternalStore, Suspense } from 'rea
 import { useSearchParams, useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
-import { ShieldCheck, RefreshCw } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
+import BookingProgress from '@/components/public/BookingProgress';
 import styles from './page.module.css';
 
 const subscribeNever = () => () => {};
@@ -103,8 +104,10 @@ function OTPVerifyContent() {
   return (
     <div className={styles.page}>
       <div className="container">
+        <div className={styles.progress}>
+          <BookingProgress current={2} />
+        </div>
         <div className={styles.card}>
-          <div className={styles.icon}><ShieldCheck size={32} /></div>
           <h1 className={styles.title}>Check Your Email</h1>
           <p className={styles.subtitle}>
             We sent a 6-digit code to <strong>{maskedEmail || 'your email'}</strong>.

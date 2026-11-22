@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import { MapPin, Phone, Mail, Clock, MessageCircle, Moon } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Moon } from 'lucide-react';
+import WhatsAppIcon from '@/components/public/WhatsAppIcon';
 import OpenStatusBadge, { type OpeningWindows } from '@/components/public/OpenStatusBadge';
 import styles from './page.module.css';
 
@@ -142,7 +143,7 @@ export default function ContactPage() {
             className={`${styles.contactItem} ${styles.whatsapp}`}
           >
             <div className={`${styles.iconWrapper} ${styles.whatsappIcon}`}>
-              <MessageCircle size={18} />
+              <WhatsAppIcon size={18} />
             </div>
             <span className={`${styles.contactLabel} ${styles.whatsappLabel}`}>WhatsApp</span>
             <span className={styles.contactValue}>+94 718109283</span>

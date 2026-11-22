@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import dynamic from 'next/dynamic';
 import api from '@/lib/api';
+import BookingProgress from '@/components/public/BookingProgress';
 import { User, Mail, Calendar, ArrowRight } from 'lucide-react';
 import styles from '../../../app/(public)/book/page.module.css';
 
@@ -146,6 +147,7 @@ export default function BookingForm() {
 
   return (
     <div className={`card ${styles.formCard}`}>
+      <BookingProgress current={1} />
       <h2 className={styles.formTitle}>Appointment Details</h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className={styles.form} noValidate>
@@ -329,7 +331,7 @@ export default function BookingForm() {
         </button>
 
         <p className={styles.privacy}>
-          <span aria-hidden="true">🔒</span> Your information is kept private and only shared with clinic staff.
+          * Your information is kept private.
         </p>
       </form>
     </div>

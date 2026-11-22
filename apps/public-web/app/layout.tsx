@@ -62,6 +62,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
             <Toaster
               position="top-right"
+              // Push messages down so they appear below the navbar, not over it
+              containerStyle={{ top: 96 }}
               toastOptions={{
                 duration: 4000,
                 style: {

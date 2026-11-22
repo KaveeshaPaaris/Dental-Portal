@@ -2,7 +2,15 @@
   min-height: 100vh;
   display: flex;
   align-items: center;
-  padding: 48px 0;
+  /* top padding clears the fixed navbar */
+  padding: 120px 0 48px;
+}
+
+/* Progress bar sits above the card, same width as the card */
+.progress {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 4px;
 }
 
 .card {
@@ -11,24 +19,10 @@
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
-  padding: 48px 40px;
+  padding: 32px 40px;
   box-shadow: var(--shadow-xl);
   text-align: center;
   animation: fadeIn 0.4s ease-out;
-}
-
-.icon {
-  width: 72px;
-  height: 72px;
-  border-radius: var(--radius-xl);
-  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 24px;
-  box-shadow: var(--shadow-md), var(--shadow-glow);
-  animation: float 3s ease-in-out infinite;
 }
 
 .title { font-size: 1.75rem; font-weight: 800; margin-bottom: 12px; }

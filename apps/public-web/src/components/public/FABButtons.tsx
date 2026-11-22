@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { Phone, MessageCircle } from 'lucide-react';
+import { Phone } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import WhatsAppIcon from './WhatsAppIcon';
 
 const WHATSAPP_NUMBER = '94718109283';
 const PHONE_NUMBER = '+94718109283';
@@ -61,7 +62,7 @@ export default function FABButtons() {
         title="Chat on WhatsApp"
         whileHover={{ scale: 1.1 }}
       >
-        <MessageCircle size={26} />
+        <WhatsAppIcon size={28} />
       </motion.a>
 
       <motion.a

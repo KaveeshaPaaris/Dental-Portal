@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import WhatsAppIcon from './WhatsAppIcon';
 import {
-  Phone, MessageCircle, Mail, MapPin, Clock, Heart, ChevronRight,
+  Phone, Mail, MapPin, Clock, Heart, ChevronRight,
 } from 'lucide-react';
 // Social icons as inline SVGs
 const IconFacebook = (props: any) => (
@@ -123,7 +124,7 @@ export default function Footer() {
               rel="noopener noreferrer"
               className={styles.contactRow}
             >
-              <MessageCircle size={15} aria-hidden="true" />
+              <WhatsAppIcon size={15} />
               <span>WhatsApp Us</span>
             </a>
           </div>

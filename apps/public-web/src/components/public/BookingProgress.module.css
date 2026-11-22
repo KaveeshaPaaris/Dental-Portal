@@ -1,0 +1,118 @@
+/* Compact one-row progress bar:  (1) Your Details ━━ (2) Verify Email ━━ (3) We Confirm */
+.wrap {
+  margin-bottom: 18px;
+}
+
+/* Kept for screen readers only ("Step 1 of 3") */
+.stepText {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.step:first-child {
+  flex: 0 0 auto;
+}
+
+/* Grey track between two steps */
+.line {
+  flex: 1 1 auto;
+  min-width: 12px;
+  height: 3px;
+  margin-right: 2px;
+  border-radius: 2px;
+  background: var(--color-border);
+  overflow: hidden;
+}
+
+/* The coloured part that fills in */
+.lineFill {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, #7cc4fa, #38a3f5);
+  border-radius: 2px;
+}
+
+.done .lineFill,
+.current .lineFill {
+  animation: fillLine 0.6s ease-out forwards;
+}
+
+@keyframes fillLine {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.dot {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  color: var(--color-text-muted);
+  transition: background 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.done .dot {
+  background: #38a3f5;
+  border-color: #38a3f5;
+  color: #fff;
+}
+
+.current .dot {
+  border-color: #38a3f5;
+  color: #1c86d9;
+  box-shadow: 0 0 0 3px rgba(56, 163, 245, 0.25);
+}
+
+.label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.done .label,
+.current .label {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+/* Small phones: only the current step keeps its name, so everything fits in one row */
+@media (max-width: 480px) {
+  .todo .label,
+  .done .label {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .done .lineFill,
+  .current .lineFill { animation: none; width: 100%; }
+}
