@@ -1,17 +1,30 @@
 'use client';
 
-import { useState, useRef, useEffect, Suspense } from 'react';
+import { useState, useRef, useEffect, useSyncExternalStore, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
 import { ShieldCheck, RefreshCw } from 'lucide-react';
 import styles from './page.module.css';
 
+const subscribeNever = () => () => {};
+
 function OTPVerifyContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const bookingId = searchParams.get('id');
-  const maskedEmail = searchParams.get('email') ?? '';
+  // Masked email saved by the booking form (never put in the URL). '' on the server.
+  const maskedEmail = useSyncExternalStore(
+    subscribeNever,
+    () => {
+      try {
+        return sessionStorage.getItem(`booking-email:${bookingId}`) ?? '';
+      } catch {
+        return '';
+      }
+    },
+    () => '',
+  );
 
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [loading, setLoading] = useState(false);

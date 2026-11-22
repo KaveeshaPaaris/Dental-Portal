@@ -117,9 +117,19 @@ export default function BookingForm() {
     try {
       const res = await api.post<{ booking_id: string; email: string }>('/bookings', data);
       toast.success('Verification code sent to your email.');
-      router.push(
-        `/book/verify?id=${res.data.booking_id}&email=${encodeURIComponent(res.data.email ?? '')}`
-      );
+      // Keep the email out of the URL: store a masked copy (j***@gmail.com) for the next page only.
+      try {
+        const [name = '', domain = ''] = (res.data.email ?? '').split('@');
+        if (domain) {
+          sessionStorage.setItem(
+            `booking-email:${res.data.booking_id}`,
+            `${name.slice(0, 1)}***@${domain}`,
+          );
+        }
+      } catch {
+        // storage unavailable: the verify page falls back to "your email"
+      }
+      router.push(`/book/verify?id=${encodeURIComponent(res.data.booking_id)}`);
     } catch (err: unknown) {
       const msg =
         (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
