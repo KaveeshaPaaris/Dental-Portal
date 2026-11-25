@@ -6,6 +6,13 @@ const nextConfig: NextConfig = {
 
   output: 'standalone',
 
+  // The shared host caps the whole account at 120 processes, and all three apps rebuild at once
+  // on every merge to main. Next starts one build worker per CPU core it sees (the HOST's cores,
+  // dozens on a shared server), so keep this build to a few workers like public-web does.
+  experimental: {
+    cpus: 2,
+  },
+
   // Allow images from common external sources
   images: {
     remotePatterns: [
