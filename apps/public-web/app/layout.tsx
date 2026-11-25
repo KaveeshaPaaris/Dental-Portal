@@ -1,21 +1,24 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, Plus_Jakarta_Sans } from 'next/font/google';
+import localFont from 'next/font/local';
 import '@/styles/globals.css';
 import { ThemeProvider } from '@/context/ThemeContext';
 import { Toaster } from 'react-hot-toast';
 import ReactQueryProvider from '@/components/providers/ReactQueryProvider';
 import { ALLOW_INDEXING, SITE_URL } from '@/lib/site';
 
-const inter = Inter({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800'],
+// Fonts are self-hosted (app/fonts, Latin variable WOFF2 from Google Fonts, OFL licence).
+// next/font/google downloads them during the build and crashes when Google returns font URLs
+// without a file extension, which broke the Hostinger build. Local files need no network.
+const inter = localFont({
+  src: './fonts/inter-latin-variable.woff2',
+  weight: '300 800',
   variable: '--font-sans',
   display: 'swap',
 });
 
-const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  weight: ['600', '700', '800'],
+const plusJakartaSans = localFont({
+  src: './fonts/plus-jakarta-sans-latin-variable.woff2',
+  weight: '200 800',
   variable: '--font-display',
   display: 'swap',
 });
@@ -55,8 +58,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${plusJakartaSans.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body>
         <ThemeProvider>
