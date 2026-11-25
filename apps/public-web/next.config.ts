@@ -40,6 +40,8 @@ const securityHeaders = [
   // Features this site never uses are switched off.
   { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), payment=()' },
   { key: 'Content-Security-Policy-Report-Only', value: cspReportOnly },
+  // Hidden from search engines until ALLOW_INDEXING=true (kept in sync with src/lib/site.ts).
+  ...(process.env.ALLOW_INDEXING === 'true' ? [] : [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }]),
 ];
 
 const nextConfig: NextConfig = {
