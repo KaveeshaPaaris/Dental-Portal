@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { Phone, MessageCircle } from 'lucide-react';
+import { Phone } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import WhatsAppIcon from './WhatsAppIcon';
 
-const WHATSAPP_NUMBER = '94776429760';
-const PHONE_NUMBER = '+94776429760';
+const WHATSAPP_NUMBER = '94718109283';
+const PHONE_NUMBER = '+94718109283';
 
 export default function FABButtons() {
   const router = useRouter();
@@ -44,8 +45,8 @@ export default function FABButtons() {
         title="Ask our AI Dental Assistant"
       >
         <div className={`ai-icon-container ${!hasOpenedChat ? 'ai-icon-animating' : ''}`}>
-          <Image src="/logo.png" alt="Dental Logo" width={32} height={32} className="show-in-light" style={{ objectFit: 'contain' }} />
-          <Image src="/logo_dark.png" alt="Dental Logo" width={32} height={32} className="show-in-dark" style={{ objectFit: 'contain' }} />
+          <Image src="/logo.webp" alt="Dental Logo" width={32} height={32} className="show-in-light" style={{ objectFit: 'contain' }} />
+          <Image src="/logo_dark.webp" alt="Dental Logo" width={32} height={32} className="show-in-dark" style={{ objectFit: 'contain' }} />
         </div>
         <span className="fab-ai-text">Ask AI</span>
       </button> */}
@@ -61,7 +62,7 @@ export default function FABButtons() {
         title="Chat on WhatsApp"
         whileHover={{ scale: 1.1 }}
       >
-        <MessageCircle size={26} />
+        <WhatsAppIcon size={28} />
       </motion.a>
 
       <motion.a

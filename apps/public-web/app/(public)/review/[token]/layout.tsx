@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 
 export const metadata: Metadata = {
-  title: 'Submit Your Review — Charming Dental Clinic',
+  title: 'Submit Your Review',
   robots: {
     index: false,
     follow: false,

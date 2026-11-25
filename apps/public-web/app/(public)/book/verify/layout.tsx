@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Verify OTP — Charming Dental Clinic',
+  title: 'Verify Your Email',
   robots: {
     index: false,
     follow: false,

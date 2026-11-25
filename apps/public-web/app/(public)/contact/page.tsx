@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
-import { MapPin, Phone, Mail, Clock, MessageCircle, Moon } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Moon } from 'lucide-react';
+import WhatsAppIcon from '@/components/public/WhatsAppIcon';
+import OpenStatusBadge, { type OpeningWindows } from '@/components/public/OpenStatusBadge';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
-  title: 'Contact Us — Charming Dental Clinic',
+  title: 'Contact Us',
   description: 'Get in touch with us for appointments, inquiries, or dental emergencies.',
   alternates: {
     canonical: 'https://charmingdental.com/contact',
@@ -17,6 +19,16 @@ const WORKING_HOURS = [
   { day: 'Saturday', time: ['3:30 PM – 11:00 PM'] },
   { day: 'Sunday', time: ['Call in Advance'] },
 ];
+
+// Same hours as WORKING_HOURS above, in minutes after midnight (0 = Sunday). Keep the two in sync.
+const OPENING_WINDOWS: OpeningWindows = {
+  1: [[9 * 60, 13 * 60], [17 * 60, 23 * 60]],
+  2: [[9 * 60, 13 * 60], [17 * 60, 23 * 60]],
+  3: [[9 * 60, 13 * 60], [17 * 60, 23 * 60]],
+  4: [[9 * 60, 13 * 60]],
+  5: [[9 * 60, 17 * 60]],
+  6: [[15 * 60 + 30, 23 * 60]],
+};
 
 export default function ContactPage() {
   const clinicSchema = {
@@ -131,7 +143,7 @@ export default function ContactPage() {
             className={`${styles.contactItem} ${styles.whatsapp}`}
           >
             <div className={`${styles.iconWrapper} ${styles.whatsappIcon}`}>
-              <MessageCircle size={18} />
+              <WhatsAppIcon size={18} />
             </div>
             <span className={`${styles.contactLabel} ${styles.whatsappLabel}`}>WhatsApp</span>
             <span className={styles.contactValue}>+94 718109283</span>
@@ -158,9 +170,7 @@ export default function ContactPage() {
               </div>
               <h3 className={styles.hoursTitle}>WORKING HOURS</h3>
             </div>
-            <div className={styles.closedBadge}>
-              <span className={styles.badgeDot}></span> Closed
-            </div>
+            <OpenStatusBadge windows={OPENING_WINDOWS} callDays={[0]} />
           </div>
 
           <div className={styles.hoursList}>

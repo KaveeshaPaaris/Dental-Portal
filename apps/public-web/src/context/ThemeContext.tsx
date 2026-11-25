@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useSyncExternalStore } from 'react';
 
 type Theme = 'light' | 'dark';
 
@@ -11,24 +11,42 @@ interface ThemeContextValue {
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>('light');
+/**
+ * The initial theme is applied by a tiny inline script in <head> (see THEME_INIT_SCRIPT in
+ * app/layout.tsx) BEFORE the page paints, so dark-mode visitors never see a light flash.
+ * This provider just reads/updates the `data-theme` attribute that script set.
+ */
+export const THEME_STORAGE_KEY = 'dental-theme';
 
-  useEffect(() => {
-    const saved = localStorage.getItem('dental-theme') as Theme | null;
-    const preferred = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    const initial = saved || preferred;
-    setTheme(initial);
-    document.documentElement.setAttribute('data-theme', initial);
-  }, []);
+const listeners = new Set<() => void>();
+
+function subscribe(onChange: () => void) {
+  listeners.add(onChange);
+  return () => {
+    listeners.delete(onChange);
+  };
+}
+
+function getSnapshot(): Theme {
+  return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+}
+
+function getServerSnapshot(): Theme {
+  return 'light';
+}
+
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   const toggleTheme = () => {
-    setTheme((prev) => {
-      const next = prev === 'light' ? 'dark' : 'light';
-      localStorage.setItem('dental-theme', next);
-      document.documentElement.setAttribute('data-theme', next);
-      return next;
-    });
+    const next: Theme = getSnapshot() === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, next);
+    } catch {
+      // storage blocked (private mode etc.) – the theme still changes for this visit
+    }
+    listeners.forEach((l) => l());
   };
 
   return (

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useSyncExternalStore } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import dynamic from 'next/dynamic';
 import api from '@/lib/api';
+import BookingProgress from '@/components/public/BookingProgress';
 import { User, Mail, Calendar, ArrowRight } from 'lucide-react';
 import styles from '../../../app/(public)/book/page.module.css';
 
@@ -40,6 +41,21 @@ interface ScheduleOverride {
   custom_session_label: string | null;
   custom_session_start: string | null;
   custom_session_end: string | null;
+}
+
+const subscribeNever = () => () => {};
+
+/**
+ * "Tomorrow" as YYYY-MM-DD in Sri Lanka time. toISOString() uses UTC, which is still
+ * "yesterday" there between 00:00 and 05:30, so format the date in the clinic's timezone.
+ */
+function getTomorrowInClinicTz(): string {
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Colombo',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(new Date(Date.now() + 24 * 60 * 60 * 1000));
 }
 
 export default function BookingForm() {
@@ -102,9 +118,19 @@ export default function BookingForm() {
     try {
       const res = await api.post<{ booking_id: string; email: string }>('/bookings', data);
       toast.success('Verification code sent to your email.');
-      router.push(
-        `/book/verify?id=${res.data.booking_id}&email=${encodeURIComponent(res.data.email ?? '')}`
-      );
+      // Keep the email out of the URL: store a masked copy (j***@gmail.com) for the next page only.
+      try {
+        const [name = '', domain = ''] = (res.data.email ?? '').split('@');
+        if (domain) {
+          sessionStorage.setItem(
+            `booking-email:${res.data.booking_id}`,
+            `${name.slice(0, 1)}***@${domain}`,
+          );
+        }
+      } catch {
+        // storage unavailable: the verify page falls back to "your email"
+      }
+      router.push(`/book/verify?id=${encodeURIComponent(res.data.booking_id)}`);
     } catch (err: unknown) {
       const msg =
         (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
@@ -115,12 +141,13 @@ export default function BookingForm() {
     }
   };
 
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const minDate = tomorrow.toISOString().split('T')[0];
+  // Empty on the server (the page is pre-built, so a date computed there would go stale);
+  // the real value is filled in by the browser right after load.
+  const minDate = useSyncExternalStore(subscribeNever, getTomorrowInClinicTz, () => '');
 
   return (
     <div className={`card ${styles.formCard}`}>
+      <BookingProgress current={1} />
       <h2 className={styles.formTitle}>Appointment Details</h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className={styles.form} noValidate>
@@ -304,7 +331,7 @@ export default function BookingForm() {
         </button>
 
         <p className={styles.privacy}>
-          <span aria-hidden="true">🔒</span> Your information is kept private and only shared with clinic staff.
+          * Your information is kept private.
         </p>
       </form>
     </div>

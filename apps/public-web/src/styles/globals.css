@@ -124,6 +124,30 @@ html, body, [data-theme] body {
   transition: background-color var(--transition-normal), color var(--transition-normal);
 }
 
+/* Skip link: hidden until a keyboard user tabs to it (first focusable element on every page) */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip-link:focus {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  width: auto;
+  height: auto;
+  padding: 8px 16px;
+  background: var(--color-primary);
+  color: white;
+  border-radius: var(--radius-sm, 6px);
+  z-index: 9999;
+  font-weight: 600;
+  text-decoration: none;
+}
+
 img, video { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
 button { cursor: pointer; border: none; background: none; font-family: inherit; }

@@ -4,6 +4,8 @@ import {
   Activity, Baby,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { apiFetch } from '@/lib/apiFetch';
+import { toWebp } from '@/lib/localImage';
 
 export type ServiceCategory = 'Preventive' | 'Cosmetic' | 'Restorative' | 'Orthodontics';
 
@@ -58,8 +60,6 @@ export const REVIEWER_INFO = {
   dateUpdated: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 };
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api/v1';
-
 // Helper to map string icon names back to Lucide components if needed
 // Or we can just use the icon name in the UI components
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -75,11 +75,11 @@ function mapService(dbService: any): Service {
     title: dbService.title,
     category: dbService.category,
     icon: ICON_MAP[dbService.icon] || dbService.icon,
-    image: dbService.slug === 'teeth-whitening' ? '/teeth whitning.jpg' : (dbService.slug === 'dental-fillings' ? '/toot_filling .jpg' : dbService.image),
+    image: dbService.slug === 'teeth-whitening' ? '/teeth whitning.webp' : (dbService.slug === 'dental-fillings' ? '/toot_filling.webp' : toWebp(dbService.image)),
     showBeforeAfter: dbService.show_before_after,
-    beforeImage: dbService.before_image,
-    afterImage: dbService.after_image,
-    standaloneImage: dbService.slug === 'teeth-whitening' ? '/teeth whitning.jpg' : (dbService.slug === 'dental-fillings' ? '/toot_filling .jpg' : dbService.standalone_image),
+    beforeImage: toWebp(dbService.before_image),
+    afterImage: toWebp(dbService.after_image),
+    standaloneImage: dbService.slug === 'teeth-whitening' ? '/teeth whitning.webp' : (dbService.slug === 'dental-fillings' ? '/toot_filling.webp' : toWebp(dbService.standalone_image)),
     shortDesc: dbService.short_desc,
     listingDesc: dbService.listing_desc,
     highlights: dbService.highlights,
@@ -96,16 +96,11 @@ function mapService(dbService: any): Service {
   };
 }
 
+// Both fetchers throw if the API is unreachable/erroring (see apiFetch) so a temporary
+// outage never overwrites a good cached page with an empty one.
 export async function getServices(): Promise<Service[]> {
-  try {
-    const res = await fetch(`${API_URL}/services`, { next: { revalidate: 60 } });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return data.map(mapService);
-  } catch (error) {
-    console.error('Failed to fetch services:', error);
-    return [];
-  }
+  const data = await apiFetch<any[]>('/services', 60);
+  return (data ?? []).map(mapService);
 }
 
 export async function getFeaturedServices(): Promise<Service[]> {
@@ -114,15 +109,9 @@ export async function getFeaturedServices(): Promise<Service[]> {
 }
 
 export async function getServiceBySlug(slug: string): Promise<Service | null> {
-  try {
-    const res = await fetch(`${API_URL}/services/${slug}`, { next: { revalidate: 60 } });
-    if (!res.ok) return null;
-    const data = await res.json();
-    return mapService(data);
-  } catch (error) {
-    console.error(`Failed to fetch service ${slug}:`, error);
-    return null;
-  }
+  // null only when the API says 404 (service really doesn't exist)
+  const data = await apiFetch<any>(`/services/${encodeURIComponent(slug)}`, 60);
+  return data ? mapService(data) : null;
 }
 
 export async function getRelatedServices(slugs: string[]): Promise<Service[]> {

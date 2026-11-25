@@ -79,7 +79,13 @@ export default function AskPage() {
         </header>
 
         <div className={styles.chatContainer}>
-          <div className={styles.chatWindow} ref={chatWindowRef}>
+          <div
+            className={styles.chatWindow}
+            ref={chatWindowRef}
+            role="log"
+            aria-live="polite"
+            aria-label="Conversation with the dental assistant"
+          >
             {messages.length === 0 ? (
               <div className={styles.welcomeContainer}>
                 <motion.div 
@@ -88,8 +94,8 @@ export default function AskPage() {
                   transition={{ duration: 0.4 }}
                   className={styles.logoContainer}
                 >
-                  <Image src="/logo.png" alt="Charming Dental Clinic Logo" width={180} height={180} className="show-in-light" style={{ objectFit: 'contain' }} />
-                  <Image src="/logo_dark.png" alt="Charming Dental Clinic Logo" width={180} height={180} className="show-in-dark" style={{ objectFit: 'contain' }} />
+                  <Image src="/logo.webp" alt="Charming Dental Clinic Logo" width={180} height={180} className="show-in-light" style={{ objectFit: 'contain' }} />
+                  <Image src="/logo_dark.webp" alt="Charming Dental Clinic Logo" width={180} height={180} className="show-in-dark" style={{ objectFit: 'contain' }} />
                 </motion.div>
                 
                 <motion.div
@@ -199,8 +205,8 @@ export default function AskPage() {
               ))
             )}
             {isTyping && (
-              <div className={`${styles.message} ${styles.messageBot}`}>
-                <div className={styles.typingIndicator}>
+              <div className={`${styles.message} ${styles.messageBot}`} role="status" aria-label="The assistant is typing">
+                <div className={styles.typingIndicator} aria-hidden="true">
                   <div className={styles.typingDot}></div>
                   <div className={styles.typingDot}></div>
                   <div className={styles.typingDot}></div>
@@ -210,20 +216,42 @@ export default function AskPage() {
           </div>
 
           <form className={styles.inputArea} onSubmit={(e) => handleSend(e)}>
-            <input 
+            <label htmlFor="ai-chat-input" style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0 0 0 0)', whiteSpace: 'nowrap' }}>
+              Your question
+            </label>
+            <input
               id="ai-chat-input"
-              type="text" 
+              type="text"
               className={styles.inputField} 
               placeholder="Ask anything about your dental care..." 
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={isTyping}
             />
-            <button type="submit" className={styles.sendBtn} disabled={!input.trim() || isTyping}>
+            <button type="submit" aria-label="Send message" className={styles.sendBtn} disabled={!input.trim() || isTyping}>
               <Send size={20} style={{ marginLeft: -2 }} />
             </button>
           </form>
         </div>
+
+        <p
+          style={{
+            maxWidth: 720,
+            margin: '16px auto 0',
+            textAlign: 'center',
+            fontSize: '0.8125rem',
+            lineHeight: 1.5,
+            color: 'var(--color-text-secondary)',
+          }}
+        >
+          This AI assistant gives general information only. It is not medical advice and cannot
+          diagnose or treat any condition. For severe pain, swelling, bleeding or any dental
+          emergency, please call us on{' '}
+          <a href="tel:+94718109283" style={{ fontWeight: 600, textDecoration: 'underline' }}>
+            +94 71 810 9283
+          </a>{' '}
+          or visit a doctor or hospital straight away.
+        </p>
       </div>
     </div>
   );

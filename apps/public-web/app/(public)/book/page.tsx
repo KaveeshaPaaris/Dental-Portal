@@ -1,16 +1,18 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 import BookingForm from '@/components/public/BookingForm';
+import { SITE_URL } from '@/lib/site';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
-  title: 'Book an Appointment | Charming Dental Clinic',
+  // The layout template appends "| Charming Dental Clinic"
+  title: 'Book an Appointment',
   description: 'Book your dental appointment online at Charming Dental Clinic, Negombo. Quick, easy, and secure booking process.',
   alternates: {
     canonical: 'https://charmingdental.com/book',
   },
   openGraph: {
-    title: 'Book an Appointment | Charming Dental Clinic',
+    title: 'Book an Appointment — Charming Dental Clinic',
     description: 'Book your dental appointment online at Charming Dental Clinic, Negombo. Quick, easy, and secure booking process.',
     url: 'https://charmingdental.com/book',
     siteName: 'Charming Dental Clinic',
@@ -18,7 +20,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Book an Appointment | Charming Dental Clinic',
+    title: 'Book an Appointment — Charming Dental Clinic',
     description: 'Book your dental appointment online at Charming Dental Clinic, Negombo. Quick, easy, and secure booking process.',
   },
 };
@@ -29,8 +31,8 @@ export default function BookAppointmentPage() {
     '@type': 'MedicalClinic',
     name: 'Charming Dental Clinic',
     description: 'Dental clinic offering various treatments including checkups, whitening, and implants.',
-    url: 'https://charmingdentalclinic.com',
-    telephone: '+94771234567',
+    url: SITE_URL,
+    telephone: '+94718109283',
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Negombo',
@@ -40,7 +42,7 @@ export default function BookAppointmentPage() {
       '@type': 'ReserveAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: 'https://charmingdentalclinic.com/book',
+        urlTemplate: `${SITE_URL}/book`,
         inLanguage: 'en-US',
         actionPlatform: [
           'http://schema.org/DesktopWebPlatform',
@@ -75,7 +77,7 @@ export default function BookAppointmentPage() {
             <div className={styles.photoOverlay}>
               <h1 className={styles.photoTitle}>Book Your<br />Appointment</h1>
               <p className={styles.photoSubtitle}>
-                Fill in the form and we'll send a verification code to your phone to confirm your booking.
+                Fill in the form and we'll email you a verification code to confirm your booking request.
               </p>
             </div>
           </div>

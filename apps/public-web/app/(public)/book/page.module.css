@@ -6,7 +6,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 48px;
-  align-items: center;
+  align-items: stretch; /* photo card and form card always end up the same height */
 }
 
 /* ─── Left Photo Card ─────────────────────────────────────── */
@@ -14,7 +14,7 @@
   position: relative;
   border-radius: 20px;
   overflow: hidden;
-  aspect-ratio: 4 / 5;
+  min-height: 480px; /* height follows the form card on desktop */
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
 }
 
@@ -76,10 +76,20 @@
   /* Subtle border to match */
 }
 
+[data-theme='dark'] .formCard {
+  background-color: var(--color-surface);
+  border-color: var(--color-border);
+}
+
+[data-theme='dark'] .formTitle,
+[data-theme='dark'] .sessionOptionName {
+  color: var(--color-text-primary);
+}
+
 .formTitle {
   font-size: 1.375rem;
   font-weight: 800;
-  margin-bottom: 28px;
+  margin-bottom: 20px;
 }
 
 .form {
@@ -183,7 +193,7 @@
 }
 
 .privacy {
-  text-align: center;
+  text-align: left;
   font-size: 0.8rem;
   color: var(--color-text-muted);
   line-height: 1.5;
@@ -195,6 +205,7 @@
   }
 
   .photoCard {
+    min-height: 0;
     aspect-ratio: 16 / 9;
     order: 1;
   }

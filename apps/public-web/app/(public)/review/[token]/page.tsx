@@ -117,11 +117,20 @@ export default function ReviewSubmissionPage() {
         </div>
 
         <form onSubmit={handleSubmit}>
-          <div className={styles.starRating} onMouseLeave={() => setHoverRating(0)}>
+          <div
+            className={styles.starRating}
+            role="group"
+            aria-label="Rating out of 5 stars"
+            onMouseLeave={() => setHoverRating(0)}
+          >
             {[1, 2, 3, 4, 5].map((star) => (
               <button
                 key={star}
                 type="button"
+                aria-label={`${star} ${star === 1 ? 'star' : 'stars'}`}
+                aria-pressed={rating === star}
+                onFocus={() => setHoverRating(star)}
+                onBlur={() => setHoverRating(0)}
                 className={`${styles.starBtn} ${(hoverRating || rating) >= star ? styles.starFilled : ''}`}
                 onMouseEnter={() => setHoverRating(star)}
                 onClick={() => setRating(star)}
@@ -144,7 +153,7 @@ export default function ReviewSubmissionPage() {
             />
           </div>
 
-          {error && <div className="form-error" style={{ marginBottom: 16 }}>{error}</div>}
+          {error && <div className="form-error" role="alert" style={{ marginBottom: 16 }}>{error}</div>}
 
           <button 
             type="submit" 

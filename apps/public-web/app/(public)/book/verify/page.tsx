@@ -1,17 +1,31 @@
 'use client';
 
-import { useState, useRef, useEffect, Suspense } from 'react';
+import { useState, useRef, useEffect, useSyncExternalStore, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
-import { ShieldCheck, RefreshCw } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
+import BookingProgress from '@/components/public/BookingProgress';
 import styles from './page.module.css';
+
+const subscribeNever = () => () => {};
 
 function OTPVerifyContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const bookingId = searchParams.get('id');
-  const maskedEmail = searchParams.get('email') ?? '';
+  // Masked email saved by the booking form (never put in the URL). '' on the server.
+  const maskedEmail = useSyncExternalStore(
+    subscribeNever,
+    () => {
+      try {
+        return sessionStorage.getItem(`booking-email:${bookingId}`) ?? '';
+      } catch {
+        return '';
+      }
+    },
+    () => '',
+  );
 
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [loading, setLoading] = useState(false);
@@ -58,7 +72,7 @@ function OTPVerifyContent() {
     setLoading(true);
     try {
       await api.post('/bookings/verify-otp', { booking_id: bookingId, code });
-      toast.success('Booking confirmed! We will contact you shortly.');
+      toast.success('Thank you! Our staff will contact you shortly to confirm your appointment.');
       router.push('/?booked=true');
     } catch (err: unknown) {
       const msg = (err as { response?: { data?: { error?: string } } })?.response?.data?.error ?? 'Could not verify the code. Please try again.';
@@ -90,12 +104,14 @@ function OTPVerifyContent() {
   return (
     <div className={styles.page}>
       <div className="container">
+        <div className={styles.progress}>
+          <BookingProgress current={2} />
+        </div>
         <div className={styles.card}>
-          <div className={styles.icon}><ShieldCheck size={32} /></div>
           <h1 className={styles.title}>Check Your Email</h1>
           <p className={styles.subtitle}>
             We sent a 6-digit code to <strong>{maskedEmail || 'your email'}</strong>.
-            <br />Enter it below to confirm your booking.
+            <br />Enter it below to submit your booking request.
             <br /><small>Can&apos;t find it? Check your spam or junk folder. The code expires in 10 minutes.</small>
           </p>
 
@@ -122,7 +138,7 @@ function OTPVerifyContent() {
             className={`btn btn-primary ${styles.verifyBtn} ${loading ? 'btn-loading' : ''}`}
             disabled={loading || otp.join('').length !== 6}
           >
-            {loading ? '' : 'Confirm Booking'}
+            {loading ? '' : 'Submit Booking Request'}
           </button>
 
           <div className={styles.resendRow}>

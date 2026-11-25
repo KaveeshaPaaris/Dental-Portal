@@ -68,6 +68,38 @@ export default function Navbar() {
 
   const openDrawer = () => setMenuOpen(true);
 
+  // Keyboard focus trap: Tab / Shift+Tab stay inside the open drawer, and focus
+  // returns to the menu button when it closes.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const opener = document.activeElement as HTMLElement | null;
+    const onTab = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return;
+      const drawer = document.getElementById('mobile-drawer');
+      if (!drawer) return;
+      const items = drawer.querySelectorAll<HTMLElement>('a[href], button:not([disabled])');
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      const active = document.activeElement;
+      if (!drawer.contains(active)) {
+        e.preventDefault();
+        first.focus();
+      } else if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener('keydown', onTab);
+    return () => {
+      document.removeEventListener('keydown', onTab);
+      opener?.focus?.();
+    };
+  }, [menuOpen]);
+
   return (
     <header className={`${styles.header} ${scrolled ? styles.headerScrolled : ''}`}>
       <div className={styles.nav}>
@@ -75,7 +107,7 @@ export default function Navbar() {
         <SpotlightCard className={`${styles.logoBox} ${styles.glassBox}`} spotlightColor="rgba(0, 22, 70, 0.25)">
           <Link href="/" style={{ display: 'flex', alignItems: 'center', height: '100%', textDecoration: 'none' }}>
             <Image
-              src="/logo.png"
+              src="/logo.webp"
               alt="Charming Dental Clinic logo — Dentist in Negombo"
               width={240}
               height={64}
@@ -85,7 +117,7 @@ export default function Navbar() {
               priority
             />
             <Image
-              src="/logo_dark.png"
+              src="/logo_dark.webp"
               alt="Charming Dental Clinic logo — Dentist in Negombo"
               width={240}
               height={64}
@@ -165,7 +197,7 @@ export default function Navbar() {
             <div className={styles.drawerHeader}>
               <Link href="/" onClick={closeDrawer} style={{ display: 'flex', alignItems: 'center' }}>
                 <Image
-                  src={theme === 'dark' ? '/logo_dark.png' : '/logo.png'}
+                  src={theme === 'dark' ? '/logo_dark.webp' : '/logo.webp'}
                   alt="Charming Dental Clinic"
                   width={120}
                   height={40}

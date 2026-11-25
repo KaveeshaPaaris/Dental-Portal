@@ -6,7 +6,7 @@ import type { Metadata } from 'next';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
-  title: 'Our Dental Services — Charming Dental Clinic',
+  title: 'Our Dental Services',
   description:
     'Explore our full range of dental services in Negombo — teeth whitening, orthodontics, implants, scaling & polishing, and more. Book your appointment today.',
   keywords:

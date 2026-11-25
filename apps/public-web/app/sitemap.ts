@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
-import api from '@/lib/api';
+import { apiFetch } from '@/lib/apiFetch';
+import { getServices } from '@/data/services';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://charmingdental.com';
@@ -20,41 +21,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === '' ? 1 : 0.8,
   }));
 
-  // Dynamic routes for blogs
-  try {
-    // Fetch up to 1000 published blogs for the sitemap
-    const res = await api.get('/blogs?limit=1000');
-    const blogs = res.data?.data || [];
+  // If the API is down these throw, so the sitemap request fails and crawlers retry later.
+  // (Returning a sitemap with the blog/service URLs silently missing could make search
+  // engines think those pages were removed.)
+  const [blogsRes, services] = await Promise.all([
+    apiFetch<{ data?: { slug: string; updated_at?: string; published_at?: string }[] }>('/blogs?limit=1000', 3600),
+    getServices(),
+  ]);
 
-    const blogRoutes = blogs.map((blog: any) => ({
-      url: `${baseUrl}/blogs/${blog.slug}`,
-      lastModified: blog.updated_at || blog.published_at || new Date().toISOString(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.6,
-    }));
+  const blogRoutes = (blogsRes?.data || []).map((blog) => ({
+    url: `${baseUrl}/blogs/${blog.slug}`,
+    lastModified: blog.updated_at || blog.published_at || new Date().toISOString(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }));
 
-    const { getServices } = await import('@/data/services');
-    const services = await getServices();
-    const serviceRoutes = services.map((service) => ({
-      url: `${baseUrl}/services/${service.slug}`,
-      lastModified: new Date().toISOString(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    }));
+  const serviceRoutes = services.map((service) => ({
+    url: `${baseUrl}/services/${service.slug}`,
+    lastModified: new Date().toISOString(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.8,
+  }));
 
-    return [...routes, ...serviceRoutes, ...blogRoutes];
-  } catch (error) {
-    console.error('Failed to generate dynamic sitemap for blogs:', error);
-    // If API fails, just return static routes and service routes
-    const { getServices } = await import('@/data/services');
-    const services = await getServices();
-    const serviceRoutes = services.map((service) => ({
-      url: `${baseUrl}/services/${service.slug}`,
-      lastModified: new Date().toISOString(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    }));
-    return [...routes, ...serviceRoutes];
-  }
+  return [...routes, ...serviceRoutes, ...blogRoutes];
 }
-
