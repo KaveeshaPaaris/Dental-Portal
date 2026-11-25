@@ -6,4 +6,7 @@
  * and the bundled node_modules are at .next/standalone/node_modules/
  */
 'use strict';
+// Keep image-processing and background thread pools small: the account has a 120-process limit.
+process.env.VIPS_CONCURRENCY = process.env.VIPS_CONCURRENCY || '1';
+process.env.UV_THREADPOOL_SIZE = process.env.UV_THREADPOOL_SIZE || '4';
 require('./.next/standalone/apps/admin-dashboard/server.js');
