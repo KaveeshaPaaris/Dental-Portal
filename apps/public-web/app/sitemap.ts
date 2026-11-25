@@ -1,8 +1,12 @@
 import { MetadataRoute } from 'next';
 import { apiFetch } from '@/lib/apiFetch';
 import { getServices } from '@/data/services';
+import { ALLOW_INDEXING } from '@/lib/site';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  // Not launched yet: advertise nothing.
+  if (!ALLOW_INDEXING) return [];
+
   const baseUrl = 'https://charmingdental.com';
 
   // Static routes

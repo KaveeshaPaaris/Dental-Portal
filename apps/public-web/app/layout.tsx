@@ -4,7 +4,7 @@ import '@/styles/globals.css';
 import { ThemeProvider } from '@/context/ThemeContext';
 import { Toaster } from 'react-hot-toast';
 import ReactQueryProvider from '@/components/providers/ReactQueryProvider';
-import { SITE_URL } from '@/lib/site';
+import { ALLOW_INDEXING, SITE_URL } from '@/lib/site';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -29,6 +29,8 @@ export const metadata: Metadata = {
   title: 'Charming Dental Clinic',
   description: 'World-class dental care, close to home. Book your appointment today.',
   keywords: 'dental clinic, dentist, teeth, orthodontics, dental care',
+  // Hidden from search engines until ALLOW_INDEXING=true (see src/lib/site.ts).
+  ...(ALLOW_INDEXING ? {} : { robots: { index: false, follow: false } }),
   openGraph: {
     title: 'Charming Dental Clinic',
     description: 'World-class dental care, close to home.',
