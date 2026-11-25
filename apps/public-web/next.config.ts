@@ -47,9 +47,21 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   reactStrictMode: true,
 
+  // The shared host caps the whole account at 120 processes. Next starts one build worker per CPU
+  // core it sees, and on a shared server it sees the HOST's cores (dozens), so every deploy could
+  // hit the cap and take the site down with a 503. Keep the build to a few workers.
+  experimental: {
+    cpus: 2,
+  },
+
   // Allow images from Supabase and Unsplash (keep in sync with src/lib/imageHosts.ts)
   images: {
-    formats: ['image/avif', 'image/webp'],
+    // WebP only: AVIF encoding is far heavier on a small shared host and the images are already small.
+    formats: ['image/webp'],
+    // Fewer sizes = fewer optimised copies to generate. (Defaults also include 2048 and 3840.)
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    // Keep optimised images cached for 30 days so they are not regenerated again and again.
+    minimumCacheTTL: 60 * 60 * 24 * 30,
     remotePatterns: [
       { protocol: 'https', hostname: '**.supabase.co' },
       { protocol: 'https', hostname: 'images.unsplash.com' },
