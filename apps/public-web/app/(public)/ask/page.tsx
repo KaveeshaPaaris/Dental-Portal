@@ -94,8 +94,8 @@ export default function AskPage() {
                   transition={{ duration: 0.4 }}
                   className={styles.logoContainer}
                 >
-                  <Image src="/logo.png" alt="Charming Dental Clinic Logo" width={180} height={180} className="show-in-light" style={{ objectFit: 'contain' }} />
-                  <Image src="/logo_dark.png" alt="Charming Dental Clinic Logo" width={180} height={180} className="show-in-dark" style={{ objectFit: 'contain' }} />
+                  <Image src="/logo.webp" alt="Charming Dental Clinic Logo" width={180} height={180} className="show-in-light" style={{ objectFit: 'contain' }} />
+                  <Image src="/logo_dark.webp" alt="Charming Dental Clinic Logo" width={180} height={180} className="show-in-dark" style={{ objectFit: 'contain' }} />
                 </motion.div>
                 
                 <motion.div

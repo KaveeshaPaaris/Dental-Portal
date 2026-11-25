@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { apiFetch } from '@/lib/apiFetch';
+import { toWebp } from '@/lib/localImage';
 
 export type ServiceCategory = 'Preventive' | 'Cosmetic' | 'Restorative' | 'Orthodontics';
 
@@ -74,11 +75,11 @@ function mapService(dbService: any): Service {
     title: dbService.title,
     category: dbService.category,
     icon: ICON_MAP[dbService.icon] || dbService.icon,
-    image: dbService.slug === 'teeth-whitening' ? '/teeth whitning.jpg' : (dbService.slug === 'dental-fillings' ? '/toot_filling .jpg' : dbService.image),
+    image: dbService.slug === 'teeth-whitening' ? '/teeth whitning.webp' : (dbService.slug === 'dental-fillings' ? '/toot_filling.webp' : toWebp(dbService.image)),
     showBeforeAfter: dbService.show_before_after,
-    beforeImage: dbService.before_image,
-    afterImage: dbService.after_image,
-    standaloneImage: dbService.slug === 'teeth-whitening' ? '/teeth whitning.jpg' : (dbService.slug === 'dental-fillings' ? '/toot_filling .jpg' : dbService.standalone_image),
+    beforeImage: toWebp(dbService.before_image),
+    afterImage: toWebp(dbService.after_image),
+    standaloneImage: dbService.slug === 'teeth-whitening' ? '/teeth whitning.webp' : (dbService.slug === 'dental-fillings' ? '/toot_filling.webp' : toWebp(dbService.standalone_image)),
     shortDesc: dbService.short_desc,
     listingDesc: dbService.listing_desc,
     highlights: dbService.highlights,

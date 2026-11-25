@@ -18,7 +18,7 @@ const DOCTORS = [
     name: 'Dr. Chaaminda Paaris',
     specialty: 'Chief Dentist',
     bio: 'Delivering trusted dental care with over two decades of experience',
-    imageUrl: '/doctor_croped.jpg',
+    imageUrl: '/doctor_croped.webp',
   },
 
 ];
@@ -47,7 +47,7 @@ export default function AboutPage() {
             priority
           />
           <Image
-            src="/about-clinic-v2.jpg"
+            src="/about-clinic-v2.webp"
             alt="Charming Dental Clinic exterior — Dental clinic in Negombo, Sri Lanka"
             fill
             className="show-in-dark"
@@ -94,7 +94,7 @@ export default function AboutPage() {
             <SlideIn direction="left" delay={0} className={styles.doctorImageCol}>
               <FloatAnimation className={styles.doctorImageWrapper}>
                 <Image
-                  src="/doctor_croped.jpg"
+                  src="/doctor_croped.webp"
                   alt="Dr. Chaaminda Paaris — Expert dentist at Charming Dental Clinic, Negombo"
                   fill
                   style={{ objectFit: 'cover', objectPosition: 'center' }}

@@ -215,7 +215,7 @@ export default function HomePage() {
     '@context': 'https://schema.org',
     '@type': 'Dentist',
     name: 'Charming Dental Clinic',
-    image: 'https://charmingdental.com/about-clinic-v2.jpg',
+    image: 'https://charmingdental.com/about-clinic-v2.webp',
     '@id': 'https://charmingdental.com',
     url: 'https://charmingdental.com',
     telephone: '+94718109283',
@@ -363,7 +363,7 @@ export default function HomePage() {
             <SlideIn direction="left" delay={0} className={styles.doctorImageCol}>
               <FloatAnimation className={styles.doctorImageWrapper}>
                 <Image
-                  src="/doctor_croped.jpg"
+                  src="/doctor_croped.webp"
                   alt="Dr. Chaaminda Paaris — Expert dentist at Charming Dental Clinic, Negombo"
                   fill
                   style={{ objectFit: 'cover', objectPosition: 'center' }}

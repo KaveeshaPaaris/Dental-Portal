@@ -107,7 +107,7 @@ export default function Navbar() {
         <SpotlightCard className={`${styles.logoBox} ${styles.glassBox}`} spotlightColor="rgba(0, 22, 70, 0.25)">
           <Link href="/" style={{ display: 'flex', alignItems: 'center', height: '100%', textDecoration: 'none' }}>
             <Image
-              src="/logo.png"
+              src="/logo.webp"
               alt="Charming Dental Clinic logo — Dentist in Negombo"
               width={240}
               height={64}
@@ -117,7 +117,7 @@ export default function Navbar() {
               priority
             />
             <Image
-              src="/logo_dark.png"
+              src="/logo_dark.webp"
               alt="Charming Dental Clinic logo — Dentist in Negombo"
               width={240}
               height={64}
@@ -197,7 +197,7 @@ export default function Navbar() {
             <div className={styles.drawerHeader}>
               <Link href="/" onClick={closeDrawer} style={{ display: 'flex', alignItems: 'center' }}>
                 <Image
-                  src={theme === 'dark' ? '/logo_dark.png' : '/logo.png'}
+                  src={theme === 'dark' ? '/logo_dark.webp' : '/logo.webp'}
                   alt="Charming Dental Clinic"
                   width={120}
                   height={40}

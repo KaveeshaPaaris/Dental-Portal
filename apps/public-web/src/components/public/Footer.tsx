@@ -49,7 +49,7 @@ export default function Footer() {
         <div className={styles.brand}>
           <div className={styles.logo}>
             <Image
-              src="/logo.png"
+              src="/logo.webp"
               alt="Charming Dental Clinic — Dental Clinic in Negombo, Sri Lanka"
               width={250}
               height={110}
@@ -57,7 +57,7 @@ export default function Footer() {
               style={{ objectFit: 'contain', objectPosition: 'left', width: 'auto', height: '110px' }}
             />
             <Image
-              src="/logo_dark.png"
+              src="/logo_dark.webp"
               alt=""
               width={250}
               height={110}
