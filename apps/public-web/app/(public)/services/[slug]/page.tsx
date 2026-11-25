@@ -138,7 +138,7 @@ export default async function ServiceDetailPage({
         </section>
 
         {/* Visual / Image */}
-        {service.standaloneImage && (
+        {service.standaloneImage && !(service.showBeforeAfter && service.beforeImage && service.afterImage) && (
           <figure style={{ margin: '40px 0' }}>
             <Image
               src={service.standaloneImage}
