@@ -62,7 +62,16 @@ function ReviewCard({ review }: { review: Review }) {
       )}
       <div className={styles.cardFooter}>
         <div className={styles.flagIcon}>
-          <img src="https://flagcdn.com/w40/lk.png" alt="Sri Lanka" width="32" height="22" loading="lazy" />
+          {/* Served from our own site (no extra connection to flagcdn.com). The file is 2:1 but the box
+              is 32x22, so object-fit: cover keeps the flag's real proportions instead of stretching it. */}
+          <img
+            src="/flags/lk.png"
+            alt="Sri Lanka"
+            width="32"
+            height="22"
+            loading="lazy"
+            style={{ objectFit: 'cover' }}
+          />
         </div>
         <div>
           <div className={styles.patientName}>{review.patient_name}</div>

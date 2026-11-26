@@ -55,6 +55,10 @@ const nextConfig = {
   // hit the cap and take the site down with a 503. Keep the build to a few workers.
   experimental: {
     cpus: 2,
+    // Put the CSS inside the HTML instead of separate files. Phones then don't have to download
+    // 3 stylesheets before they can draw the page (PageSpeed: ~730 ms of render-blocking on 4G).
+    // The site's CSS is small (~16 KB), so carrying it in each page is cheap. Production builds only.
+    inlineCss: true,
   },
 
   // Allow images from Supabase and Unsplash (keep in sync with src/lib/imageHosts.ts)
