@@ -24,7 +24,7 @@ const plusJakartaSans = localFont({
 });
 
 // Runs before first paint: picks the saved theme (or the device's preference) so there is no flash.
-const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem('dental-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.setAttribute('data-theme',t)}catch(e){}})();`;
+const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem('dental-theme');if(t!=='light'&&t!=='dark'){t='light'}document.documentElement.setAttribute('data-theme',t)}catch(e){}})();`;
 
 export const metadata: Metadata = {
   // Lets relative URLs (e.g. the social preview image) resolve to absolute ones.
