@@ -28,12 +28,47 @@ function HeroBackgroundImage() {
   } = getImageProps({ ...common, src: '/dental_clinic_interior_portrait.webp' });
 
   return (
-    <picture>
-      <source media="(max-width: 768px)" srcSet={mobileSrcSet} />
-      <source media="(min-width: 769px)" srcSet={desktopSrcSet} />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img {...imgProps} srcSet={desktopSrcSet} alt="" className={styles.heroImage} />
-    </picture>
+    <>
+      {/* Phones only: start downloading the phone hero photo right away. It uses the same srcSet and
+          sizes as the <source> below, so the browser picks the same file and downloads it once. */}
+      <link
+        rel="preload"
+        as="image"
+        media="(max-width: 768px)"
+        imageSrcSet={mobileSrcSet}
+        imageSizes="100vw"
+        fetchPriority="high"
+      />
+      <picture>
+        <source media="(max-width: 768px)" srcSet={mobileSrcSet} />
+        <source media="(min-width: 769px)" srcSet={desktopSrcSet} />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img {...imgProps} srcSet={desktopSrcSet} alt="" className={styles.heroImage} />
+      </picture>
+    </>
+  );
+}
+
+/**
+ * Hero entrance animation (fade + 40px lift) done in CSS instead of the JavaScript FadeUp, so the
+ * headline is visible as soon as the page paints. Same timing as FadeUp. Used for the hero only.
+ */
+function HeroFade({
+  delay = 0,
+  className = '',
+  children,
+}: {
+  delay?: number;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      className={`${styles.heroFade} ${className}`}
+      style={{ '--hero-delay': `${delay}s` } as React.CSSProperties}
+    >
+      {children}
+    </div>
   );
 }
 
@@ -282,44 +317,44 @@ export default function HomePage() {
           {/* [FIX #1] heroContent sits cleanly over the hero image */}
           <div className={styles.heroContent}>
             <div className={styles.desktopOnly}>
-              <FadeUp delay={0}>
+              <HeroFade delay={0}>
                 <h1 className={styles.heroTitle}>
                   Where Excellence Meets{' '}
                   <span className={styles.heroHighlight}>Every Smile</span>
                 </h1>
-              </FadeUp>
-              <FadeUp delay={0.15}>
+              </HeroFade>
+              <HeroFade delay={0.15}>
                 <p className={styles.heroSubtext}>
                   Trusted by 5,000+ patients. Board-certified specialists, same-week appointments available.
                 </p>
-              </FadeUp>
+              </HeroFade>
             </div>
 
             <div className={styles.mobileOnly}>
-              <FadeUp delay={0}>
+              <HeroFade delay={0}>
                 <h1 className={styles.heroTitle}>
                   Where <span className={styles.heroHighlight}>Excellence</span> Meets{' '}
                   <span className={styles.heroHighlight}>Every Smile.</span>
                 </h1>
-              </FadeUp>
-              <FadeUp delay={0.15}>
+              </HeroFade>
+              <HeroFade delay={0.15}>
                 <p className={styles.heroSubtext}>
                   Your path to a brighter, healthier smile starts here.
                 </p>
-              </FadeUp>
+              </HeroFade>
             </div>
 
             <div className={styles.heroActions}>
-              <FadeUp delay={0.3}>
+              <HeroFade delay={0.3}>
                 <Link href="/book" className="btn btn-primary btn-xl">
                   Book Appointment <ArrowRight size={18} aria-hidden="true" />
                 </Link>
-              </FadeUp>
-              <FadeUp delay={0.42} className={styles.hideOnMobile}>
+              </HeroFade>
+              <HeroFade delay={0.42} className={styles.hideOnMobile}>
                 <Link href="/services" className="btn btn-secondary btn-xl">
                   Our Services
                 </Link>
-              </FadeUp>
+              </HeroFade>
             </div>
 
             {/* [FIX #3] Stats section with a subtle separator/backdrop for contrast */}

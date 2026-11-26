@@ -91,7 +91,7 @@ export default function Footer() {
 
         {/* ── Col 2: Quick Links ───────────────── */}
         <div className={`${styles.col} ${styles.quickLinksCol}`}>
-          <h4 className={styles.colTitle}>Quick Links</h4>
+          <p className={styles.colTitle}>Quick Links</p>
           <nav aria-label="Footer navigation">
             {QUICK_LINKS.map(({ label, href }) => (
               <Link key={href} href={href} className={styles.navLink}>
@@ -104,7 +104,7 @@ export default function Footer() {
 
         {/* ── Col 3: Contact ───────────────────── */}
         <div className={styles.col}>
-          <h4 className={styles.colTitle}>Contact</h4>
+          <p className={styles.colTitle}>Contact</p>
           <div className={styles.contactList}>
             <a href="tel:+94718109283" className={styles.contactRow}>
               <Phone size={15} aria-hidden="true" />
@@ -132,7 +132,7 @@ export default function Footer() {
 
         {/* ── Col 4: Clinic Hours ──────────────── */}
         <div className={styles.col}>
-          <h4 className={styles.colTitle}>Clinic Hours</h4>
+          <p className={styles.colTitle}>Clinic Hours</p>
           <div className={styles.hoursList}>
             {HOURS.map(({ day, times }) => (
               <div key={day} className={styles.hourItem}>

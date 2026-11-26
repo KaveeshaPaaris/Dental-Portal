@@ -1,12 +1,37 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ExternalLink } from 'lucide-react';
 import styles from '../../../app/(public)/contact/page.module.css';
 
 export default function MapSection() {
   const [isSatellite, setIsSatellite] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+
+  // The Google Maps embed pulls in several hundred KB of scripts, so the iframe is only created
+  // once the map is about to scroll into view (200px early, so it is usually ready by then).
+  // While it is hidden (e.g. the desktop layout hides this map), it never loads at all.
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [showMap, setShowMap] = useState(false);
+  useEffect(() => {
+    const el = wrapperRef.current;
+    if (!el || showMap) return;
+    if (typeof IntersectionObserver === 'undefined') {
+      setShowMap(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setShowMap(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [showMap]);
 
   const baseSrc = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63333.71501809776!2d79.77092724863276!3d7.200025499999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2ef7ab25a6c1b%3A0xc69391f9fb930206!2sDental%20Clinic%20-%20Dr%20Chaminda%20Paris!5e0!3m2!1sen!2slk!4v1781681815874!5m2!1sen!2slk";
   
@@ -18,7 +43,7 @@ export default function MapSection() {
   const mapThumb = 'url("https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?auto=format&fit=crop&w=100&q=80")';
 
   return (
-    <div className={styles.mapWrapper} style={{ padding: 0, overflow: 'hidden', position: 'relative' }}>
+    <div ref={wrapperRef} className={styles.mapWrapper} style={{ padding: 0, overflow: 'hidden', position: 'relative' }}>
       <a
         href="https://www.google.com/maps/search/?api=1&query=Dental+Clinic+-+Dr+Chaminda+Paris+Negombo"
         target="_blank"
@@ -90,15 +115,24 @@ export default function MapSection() {
         </div>
       </button>
 
-      <iframe
-        src={src}
-        width="100%"
-        height="100%"
-        style={{ border: 0, minHeight: '400px' }}
-        allowFullScreen
-        loading="lazy"
-        referrerPolicy="no-referrer-when-downgrade"
-      ></iframe>
+      {showMap ? (
+        <iframe
+          title="Charming Dental Clinic location map"
+          src={src}
+          width="100%"
+          height="100%"
+          style={{ border: 0, minHeight: '400px' }}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+        ></iframe>
+      ) : (
+        // Same size as the map, so nothing jumps when the map appears.
+        <div
+          aria-hidden="true"
+          style={{ width: '100%', height: '100%', minHeight: '400px', background: 'var(--color-surface-2)' }}
+        />
+      )}
     </div>
   );
 }

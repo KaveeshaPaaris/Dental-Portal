@@ -179,25 +179,44 @@
 }
 
 /* ─── Dots ──────────────────────────────────────────────────── */
+/*
+  Each dot is a 24x24 button (the minimum tap size accessibility checks look for) that is
+  transparent; the visible dot is drawn by ::before at the same size as before (8px).
+  The extra space inside the button is why the dots sit a little further apart than they did.
+*/
 .dots {
   display: flex;
   justify-content: center;
-  gap: 8px;
-  margin-top: 36px;
+  gap: 0;
+  /* The 24px-tall buttons add 8px above and below the 8px dot; the margins give that back
+     (36px top, 0 bottom as before) so the spacing around the visible dots does not change. */
+  margin-top: 28px;
+  margin-bottom: -8px;
 }
 
 .dot {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dot::before {
+  content: '';
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  border: none;
   background: var(--color-border);
-  cursor: pointer;
   transition: background 0.2s, width 0.2s;
-  padding: 0;
-  position: relative;
 }
 
+/* Larger invisible hit area (as before), centred on the dot */
 .dot::after {
   content: '';
   position: absolute;
@@ -209,7 +228,7 @@
   z-index: 1;
 }
 
-.dotActive {
+.dotActive::before {
   width: 24px;
   border-radius: 4px;
   background: var(--color-primary);
@@ -321,11 +340,13 @@
 
   /* Dots — larger touch target */
   .dots {
-    margin-top: 20px;
-    gap: 10px;
+    /* 10px dots in 24px buttons: 7px extra above and below, given back (20px top as before) */
+    margin-top: 13px;
+    margin-bottom: -7px;
+    gap: 0;
   }
 
-  .dot {
+  .dot::before {
     width: 10px;
     height: 10px;
   }
@@ -335,7 +356,12 @@
     height: 44px;
   }
 
+  /* The active dot is a 28px pill, wider than the 24px button, so the button grows with it */
   .dotActive {
+    width: 28px;
+  }
+
+  .dotActive::before {
     width: 28px;
   }
 

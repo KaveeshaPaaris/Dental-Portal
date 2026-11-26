@@ -43,6 +43,25 @@
 
 /* [FIX #7] Removed unused `.heroBadge` CSS rule */
 
+/*
+  Hero entrance: the same fade + 40px lift (0.6s, same easing, per-element delay) the hero used to
+  get from the JavaScript FadeUp component. As plain CSS it starts the moment the page is painted,
+  so the headline no longer sits invisible until the JavaScript bundle has loaded (that wait was
+  what made the mobile Largest Contentful Paint slow).
+*/
+.heroFade {
+  animation: heroFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) var(--hero-delay, 0s) both;
+}
+
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroFade { animation: none; }
+}
+
 .heroTitle {
   font-size: clamp(3rem, 7vw, 5rem);
   font-weight: 800;

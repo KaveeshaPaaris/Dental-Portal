@@ -3,6 +3,13 @@
   background: var(--color-surface-2);
   border-top: 1px solid var(--color-border);
   padding-top: 52px; /* slightly tighter than 56px */
+  /* Small footer text: the site-wide muted grey is below 4.5:1 contrast on this background
+     (4.30 in light mode, 2.79 in dark). These values pass (4.9 / 4.6) and are footer-only. */
+  --footer-muted: #5B6B80;
+}
+
+:global([data-theme='dark']) .footer {
+  --footer-muted: #8A99AD;
 }
 
 /* ─── 4-Column Grid ──────────────────────────────────────── */
@@ -82,6 +89,9 @@
   Blue uppercase text + subtle bottom border as divider.
 */
 .colTitle {
+  /* These were headings (<h4>) and got these two values from the global heading style; kept so it looks identical now that it's a <p>. */
+  font-family: var(--font-display);
+  line-height: 1.2;
   font-size: 0.6875rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -190,7 +200,7 @@
   align-items: flex-start;
   gap: 5px;
   font-size: 0.75rem;
-  color: var(--color-text-muted);
+  color: var(--footer-muted);
   font-style: italic;
   margin-top: 12px;
   margin-bottom: 14px;
@@ -200,7 +210,7 @@
 .poyaNote svg {
   flex-shrink: 0;
   margin-top: 2px;
-  color: var(--color-text-muted);
+  color: var(--footer-muted);
 }
 
 /* Subtle outlined map button */
@@ -242,7 +252,7 @@
 
 .bottom p {
   font-size: 0.8rem;
-  color: var(--color-text-muted);
+  color: var(--footer-muted);
 }
 
 .madeWith {
