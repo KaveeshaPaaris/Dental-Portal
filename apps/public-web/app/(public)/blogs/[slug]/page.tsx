@@ -11,7 +11,7 @@ import styles from './page.module.css';
 
 
 // ─── Constants ───────────────────────────────────────────────────────────────
-const baseUrl = 'https://charmingdental.com';
+const baseUrl = 'https://charmingdental.lk';
 
 // ─── Static Pre-rendering (optional, improves performance) ───────────────────
 // Pre-renders known blog slugs at build time. New slugs are ISR on-demand.

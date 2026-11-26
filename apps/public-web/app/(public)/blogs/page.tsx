@@ -9,7 +9,7 @@ const title = 'Dental Health Blog';
 const socialTitle = 'Dental Health Blog — Charming Dental Clinic';
 const description =
   'Expert insights, tips, and news to help you maintain a healthy, beautiful smile. Read our latest articles on oral hygiene, treatments, and more.';
-const url = 'https://charmingdental.com/blogs';
+const url = 'https://charmingdental.lk/blogs';
 
 // ─── Metadata ─────────────────────────────────────────────────────────────────
 export const metadata: Metadata = {
@@ -54,7 +54,7 @@ export default async function BlogsPage() {
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: 'https://charmingdental.com',
+        item: 'https://charmingdental.lk',
       },
       {
         '@type': 'ListItem',

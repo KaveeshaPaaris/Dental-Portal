@@ -7,7 +7,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Not launched yet: advertise nothing.
   if (!ALLOW_INDEXING) return [];
 
-  const baseUrl = 'https://charmingdental.com';
+  const baseUrl = 'https://charmingdental.lk';
 
   // Static routes
   const routes = [

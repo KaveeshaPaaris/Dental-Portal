@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: 'About Us',
   description: 'Learn about our mission, our history, and meet the expert team of dentists dedicated to your oral health.',
   alternates: {
-    canonical: 'https://charmingdental.com/about',
+    canonical: 'https://charmingdental.lk/about',
   },
 };
 

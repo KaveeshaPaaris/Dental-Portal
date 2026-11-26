@@ -9,12 +9,12 @@ export const metadata: Metadata = {
   title: 'Book an Appointment',
   description: 'Book your dental appointment online at Charming Dental Clinic, Negombo. Quick, easy, and secure booking process.',
   alternates: {
-    canonical: 'https://charmingdental.com/book',
+    canonical: 'https://charmingdental.lk/book',
   },
   openGraph: {
     title: 'Book an Appointment — Charming Dental Clinic',
     description: 'Book your dental appointment online at Charming Dental Clinic, Negombo. Quick, easy, and secure booking process.',
-    url: 'https://charmingdental.com/book',
+    url: 'https://charmingdental.lk/book',
     siteName: 'Charming Dental Clinic',
     type: 'website',
   },
