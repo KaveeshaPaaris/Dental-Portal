@@ -124,7 +124,6 @@ export default function Navbar() {
               sizes="140px"
               style={{ objectFit: 'contain', width: '140px', height: '140px' }}
               className={styles.logoDark}
-              priority
             />
           </Link>
         </SpotlightCard>
@@ -202,7 +201,6 @@ export default function Navbar() {
                   width={120}
                   height={40}
                   style={{ objectFit: 'contain', width: 'auto', height: '40px' }}
-                  priority
                 />
               </Link>
               <button
