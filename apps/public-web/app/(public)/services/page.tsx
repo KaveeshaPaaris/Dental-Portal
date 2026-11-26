@@ -12,13 +12,13 @@ export const metadata: Metadata = {
   keywords:
     'dental services, teeth whitening, orthodontics, dental implants, scaling polishing, Negombo dentist, Charming Dental Clinic',
   alternates: {
-    canonical: 'https://charmingdental.com/services',
+    canonical: 'https://charmingdental.lk/services',
   },
   openGraph: {
     title: 'Our Dental Services — Charming Dental Clinic',
     description:
       'Comprehensive dental care for your entire family — from routine check-ups to advanced restorative procedures.',
-    url: 'https://charmingdental.com/services',
+    url: 'https://charmingdental.lk/services',
     siteName: 'Charming Dental Clinic',
     type: 'website',
   },

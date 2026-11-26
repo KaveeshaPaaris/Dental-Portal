@@ -75,7 +75,7 @@ export const metadata: Metadata = {
   description:
     'Book your dental appointment online. Expert care for all your dental needs — teeth whitening, orthodontics, implants, and more.',
   alternates: {
-    canonical: 'https://charmingdental.com',
+    canonical: 'https://charmingdental.lk',
   },
 };
 
@@ -215,9 +215,9 @@ export default function HomePage() {
     '@context': 'https://schema.org',
     '@type': 'Dentist',
     name: 'Charming Dental Clinic',
-    image: 'https://charmingdental.com/about-clinic-v2.webp',
-    '@id': 'https://charmingdental.com',
-    url: 'https://charmingdental.com',
+    image: 'https://charmingdental.lk/about-clinic-v2.webp',
+    '@id': 'https://charmingdental.lk',
+    url: 'https://charmingdental.lk',
     telephone: '+94718109283',
     address: {
       '@type': 'PostalAddress',

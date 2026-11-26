@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: 'Contact Us',
   description: 'Get in touch with us for appointments, inquiries, or dental emergencies.',
   alternates: {
-    canonical: 'https://charmingdental.com/contact',
+    canonical: 'https://charmingdental.lk/contact',
   },
 };
 
@@ -35,9 +35,9 @@ export default function ContactPage() {
     '@context': 'https://schema.org',
     '@type': 'Dentist',
     name: 'Charming Dental Clinic',
-    image: 'https://charmingdental.com/about-clinic-v2.jpg',
-    '@id': 'https://charmingdental.com',
-    url: 'https://charmingdental.com',
+    image: 'https://charmingdental.lk/about-clinic-v2.jpg',
+    '@id': 'https://charmingdental.lk',
+    url: 'https://charmingdental.lk',
     telephone: '+94718109283',
     address: {
       '@type': 'PostalAddress',
