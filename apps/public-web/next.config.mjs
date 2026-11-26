@@ -1,9 +1,11 @@
-import type { NextConfig } from 'next';
+// Plain .mjs on purpose: with a next.config.ts, Next loads its Rust compiler (SWC) when the server
+// starts just to read this file, and that compiler keeps one thread per CPU core of the HOST alive
+// (64 on Hostinger). The shared plan allows only 120 processes/threads for the whole account.
 
 const isDev = process.env.NODE_ENV !== 'production';
 
 // Where the browser is allowed to call the API from (for the Content-Security-Policy below).
-function apiOrigin(): string {
+function apiOrigin() {
   try {
     return new URL(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001').origin;
   } catch {
@@ -44,7 +46,8 @@ const securityHeaders = [
   ...(process.env.ALLOW_INDEXING === 'true' ? [] : [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }]),
 ];
 
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   reactStrictMode: true,
 
   // The shared host caps the whole account at 120 processes. Next starts one build worker per CPU
