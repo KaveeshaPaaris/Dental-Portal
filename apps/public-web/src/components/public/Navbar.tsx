@@ -114,7 +114,10 @@ export default function Navbar() {
               sizes="140px"
               style={{ objectFit: 'contain', width: '140px', height: '140px' }}
               className={styles.logoLight}
-              priority
+              // The logo is the Largest Contentful Paint on phones. Next 16 deprecated `priority`;
+              // its docs recommend eager loading + high fetch priority for this case.
+              loading="eager"
+              fetchPriority="high"
             />
             <Image
               src="/logo_dark.webp"
