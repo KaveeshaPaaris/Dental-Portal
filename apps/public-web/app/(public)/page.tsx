@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Shield } from 'lucide-react';
+import { ArrowRight, Shield, Users, CalendarCheck } from 'lucide-react';
 import styles from './page.module.css';
 import ReviewsCarousel from '@/components/ReviewsCarousel';
 import { getFeaturedServices } from '@/data/services';
@@ -15,25 +15,24 @@ function HeroStats({ className }: { className?: string }) {
   return (
     <div className={`${styles.heroStatsWrapper} ${className || ''}`}>
       <div className={styles.heroStats}>
-        {[
-          { value: '25+', label: 'Years Experience' },
-          { value: '5K+', label: 'Happy Patients' },
-          { value: '4.9', label: 'Star Rating' },
-        ].map((stat) => (
-          <div
-            key={stat.label}
-            className={styles.stat}
-            aria-label={`${stat.value} ${stat.label}`}
-          >
-            <div className={styles.statValue}>
-              <AnimatedCounter
-                value={parseFloat(stat.value.replace(/[^\d.]/g, ''))}
-                suffix={stat.value.replace(/[\d.]/g, '')}
-              />
-            </div>
-            <div className={styles.statLabel}>{stat.label}</div>
+        <div className={styles.stat}>
+          <div className={styles.statValue}>
+            <AnimatedCounter value={25} suffix="+" />
           </div>
-        ))}
+          <div className={styles.statLabel}>Years of Experience</div>
+        </div>
+        <div className={styles.stat}>
+          <div className={styles.statValue}>
+            <Users className={styles.statIcon} strokeWidth={1.75} aria-hidden="true" />
+          </div>
+          <div className={styles.statLabel}>Family Dental Care</div>
+        </div>
+        <div className={styles.stat}>
+          <div className={styles.statValue}>
+            <CalendarCheck className={styles.statIcon} strokeWidth={1.75} aria-hidden="true" />
+          </div>
+          <div className={styles.statLabel}>Flexible Appointments</div>
+        </div>
       </div>
     </div>
   );
@@ -290,7 +289,7 @@ export default function HomePage() {
               </FadeUp>
               <FadeUp delay={0.15}>
                 <p className={styles.heroSubtext}>
-                  Trusted by 5,000+ patients. Board-certified specialists, same-week appointments available.
+                  Gentle dental care for a healthy, confident smile.
                 </p>
               </FadeUp>
             </div>
@@ -304,7 +303,7 @@ export default function HomePage() {
               </FadeUp>
               <FadeUp delay={0.15}>
                 <p className={styles.heroSubtext}>
-                  Your path to a brighter, healthier smile starts here.
+                  Gentle dental care for a healthy, confident smile.
                 </p>
               </FadeUp>
             </div>

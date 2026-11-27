@@ -1,5 +1,6 @@
 import { supabase } from '../../config/supabase';
 import { createError } from '../../middleware/error.middleware';
+import type { CreateItemInput, UpdateItemInput, StockChangeInput } from './inventory.schema';
 
 export async function getAllItems() {
   const { data, error } = await supabase
@@ -10,72 +11,58 @@ export async function getAllItems() {
   return data;
 }
 
-export async function createItem(input: {
-  name: string;
-  description?: string;
-  unit?: string;
-  current_quantity: number;
-  minimum_threshold: number;
-  image_url?: string;
-}, adminId: string) {
+export async function createItem(input: CreateItemInput, adminId: string) {
   const { data, error } = await supabase
     .from('inventory')
-    .insert({ ...input, created_by: adminId, updated_by: adminId })
+    .insert({
+      name: input.name,
+      description: input.description ?? null,
+      unit: input.unit,
+      current_quantity: input.current_quantity,
+      minimum_threshold: input.minimum_threshold,
+      image_url: input.image_url ?? null,
+      created_by: adminId,
+      updated_by: adminId,
+    })
     .select()
     .single();
   if (error || !data) throw createError('Failed to create inventory item', 500);
   return data;
 }
 
-export async function updateItem(id: string, input: Partial<{
-  name: string;
-  description: string;
-  unit: string;
-  minimum_threshold: number;
-  image_url: string;
-}>, adminId: string) {
+export async function updateItem(id: string, input: UpdateItemInput, adminId: string) {
   const { data, error } = await supabase
     .from('inventory')
     .update({ ...input, updated_by: adminId })
     .eq('id', id)
     .select()
-    .single();
-  if (error || !data) throw createError('Failed to update inventory item', 500);
+    .maybeSingle();
+  if (error) throw createError('Failed to update inventory item', 500);
+  if (!data) throw createError('Inventory item not found', 404);
   return data;
 }
 
-export async function logStockChange(id: string, input: {
-  action: 'RESTOCK' | 'USED' | 'ADJUSTMENT' | 'WRITE_OFF';
-  quantity_change: number;
-  notes?: string;
-}, adminId: string) {
-  const { data: item } = await supabase.from('inventory').select('current_quantity').eq('id', id).single();
-  if (!item) throw createError('Inventory item not found', 404);
-
-  const before = item.current_quantity;
-  const after = before + input.quantity_change;
-  if (after < 0) throw createError('Stock cannot go below zero', 400);
-
-  // Log the change
-  await supabase.from('inventory_logs').insert({
-    inventory_id: id,
-    action: input.action,
-    quantity_change: input.quantity_change,
-    quantity_before: before,
-    quantity_after: after,
-    notes: input.notes ?? null,
-    performed_by: adminId,
+/**
+ * Atomic stock change: the adjust_inventory_stock() Postgres function locks the row,
+ * checks the result is >= 0, updates the quantity and writes the log in ONE transaction.
+ */
+export async function logStockChange(id: string, input: StockChangeInput, adminId: string) {
+  const { data, error } = await supabase.rpc('adjust_inventory_stock', {
+    p_item_id: id,
+    p_action: input.action,
+    p_change: input.quantity_change,
+    p_notes: input.notes ?? null,
+    p_user_id: adminId,
   });
 
-  // Update current quantity (triggers low_stock computed column + trigger)
-  const { data, error } = await supabase
-    .from('inventory')
-    .update({ current_quantity: after, updated_by: adminId })
-    .eq('id', id)
-    .select()
-    .single();
-
-  if (error || !data) throw createError('Failed to update stock quantity', 500);
+  if (error) {
+    const msg = error.message ?? '';
+    if (msg.includes('Inventory item not found')) throw createError('Inventory item not found', 404);
+    if (msg.includes('Stock cannot go below zero')) throw createError('Stock cannot go below zero', 400);
+    if (msg.includes('Invalid quantity for action')) throw createError('Invalid quantity for this action', 400);
+    console.error('[logStockChange] RPC error:', error);
+    throw createError('Failed to update stock quantity', 500);
+  }
   return data;
 }
 
